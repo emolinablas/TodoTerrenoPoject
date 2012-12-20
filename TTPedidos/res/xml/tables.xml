@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <database name="todoterreno" version="1">
+	
+    <!-- A R T I C U L O -->
+    <table name="articulo" to-string="%articulo%">
+    
+    <field name="artCodigo"			obligatory="false" 	type="text" size="80"/>
+    <field name="categoria"			obligatory="false"	type="text" size="80"/>
+    <field name="sector"			obligatory="false"	type="text" size="80"/>
+    <field name="division"			obligatory="false"	type="text" size="80"/>
+	<field name="artDescripcion"	obligatory="false" 	type="text" size="80"/>
+	<field name="artIngrediente"	obligatory="false"	type="text" size="80"/>
+	<field name="precioVenta"		obligatory="false"	type="float"/>      
+	<field name="precioDes1"		obligatory="false"	type="float"/> 
+	<field name="precioDes2"		obligatory="false"	type="float"/>
+	<field name="precioDes3"		obligatory="false"	type="float"/>
+	<field name="ofertado"			obligatory="false"	type="boolean"/>
+	<field name="precioOferta"		obligatory="false"	type="float"/>
+	<field name="foto"				obligatory="false"	type="text" size="250"/>
+	<field name="observacion"		obligatory="false"	type="text" size="120"/>
+	<field name="catalogo"			obligatory="false"	type="text" size="25"/>
+	<field name="unidadesFardo"		obligatory="false"	type="integer"/>
+	<field name="link"				obligatory="false"	type="text" size="80"/>
+	<field name="artOfertaFecha"	obligatory="false"	type="text" size="80"/>
+	         
+    </table>
+
+    <!-- C L I E N T E -->
+    <table name="cliente" to-string="%cliente%">
+    
+    <field name="cliCodigo"			obligatory="false" 	type="text" size="80"/>
+    <field name="cliEmpresa"		obligatory="false"	type="text" size="80"/>
+    <field name="cliContacto"		obligatory="false"	type="text" size="80"/>
+    <field name="codCatCliete"		obligatory="false"	type="text" size="80"/>
+	<field name="cliDireccion"		obligatory="false" 	type="text" size="80"/>
+	<field name="cliTelefono"		obligatory="false"	type="text" size="80"/>
+	<field name="cliFax"			obligatory="false" 	type="text" size="80"/>
+    <field name="cliEmail"			obligatory="false"	type="text" size="80"/>
+    <field name="cliWeb"			obligatory="false"	type="text" size="80"/>
+    <field name="fingreso"			obligatory="false"	type="text" size="80"/>
+	<field name="cliDesnormal"		obligatory="false" 	type="text" size="80"/>
+	<field name="cliDes1"			obligatory="false"	type="text" size="80"/>
+	<field name="cliDes2"			obligatory="false" 	type="text" size="80"/>
+    <field name="cliDes3"			obligatory="false"	type="text" size="80"/>
+    <field name="clilimite"			obligatory="false"	type="text" size="80"/>
+    <field name="cliSaldo"			obligatory="false"	type="text" size="80"/>
+	<field name="cliCheque"			obligatory="false" 	type="text" size="80"/>
+	<field name="cliRuta"			obligatory="false"	type="text" size="80"/>
+	<field name="cliDireccionParticular"	obligatory="false"	type="text" size="80"/>
+    <field name="cliTelefonoCasa"	obligatory="false"	type="text" size="80"/>
+	<field name="cliTelefonoMovil"	obligatory="false" 	type="text" size="80"/>
+	<field name="cliNit"			obligatory="false"	type="text" size="80"/>
+    <field name="Semana"			obligatory="false"	type="integer"/>
+	<field name="diaVisita"			obligatory="false" 	type="text" size="80"/>
+	<field name="visitado"			obligatory="false"	type="boolean"/>    
+        
+    </table>
+    
+    <!-- P O R T A F O L I O -->
+    <table name="portafolio" to-string="%portafolio%">
+    
+    <field name="idPortafolio"	obligatory="false" 	type="text" size="10"/>
+    <field name="descripcion"	obligatory="false" 	type="text" size="80"/>    
+    <field name="fechacreacion"	obligatory="false" 	type="text" size="20"/>
+    <field name="deshabilitar"	obligatory="false" 	type="text" size="80"/>
+    <field name="anotaciones"	obligatory="false" 	type="text" size="80"/>
+    <field name="usuario"		obligatory="false" 	type="text" size="20"/>
+        
+    </table>
+    
+    <!-- R U T A -->
+    <table name="ruta" to-string="%ruta%">
+    
+    <field name="id"	obligatory="false" 	type="text" size="10"/>
+    <field name="descripcion"	obligatory="false" 	type="text" size="80"/>    
+    <field name="tipovehiculo"	obligatory="false" 	type="text" size="20"/>
+    <field name="origen"		obligatory="false" 	type="text" size="50"/>
+    <field name="destino"		obligatory="false" 	type="text" size="50"/>
+    <field name="precioventa"	obligatory="false" 	type="text" size="50"/>    
+    <field name="combustible"	obligatory="false" 	type="text" size="50"/>    
+    <field name="viaticos"		obligatory="false" 	type="text" size="50"/>    
+    <field name="otrosgastos"	obligatory="false" 	type="text" size="50"/>
+    <field name="kilometros"	obligatory="false" 	type="text" size="80"/>    
+    
+    </table>
+    
+    <!-- U S U A R I O -->
+    <table name="usuario" to-string="%usuario%">
+    
+    <field name="id"			obligatory="false" 	type="text" size="10"/>    
+    <field name="usuario"		obligatory="false" 	type="text" size="20"/>    
+    <field name="password"		obligatory="false" 	type="text" size="20"/>    
+    <field name="lastLogin"		obligatory="false" 	type="text" size="20"/>
+    <field name="activo"		obligatory="false" 	type="text" size="10"/>    
+        
+    </table>
+    
+    <!-- V E N D E D O R -->
+    <table name="vendedor" to-string="%vendedor%">
+    
+    <field name="vendedor"			obligatory="false" 	type="text" size="20"/>    
+    <field name="nombre"			obligatory="false" 	type="text" size="20"/>    
+    <field name="direccion"			obligatory="false" 	type="text" size="80"/>    
+    <field name="telefono"			obligatory="false" 	type="text" size="20"/>
+    <field name="identificacion"	obligatory="false" 	type="text" size="80"/>
+    <field name="comision"			obligatory="false" 	type="text" size="80"/>    
+    <field name="ruta"				obligatory="false" 	type="text" size="80"/>    
+    <field name="clidesnormal"		obligatory="false" 	type="text" size="80"/>    
+    <field name="clides1"			obligatory="false" 	type="text" size="80"/>
+    <field name="clides2"			obligatory="false" 	type="text" size="80"/>        
+    <field name="clides3"			obligatory="false" 	type="text" size="80"/>    
+    <field name="turno"				obligatory="false" 	type="text" size="80"/>    
+    <field name="otnumero"			obligatory="false" 	type="text" size="80"/>
+    <field name="idusuario"			obligatory="false" 	type="text" size="20"/>        
+    
+    </table>
+    
+    <!-- D E T A L L E   P E D I D O -->
+	<table name="detallepedido" to-string="%detallepedido%">
+	    
+	<field name="codigo"		obligatory="false"	type="text"	size="20"/>
+	<field name="nombre"		obligatory="false"	type="text"	size="80"/>
+	<field name="caja"			obligatory="false"	type="integer"/>
+	<field name="unidad"		obligatory="false"	type="integer"/>
+	<field name="precio"		obligatory="false"	type="float"/>
+	<field name="subtotal"		obligatory="false"	type="float"/>
+	<field name="totalunidades"	obligatory="false"	type="integer"/>
+	<field name="unidadesfardo"	obligatory="false"	type="integer"/>
+	
+	</table>
+	
+	<!-- E N C A B E Z A D O   P E D I D O -->
+	<table name="encabezadopedido"	to-string="%encabezadopedido%">
+	
+	<field name="codigocliente"	obligatory="false"	type="text"	size="20"/>
+	<field name="total"			obligatory="false"	type="float"/>
+	<field name="fecha"			obligatory="false"	type="text"	size="50"/>
+	<field name="hora"			obligatory="false"	type="text"	size="50"/>
+	<field name="credito"		obligatory="false"	type="text"	size="80"/>
+	<field name="sinc"			obligatory="false"	type="integer"/>    
+	    
+	</table>
+	    
+	    
+</database>
+    
+
+</LinearLayout>
