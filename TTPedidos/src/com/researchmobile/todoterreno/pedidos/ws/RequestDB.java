@@ -10,6 +10,7 @@ import com.android.dataframework.Entity;
 import com.researchmobile.todoterreno.pedidos.entity.Articulo;
 import com.researchmobile.todoterreno.pedidos.entity.Cliente;
 import com.researchmobile.todoterreno.pedidos.entity.Portafolio;
+import com.researchmobile.todoterreno.pedidos.entity.RespuestaWS;
 import com.researchmobile.todoterreno.pedidos.entity.Ruta;
 import com.researchmobile.todoterreno.pedidos.entity.Usuario;
 import com.researchmobile.todoterreno.pedidos.entity.Vendedor;
@@ -394,6 +395,21 @@ public class RequestDB {
 				}
 			}	
 			return clientep;
+		}
+//recibe user y pass
+		public RespuestaWS  verificaLoginDB(String usuario, String password)
+		{
+			RespuestaWS respuesta = new RespuestaWS();
+			List<Entity> categories = DataFramework.getInstance().getEntityList("usuario","usuario=" + usuario + "and password=" + password);
+			{
+				if(categories.size()>0)
+				{
+					respuesta.setResultado(true);
+				}
+				 else
+					respuesta.setResultado(false);
+			return respuesta;			
+			}
 		}
 //ultima llave
 }
