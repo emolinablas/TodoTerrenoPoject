@@ -205,36 +205,44 @@ public class RequestDB {
 //recorre usuario
 		public Usuario usuarioDB()
 		{
-		 	Usuario usuario = new Usuario();
-			List<Entity> categories = DataFramework.getInstance().getEntityList("usuario");
-			 	{
-			 		Iterator iter = categories.iterator();
-			 		while(iter.hasNext())
+			try
+			{
+				Usuario usuario = new Usuario();
+				List<Entity> categories = DataFramework.getInstance().getEntityList("usuario");
 			 		{
+			 			Iterator iter = categories.iterator();
+			 			while(iter.hasNext())
+			 			{
 			 			Entity datousuario = (Entity)iter.next();
 			 			usuario.setId(datousuario.getString("id"));
 			 			usuario.setUsuario(datousuario.getString("usuario"));
 			 			usuario.setPassword(datousuario.getString("password"));
 			 			usuario.setLastLogin(datousuario.getString("lastLogin"));
-			 			usuario.setActivo(datousuario.getString("activo"));
-			 			
-			 			
+			 			usuario.setActivo(datousuario.getString("activo"));	
+			 			}
 			 		}
-			 	}
-			
-			 	return usuario;
+			 		return usuario;	
+			 }
+			  catch(Exception msj)
+			  {
+				msj.printStackTrace();
+				return null;
+			  }
+			 	
 		}
 		     	
 //recorre vendedor		
 		public Vendedor vendedorDB()
 		{
-			Vendedor vendedor = new Vendedor();
+			try
+			{
+				Vendedor vendedor = new Vendedor();
 			
 				List<Entity> categories = DataFramework.getInstance().getEntityList("vendedor");
-				{
-					Iterator c = categories.iterator();
-					while(c.hasNext())
 					{
+						Iterator c = categories.iterator();
+						while(c.hasNext())
+						{
 						Entity datovendedor = (Entity)c.next();
 						vendedor.setVendedor(datovendedor.getString("vendedor"));
 						vendedor.setNombre(datovendedor.getString("nombre"));
@@ -249,61 +257,77 @@ public class RequestDB {
 						vendedor.setClides3(datovendedor.getString("clides3"));
 						vendedor.setTurno(datovendedor.getString("turno"));
 						vendedor.setOtnumero(datovendedor.getString("otnumero"));
-						vendedor.setIdusuario(datovendedor.getString("idusuario"));
-			
+						vendedor.setIdusuario(datovendedor.getString("idusuario"));	
+						}
 						
+						return vendedor;
 					}
-				}
-				return vendedor;
+			}
+			catch(Exception msj)
+			{
+				msj.printStackTrace();
+				return null;
+			}
 		}
 			
 //recorre articulo
 		public Articulo articuloDB()
 		{
+		 try
+		 {
 			Articulo articulo = new Articulo();
 			
 			List<Entity> categories = DataFramework.getInstance().getEntityList("articulo");
 			{
-			 int tamano = categories.size();
-			 Articulo[] articulo1 = new Articulo[tamano];
-			 int i = 0;
-			 Iterator d = categories.iterator(); 
-			 	while(d.hasNext())
-			 	{
-			 		Entity datoArticulo = (Entity)d.next();
-			 		Articulo Temp = new Articulo();
-			 		Temp.setArtCodigo(datoArticulo.getString("artCodigo"));
-			 		Temp.setCategoria(datoArticulo.getString("categoria"));
-			 		Temp.setSector(datoArticulo.getString("sector"));
-			 		Temp.setDivision(datoArticulo.getString("division"));
-			 		Temp.setArtDescripcion(datoArticulo.getString("artDescripcion"));
-			 		Temp.setArtIngrediente(datoArticulo.getString("artIngrediente"));
-			 		Temp.setPrecioVenta(Float.parseFloat(datoArticulo.getString("precioVenta")));//para convertir la cadena a float
-			 		Temp.setPrecioDes1(Float.parseFloat(datoArticulo.getString("precioDes1")));
-			 		Temp.setPrecioDes2(Float.parseFloat(datoArticulo.getString("precioDes2")));
-			 		Temp.setPrecioDes3(Float.parseFloat(datoArticulo.getString("precioDes3")));
-			 		Temp.setOfertado(Boolean.parseBoolean(datoArticulo.getString("ofertado")));
-			 		Temp.setPrecioOferta(Float.parseFloat(datoArticulo.getString("precioOferta")));
-			 		Temp.setFoto(datoArticulo.getString("foto"));
-			 		Temp.setObservaciones(datoArticulo.getString("observacion"));
-			 		Temp.setCatalogo(datoArticulo.getString("catalogo"));
-			 		Temp.setUnidadesFardo(Integer.parseInt(datoArticulo.getString("unidadesFardo")));
-			 		Temp.setLink(datoArticulo.getString("link"));
-			 		Temp.setArtOfertaFecha(datoArticulo.getString("artOfertaFecha"));
+				int tamano = categories.size();
+				Articulo[] articulo1 = new Articulo[tamano];
+				int i = 0;
+				Iterator d = categories.iterator(); 
+			 		while(d.hasNext())
+			 		{
+			 			Entity datoArticulo = (Entity)d.next();
+			 			Articulo Temp = new Articulo();
+			 			Temp.setArtCodigo(datoArticulo.getString("artCodigo"));
+			 			Temp.setCategoria(datoArticulo.getString("categoria"));
+			 			Temp.setSector(datoArticulo.getString("sector"));
+			 			Temp.setDivision(datoArticulo.getString("division"));
+			 			Temp.setArtDescripcion(datoArticulo.getString("artDescripcion"));
+			 			Temp.setArtIngrediente(datoArticulo.getString("artIngrediente"));
+			 			Temp.setPrecioVenta(Float.parseFloat(datoArticulo.getString("precioVenta")));//para convertir la cadena a float
+			 			Temp.setPrecioDes1(Float.parseFloat(datoArticulo.getString("precioDes1")));
+			 			Temp.setPrecioDes2(Float.parseFloat(datoArticulo.getString("precioDes2")));
+			 			Temp.setPrecioDes3(Float.parseFloat(datoArticulo.getString("precioDes3")));
+			 			Temp.setOfertado(Boolean.parseBoolean(datoArticulo.getString("ofertado")));
+			 			Temp.setPrecioOferta(Float.parseFloat(datoArticulo.getString("precioOferta")));
+			 			Temp.setFoto(datoArticulo.getString("foto"));
+			 			Temp.setObservaciones(datoArticulo.getString("observacion"));
+			 			Temp.setCatalogo(datoArticulo.getString("catalogo"));
+			 			Temp.setUnidadesFardo(Integer.parseInt(datoArticulo.getString("unidadesFardo")));
+			 			Temp.setLink(datoArticulo.getString("link"));
+			 			Temp.setArtOfertaFecha(datoArticulo.getString("artOfertaFecha"));
 			 		
 			 		articulo1[i]=Temp;
 			 		i++;
-			 	}
+			 	   }
+			 	return articulo;		
 			}
+		 }	
+			 catch(Exception msj)
+			 {
+			   msj.printStackTrace();
+			   return null;
+			 }
 			
-			return articulo;
+			
 		}
 		
 //recorre clientevisitado
 		public Cliente clientevDB()
 		{
+		 try
+		 {
 			Cliente clientev = new Cliente();
-			
+		
 			List<Entity> categories = DataFramework.getInstance().getEntityList("cliente","visitado=1");
 			{
 			int tamano = categories.size();
@@ -344,13 +368,20 @@ public class RequestDB {
 			 		clientev1[a]=Temp;
 			 		a++;
 				}
+				return clientev;  
 			}	
-			return clientev;
-		}
-
+		 }	
+		  catch(Exception msj)
+		  {
+			  msj.printStackTrace();
+			  return null;
+		  }
+	}
 //recorre cliente_pendiente
 		public Cliente clientepDB()
 		{
+		 try
+		 {
 			Cliente clientep = new Cliente();
 			
 			List<Entity> categories = DataFramework.getInstance().getEntityList("cliente","visitado=0");
@@ -393,15 +424,23 @@ public class RequestDB {
 			 		clientev2[a]=Temp;
 			 		a++;
 				}
+				return clientep;
 			}	
-			return clientep;
+		
+		 }	
+			catch(Exception msj)
+			{
+				msj.printStackTrace();
+				return null;
+			}
 		}
 //recibe user y pass
 		public RespuestaWS  verificaLoginDB(String usuario, String password)
 		{
 			RespuestaWS respuesta = new RespuestaWS();
 		
-			try{
+			try
+			{
 				
 				List<Entity> categories = DataFramework.getInstance().getEntityList("usuario","usuario=" + usuario + " and password=" + password);
 				{
@@ -412,9 +451,13 @@ public class RequestDB {
 					 else {
 						respuesta.setResultado(false);
 					 }
+					
 				}
-			}catch(Exception exception){
-				
+			}
+			
+			catch(Exception msj)
+			{
+			 msj.printStackTrace();
 			}
 						
 			return respuesta;
