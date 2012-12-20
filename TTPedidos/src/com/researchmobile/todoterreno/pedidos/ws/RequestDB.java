@@ -400,16 +400,24 @@ public class RequestDB {
 		public RespuestaWS  verificaLoginDB(String usuario, String password)
 		{
 			RespuestaWS respuesta = new RespuestaWS();
-			List<Entity> categories = DataFramework.getInstance().getEntityList("usuario","usuario=" + usuario + "and password=" + password);
-			{
-				if(categories.size()>0)
+		
+			try{
+				
+				List<Entity> categories = DataFramework.getInstance().getEntityList("usuario","usuario=" + usuario + " and password=" + password);
 				{
-					respuesta.setResultado(true);
+					if(categories.size()>0)
+					{
+						respuesta.setResultado(true);
+					}
+					 else {
+						respuesta.setResultado(false);
+					 }
 				}
-				 else
-					respuesta.setResultado(false);
-			return respuesta;			
+			}catch(Exception exception){
+				
 			}
+						
+			return respuesta;
 		}
 //ultima llave
 }
