@@ -9,15 +9,18 @@ import java.net.URL;
 
 import org.json.JSONObject;
 
+import android.util.Log;
+
 public class ConnectWS {
 
-	private static String IP_SERVER = "174.129.97.85";
-    private static int PUERTO = 80;
+	private static String IP_SERVER = "200.6.222.110";
+    private static int PUERTO = 8080;
     
-    public static JSONObject obtenerJson(String url) {            
+    public static JSONObject obtenerJson(String url) {
+    	Log.e("TT", "ConnectWS.obtenerJson");
         JSONObject jsonObject = null;
         try {
-            URL urlCon = new URL("http", IP_SERVER, PUERTO, "/WS/" + url);
+            URL urlCon = new URL("http", IP_SERVER, PUERTO, "/megainfo/ws/" + url);
             HttpURLConnection urlConnection = (HttpURLConnection) urlCon.openConnection();
             System.out.println("Login - url = " + urlCon);
             InputStream inputStream = urlConnection.getInputStream();

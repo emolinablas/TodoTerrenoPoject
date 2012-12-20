@@ -27,12 +27,15 @@ public class Login extends Activity implements OnClickListener, OnKeyListener{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.login);
         
         setRespuesta(new RespuestaWS());
         setUsuarioEditText((EditText)findViewById(R.id.login_usuario_edittext));
         setContraseniaEditText((EditText)findViewById(R.id.login_contrasenia_edittext));
+        getUsuarioEditText().setOnKeyListener(this);
+        getContraseniaEditText().setOnKeyListener(this);
         setEntrarButton((Button)findViewById(R.id.login_entrar_button));
+        getEntrarButton().setOnClickListener(this);
         getUsuarioEditText().setText("");
         getContraseniaEditText().setText("");
     }
@@ -97,9 +100,9 @@ public class Login extends Activity implements OnClickListener, OnKeyListener{
 		// Metodo con las instrucciones al finalizar lo ejectuado en background
 		protected void onPostExecute(Integer resultado) {
 			pd.dismiss();
-			if (getRespuesta().isResultado()){
+			//if (getRespuesta().isResultado()){
 				activityRol();
-			}
+			//}
 
 		}
 

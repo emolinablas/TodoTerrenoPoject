@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.researchmobile.todoterreno.pedidos.entity.Cliente;
 import com.researchmobile.todoterreno.pedidos.entity.ListaArticulos;
@@ -14,10 +15,10 @@ import com.researchmobile.todoterreno.pedidos.entity.User;
 
 public class Peticion {
 	//Temp
-	private RequestWSTemp requestWS = new RequestWSTemp();
+	//private RequestWSTemp requestWS = new RequestWSTemp();
 	private RequestDBTemp requestDB = new RequestDBTemp();
 	
-	//private RequestWS requestWS = new RequestWS();
+	private RequestWS requestWS = new RequestWS();
 	//private RequestDB requestDB = new RequestDB();
 	private RespuestaWS respuesta = new RespuestaWS();
 
@@ -25,8 +26,10 @@ public class Peticion {
 		try{
 			respuesta = requestDB.verificaLoginDB();
 			if(respuesta.isResultado()){
+				Log.e("TT", "Peticion.login");
 				return respuesta;
 			}else{
+				Log.e("TT", "Peticion.login");
 				LoginEntity loginEntity = new LoginEntity();
 				loginEntity = requestWS.login(User.getUsername(), User.getClave());
 				respuesta = loginEntity.getRespuesta();
@@ -40,21 +43,21 @@ public class Peticion {
 				}
 			}
 		}catch(Exception exception){
-			
+			Log.e("TT", "Peticion.login - " + exception);
 		}
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	private void cargarArticulos(Context context, LoginEntity loginEntity) {
-		ListaArticulos listaArticulos = new ListaArticulos();
+		/*ListaArticulos listaArticulos = new ListaArticulos();
 		int tamanoPortafolio = loginEntity.getPortafolio().length;
 		for (int i = 0; i < tamanoPortafolio; i++){
 			listaArticulos = requestWS.listaArticulos(loginEntity.getPortafolio()[i].getIdPortafolio());
 			if (listaArticulos.getArticulo().length > 0){
 				guardarArticulos(context, listaArticulos);
 			}
-		}
+		}*/
 		
 	}
 
@@ -64,14 +67,14 @@ public class Peticion {
 	}
 
 	private void cargarClientes(Context context, LoginEntity loginEntity) {
-		ListaClientes listaClientes = new ListaClientes();
+		/*ListaClientes listaClientes = new ListaClientes();
 		int tamanoRuta = loginEntity.getRuta().length;
 		for (int i = 0; i < tamanoRuta; i++){
 			listaClientes = requestWS.listaClientes(loginEntity.getRuta()[i].getId());
 			if (listaClientes.getCliente().length > 0){
 				guardarClientes(context, listaClientes);
 			}
-		}
+		}*/
 	}
 
 	private void guardarClientes(Context context, ListaClientes listaClientes) {
@@ -91,18 +94,26 @@ public class Peticion {
 	}
 
 	public ArrayList<HashMap<String, String>> ListaClientesPendientes (){
+		Log.e("TT", "Peticion.ListaClientesPendientes");
 		ArrayList<HashMap<String, String>> mylist = new ArrayList<HashMap<String, String>>();
 		int visitado = 0;
-		Cliente[] cliente = requestDB.listaClientesPendientes();
-		int tamano = cliente.length;
-		for (int i = 0; i < tamano; i++){
+		//Cliente[] cliente = requestDB.listaClientesPendientes();
+		//int tamano = cliente.length;
+		for (int i = 0; i < 10; i++){
+			
 			HashMap<String, String> map = new HashMap<String, String>();
-			map.put("codigoCliente", cliente[i].getCliCodigo());
+			/*map.put("codigoCliente", cliente[i].getCliCodigo());
 	        map.put("empresa", cliente[i].getCliEmpresa());
 	        map.put("contacto", cliente[i].getCliContacto());
 	        map.put("direccion", cliente[i].getCliDireccion());
 	        map.put("telefono", cliente[i].getCliTelefono());
-	        map.put("nit", cliente[i].getCliNit());
+	        map.put("nit", cliente[i].getCliNit());*/
+			map.put("codigoCliente", "001");
+	        map.put("empresa", "Mi Empresa");
+	        map.put("contacto", "Mi Contacto");
+	        map.put("direccion", "Mi Direccion");
+	        map.put("telefono", "Mi Telefono");
+	        map.put("nit", "Mi Nit");
 	        mylist.add(map);
 		}
 		return mylist;

@@ -3,6 +3,8 @@ package com.researchmobile.todoterreno.pedidos.ws;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 import com.researchmobile.todoterreno.pedidos.entity.Articulo;
 import com.researchmobile.todoterreno.pedidos.entity.Cliente;
 import com.researchmobile.todoterreno.pedidos.entity.ListaArticulos;
@@ -12,15 +14,15 @@ import com.researchmobile.todoterreno.pedidos.entity.Portafolio;
 import com.researchmobile.todoterreno.pedidos.entity.Ruta;
 
 public class RequestWS {
-	private static String WS_LOGIN = "ws_login.php?";
+	private static String WS_LOGIN = "ws_login.php?a=login&";
 	private static String WS_CLIENTES = "ws_cliente?";
 
 	// Metodo que llena el Entity del login
 	@SuppressWarnings("unused")
 	public LoginEntity login(String usuario, String password) {
+		
 		String url = WS_LOGIN + "usuario=" + usuario + "&" + "password=" + password; // string de conexi—n
-
-		JSONObject jsonObject = ConnectWS.obtenerJson(url);
+		JSONObject jsonObject = ConnectWS.obtenerJson(url.replace(" ", "%20"));
 		System.out.println("RESPUESTA WS LOGIN:" + jsonObject.toString());
 		LoginEntity loginEntity = new LoginEntity();
 		try {

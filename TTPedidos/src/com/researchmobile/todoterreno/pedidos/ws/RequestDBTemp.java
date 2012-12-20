@@ -12,10 +12,11 @@ import com.researchmobile.todoterreno.pedidos.entity.Usuario;
 import com.researchmobile.todoterreno.pedidos.entity.Vendedor;
 
 public class RequestDBTemp {
+	private RespuestaWS respuesta = new RespuestaWS();
 
 	public RespuestaWS verificaLoginDB() {
-		// TODO Auto-generated method stub
-		return null;
+		respuesta.setResultado(false);
+		return respuesta;
 	}
 
 	public void guardarUsuario(Context context, Usuario usuario) {
