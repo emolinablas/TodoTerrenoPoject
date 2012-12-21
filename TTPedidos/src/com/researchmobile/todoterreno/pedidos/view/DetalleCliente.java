@@ -138,6 +138,7 @@ public class DetalleCliente extends Activity{
 
 	private void TomarPedido() {
 		Intent intent = new Intent(DetalleCliente.this, TomarPedido.class);
+		intent.putExtra("codigoCliente", getCodigoCliente());
 		startActivity(intent);
 	}
 

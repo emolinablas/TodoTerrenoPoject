@@ -349,6 +349,5 @@ private ProgressDialog pd = null;
 	public void setFecha(Fecha fecha) {
 		this.fecha = fecha;
 	}
-	
-	
+
 }

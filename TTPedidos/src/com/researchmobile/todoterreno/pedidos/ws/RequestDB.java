@@ -11,6 +11,7 @@ import com.android.dataframework.Entity;
 import com.researchmobile.todoterreno.pedidos.entity.Articulo;
 import com.researchmobile.todoterreno.pedidos.entity.Cliente;
 import com.researchmobile.todoterreno.pedidos.entity.DetallePedido;
+import com.researchmobile.todoterreno.pedidos.entity.EncabezadoPedido;
 import com.researchmobile.todoterreno.pedidos.entity.Portafolio;
 import com.researchmobile.todoterreno.pedidos.entity.RespuestaWS;
 import com.researchmobile.todoterreno.pedidos.entity.Ruta;
@@ -39,6 +40,24 @@ public class RequestDB {
 				 Log.e("TT", "RequestDB.guardaUsuario = " + msj);
 				 msj.printStackTrace();
 			 }
+		}
+		
+//guarda encabezado de pedido
+		public void guardaEncabezadoPedido(Context context, EncabezadoPedido encabezadoPedido) {
+			try{
+				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+				Entity encabezado = new Entity("encabezadopedido");
+				encabezado.setValue("codigocliente", encabezadoPedido.getCodigoCliente());
+				encabezado.setValue("total", encabezadoPedido.getTotal());
+				encabezado.setValue("fecha", encabezadoPedido.getFecha());
+				encabezado.setValue("hora", encabezadoPedido.getHora());
+				encabezado.setValue("credito", "0");
+				encabezado.setValue("sinc", 0);
+				encabezado.save();
+			}catch(Exception exception){
+				Log.e("TT", "RequestDB.guardaEncabezadoPedido error = " + exception);
+			}
+			
 		}
 		
 //guarda vendedor
@@ -210,13 +229,13 @@ public class RequestDB {
 		}
 
 //guarda articulo temporal para el pedido
-		public void guardaDetallePedidoTemp(Context context, DetallePedido articulo)
+		public void guardaDetallePedidoTemp(Context context, DetallePedido articulo, int numeroPedido)
 		{
 			try
 			{
 				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
 				Entity datoArticulo = new Entity("detallepedido_temp");
-				datoArticulo.setValue("idEncabezado_temp", "1");
+				datoArticulo.setValue("idEncabezado_temp", String.valueOf(numeroPedido));
 				datoArticulo.setValue("codigo_temp", articulo.getCodigo());
 				datoArticulo.setValue("nombre_temp", articulo.getNombre());
 				datoArticulo.setValue("caja_temp", articulo.getCaja());
@@ -594,6 +613,4 @@ public class RequestDB {
 			
 		}
 //Borrar registros
-		
-		
 }

@@ -12,6 +12,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -52,10 +53,14 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 	private EncabezadoPedido encabezado;
 	private Fecha fecha;
 	private Mensaje mensaje;
+	private int numeroPedido;
+	private String codigoCliente;
 	
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.tomar_pedido);
+		Bundle bundle = (Bundle)getIntent().getExtras();
+		setCodigoCliente((String)bundle.getString("codigoCliente"));
 		setMensaje(new Mensaje());
 		setTotal(0);
 		setFecha(new Fecha());
@@ -161,6 +166,15 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 	}
 	
 	public void terminarPedido(){
+		setEncabezado(new EncabezadoPedido());
+		getEncabezado().setCodigoCliente(getCodigoCliente());
+		getEncabezado().setCodigoPedidoTemp(String.valueOf(getNumeroPedido()));
+		getEncabezado().setCredito("0");
+		getEncabezado().setFecha(getFecha().FechaHoy());
+		getEncabezado().setHora(getFecha().Hora());
+		getEncabezado().setTotal(getTotal());
+		
+		getPeticion().insertaEncabezado(this, getEncabezado());
 		getMensaje().EnProceso(this);
 	}
 	
@@ -220,7 +234,7 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 				getArticuloSeleccionado().setTotalUnidades(totalUnidades);
 				getArticuloSeleccionado().setSubTotal(subTotal);
 				
-				getPeticion().insertaArticuloTemp(TomarPedido.this, getArticuloSeleccionado());
+				getPeticion().insertaArticuloTemp(TomarPedido.this, getArticuloSeleccionado(), getNumeroPedido());
 			}
 		
      });
@@ -251,7 +265,8 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 		float totalActual = getTotal();
 		float subTotal = getArticuloSeleccionado().getSubTotal();
 		float nuevoTotal = totalActual + subTotal;
-		getTotalGeneralTextView().setText(String.valueOf(nuevoTotal));
+		setTotal(nuevoTotal);
+		getTotalGeneralTextView().setText(String.valueOf(getTotal()));
 		
 	}
 
@@ -276,6 +291,8 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 	
 	public void buscaArticulos(){
 		setArticulosHashMap(getPeticion().listaArticulos(TomarPedido.this));
+		setNumeroPedido(getPeticion().numeroPedido(this));
+		Log.e("TT", "numero pedido = " + getNumeroPedido());
 	}
 	
 	public void llenaListaArticulos(){
@@ -319,6 +336,7 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
           protected Integer doInBackground(String... urlString) {
                 try {
                 	buscaArticulos();
+                	
 
                } catch (Exception exception) {
 
@@ -439,4 +457,23 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 	public void setEncabezado(EncabezadoPedido encabezado) {
 		this.encabezado = encabezado;
 	}
+
+	public int getNumeroPedido() {
+		return numeroPedido;
+	}
+
+	public void setNumeroPedido(int numeroPedido) {
+		this.numeroPedido = numeroPedido;
+	}
+
+	public String getCodigoCliente() {
+		return codigoCliente;
+	}
+
+	public void setCodigoCliente(String codigoCliente) {
+		this.codigoCliente = codigoCliente;
+	}
+	
+	
+	
 }

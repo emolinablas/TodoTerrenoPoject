@@ -9,6 +9,7 @@ import android.util.Log;
 import com.researchmobile.todoterreno.pedidos.entity.Articulo;
 import com.researchmobile.todoterreno.pedidos.entity.Cliente;
 import com.researchmobile.todoterreno.pedidos.entity.DetallePedido;
+import com.researchmobile.todoterreno.pedidos.entity.EncabezadoPedido;
 import com.researchmobile.todoterreno.pedidos.entity.ListaArticulos;
 import com.researchmobile.todoterreno.pedidos.entity.ListaClientes;
 import com.researchmobile.todoterreno.pedidos.entity.LoginEntity;
@@ -64,6 +65,12 @@ public class Peticion {
 		}
 		
 	}
+	
+	public void insertaEncabezado(Context context, EncabezadoPedido encabezadoPedido) {
+		Log.e("TT", "Peticion.insertaEncabezado");
+		requestDB.guardaEncabezadoPedido(context, encabezadoPedido);
+		
+	}
 
 	private void guardarArticulos(Context context, ListaArticulos listaArticulos) {
 		requestDB.guardaArticulo(context, listaArticulos.getArticulo());
@@ -97,8 +104,8 @@ public class Peticion {
 		requestDB.guardaRuta(context, loginEntity.getRuta());
 	}
 	
-	public void insertaArticuloTemp(Context context, DetallePedido articulo) {
-		requestDB.guardaDetallePedidoTemp(context, articulo);
+	public void insertaArticuloTemp(Context context, DetallePedido articulo, int numeroPedido) {
+		requestDB.guardaDetallePedidoTemp(context, articulo, numeroPedido);
 		
 	}
 
@@ -192,4 +199,9 @@ public class Peticion {
 		return articulo;
 	}
 
+	public int numeroPedido(Context context) {
+		int numero = 0;
+		numero = requestDB.ultimoEncabezado(context);
+		return numero;
+	}
 }
