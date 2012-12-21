@@ -107,7 +107,7 @@ public class DetalleCliente extends Activity{
 
 		private void BuscarDetalleCliente() {
 			Peticion peticion = new Peticion();
-			setCliente(peticion.DetalleCliente(getCodigoCliente()));
+			setCliente(peticion.DetalleCliente(DetalleCliente.this, getCodigoCliente()));
 			
 		}
 

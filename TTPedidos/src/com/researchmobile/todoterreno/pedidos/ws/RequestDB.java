@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
@@ -18,31 +19,33 @@ import com.researchmobile.todoterreno.pedidos.entity.Vendedor;
 
 public class RequestDB {
 //guarda usuario
-		public void guardarUsuario(Context context, Usuario usuario)
+		public void guardaUsuario(Context context, Usuario usuario)
 		{
 			try
 			{
-				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.ws");
+				
+				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
 				Entity datoUsuario = new Entity("usuario");
 				datoUsuario.setValue("id", usuario.getId());
 				datoUsuario.setValue("usuario", usuario.getUsuario());
 				datoUsuario.setValue("password", usuario.getPassword());
-				datoUsuario.setValue("lastlogin", usuario.getLastLogin());
+				datoUsuario.setValue("lastLogin", usuario.getLastLogin());
 				datoUsuario.setValue("activo", usuario.getActivo());
 				datoUsuario.save();
 			}
 			 catch(Exception msj)
 			 {
+				 Log.e("TT", "RequestDB.guardaUsuario = " + msj);
 				 msj.printStackTrace();
 			 }
 		}
 		
 //guarda vendedor
-		public void guardarVendedor(Context context, Vendedor vendedor)
+		public void guardaVendedor(Context context, Vendedor vendedor)
 		{
 			try
 			{
-				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.ws");
+				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
 				Entity datoVendedor = new Entity("vendedor");
 				datoVendedor.setValue("vendedor", vendedor.getVendedor());
 				datoVendedor.setValue("nombre", vendedor.getNombre());
@@ -62,19 +65,20 @@ public class RequestDB {
 			}
 			 catch(Exception msj)
 			 {
+				 Log.e("TT", "RequestDB.guardaVendedor = " + msj);
 				 msj.printStackTrace();
 			 }
 		}
 		
 //guarda portafolio
-		public void guardarportafolios(Context context, Portafolio[] portafolio)
+		public void guardaPortafolio(Context context, Portafolio[] portafolio)
 		{
 			try
 			{	
 				int tamano = portafolio.length;
 				 for(int a = 0; a<tamano; a++)
 				 {
-					 DataFramework.getInstance().open(context,"com.researchmobile.todoterreno.ws");		  	 
+					 DataFramework.getInstance().open(context,"com.researchmobile.todoterreno.pedidos.view");		  	 
 					 Entity datoPortafolio = new Entity("portafolio");
 					 datoPortafolio.setValue("idportafolio", portafolio[a].getIdPortafolio());
 					 datoPortafolio.setValue("descripcion", portafolio[a].getDescripcion());
@@ -88,19 +92,20 @@ public class RequestDB {
 			}
 			catch(Exception msj)
 			{
+				Log.e("TT", "RequestDB.guardaPortafolios = " + msj);
 			 msj.printStackTrace();	
 			}
 		}
 		
 //guarda ruta
-		public void guardarrutas(Context context, Ruta[] ruta)
+		public void guardaRuta(Context context, Ruta[] ruta)
 		{
 			try
 			{
 				int longitud = ruta.length;
 				 for(int b = 0; b<longitud; b++)
 				 {
-					 DataFramework.getInstance().open(context,"com.researchmobile.todoterreno.ws");
+					 DataFramework.getInstance().open(context,"com.researchmobile.todoterreno.pedidos.view");
 					 Entity datoruta = new Entity("ruta");
 					 datoruta.setValue("id", ruta[b].getId());
 					 datoruta.setValue("descripcion", ruta[b].getDescripcion());
@@ -117,19 +122,20 @@ public class RequestDB {
 			}	 
 				 catch(Exception msj)
 				 {
+					 Log.e("TT", "RequestDB.guardaRuta = " + msj);
 				   msj.printStackTrace();	 
 				 }
 		}
 		
 //guarda articulo
-		public void guardararticulo(Context context, Articulo[] articulo)
+		public void guardaArticulo(Context context, Articulo[] articulo)
 		{
 			try
 			{
 				int longitud1 = articulo.length;
 				for (int c= 0; c<longitud1; c++)
 				{
-					DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.ws");
+					DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
 					Entity datoarticulo = new Entity("articulo");
 					datoarticulo.setValue("artCodigo", articulo[c].getArtCodigo());
 					datoarticulo.setValue("categoria", articulo[c].getCategoria());
@@ -156,17 +162,16 @@ public class RequestDB {
 				 {
 					 msj.printStackTrace();
 				 }
-			
 		}
 //guarda cliente
-		public void guardacliente (Context context, Cliente[] cliente)
+		public void guardaCliente (Context context, Cliente[] cliente)
 		{
 			try
 			{			
 			 int longitud2 = cliente.length;
 			 for(int d=0; d<longitud2; d++)
 			 {
-				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.ws");
+				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
 				Entity datocliente = new Entity("cliente");
 				datocliente.setValue("cliCodigo", cliente[d].getCliCodigo());
 				datocliente.setValue("cliEmpresa", cliente[d].getCliEmpresa());
@@ -192,7 +197,7 @@ public class RequestDB {
 				datocliente.setValue("cliNit", cliente[d].getCliNit());
 				datocliente.setValue("Semana", cliente[d].getSemana());
 				datocliente.setValue("diaVisita", cliente[d].getDiaVisita());
-				datocliente.setValue("visitado", cliente[d].isVisitado());
+				datocliente.setValue("visitado", cliente[d].getVisitado());
 				datocliente.save();
 			 }
 			
@@ -203,10 +208,11 @@ public class RequestDB {
 			 }
 		}
 //recorre usuario
-		public Usuario usuarioDB()
+		public Usuario usuarioDB(Context context)
 		{
 			try
 			{
+				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
 				Usuario usuario = new Usuario();
 				List<Entity> categories = DataFramework.getInstance().getEntityList("usuario");
 			 		{
@@ -232,10 +238,11 @@ public class RequestDB {
 		}
 		     	
 //recorre vendedor		
-		public Vendedor vendedorDB()
+		public Vendedor vendedorDB(Context context)
 		{
 			try
 			{
+				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
 				Vendedor vendedor = new Vendedor();
 			
 				List<Entity> categories = DataFramework.getInstance().getEntityList("vendedor");
@@ -271,10 +278,11 @@ public class RequestDB {
 		}
 			
 //recorre articulo
-		public Articulo articuloDB()
+		public Articulo articuloDB(Context context)
 		{
 		 try
 		 {
+			 DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
 			Articulo articulo = new Articulo();
 			
 			List<Entity> categories = DataFramework.getInstance().getEntityList("articulo");
@@ -322,16 +330,15 @@ public class RequestDB {
 		}
 		
 //recorre clientevisitado
-		public Cliente clientevDB()
+		public Cliente[] clienteVisitadoDB(Context context)
 		{
 		 try
 		 {
-			Cliente clientev = new Cliente();
-		
+			 DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
 			List<Entity> categories = DataFramework.getInstance().getEntityList("cliente","visitado=1");
-			{
+			
 			int tamano = categories.size();
-			Cliente[] clientev1 = new Cliente[tamano];
+			Cliente[] clientes = new Cliente[tamano];
 			int a=0;
 				
 				Iterator it = categories.iterator(); 
@@ -361,15 +368,15 @@ public class RequestDB {
 			 		Temp.setCliTelefonoCasa(datoclientevisitado.getString("cliTelefonoCasa"));
 			 		Temp.setCliTelefonoMovil(datoclientevisitado.getString("cliTelefonoMovil"));
 			 		Temp.setCliNit(datoclientevisitado.getString("cliNit"));
-			 		Temp.setSemana(Integer.parseInt(datoclientevisitado.getString("Semana")));
+			 		Temp.setSemana(datoclientevisitado.getString("Semana"));
 			 		Temp.setDiaVisita(datoclientevisitado.getString("diaVisita"));
-			 		Temp.setVisitado(Boolean.parseBoolean(datoclientevisitado.getString("visitado")));
+			 		Temp.setVisitado(datoclientevisitado.getString("visitado"));
 				
-			 		clientev1[a]=Temp;
+			 		clientes[a]=Temp;
 			 		a++;
 				}
-				return clientev;  
-			}	
+				return clientes;  
+				
 		 }	
 		  catch(Exception msj)
 		  {
@@ -378,16 +385,15 @@ public class RequestDB {
 		  }
 	}
 //recorre cliente_pendiente
-		public Cliente clientepDB()
+		public Cliente[] clientePendienteDB(Context context)
 		{
 		 try
 		 {
-			Cliente clientep = new Cliente();
-			
-			List<Entity> categories = DataFramework.getInstance().getEntityList("cliente","visitado=0");
-			{
+			DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+			List<Entity> categories = DataFramework.getInstance().getEntityList("cliente");
 			int tamano = categories.size();
-			Cliente[] clientev2 = new Cliente[tamano];
+			Log.e("TT", "RequestDB.clientePendienteDB 4, tamano = " + tamano);
+			Cliente[] clientes = new Cliente[tamano];
 			int a=0;
 				
 				Iterator it = categories.iterator(); 
@@ -398,15 +404,15 @@ public class RequestDB {
 			 		Temp.setCliCodigo(datoclientevisitado.getString("cliCodigo"));
 			 		Temp.setCliEmpresa(datoclientevisitado.getString("cliEmpresa"));
 			 		Temp.setCliContacto(datoclientevisitado.getString("cliContacto"));
-			 		Temp.setCodCatCliete(datoclientevisitado.getString("codcatCliete"));
+			 		Temp.setCodCatCliete(datoclientevisitado.getString("codCatCliete"));
 			 		Temp.setCliDireccion(datoclientevisitado.getString("cliDireccion"));
 			 		Temp.setCliTelefono(datoclientevisitado.getString("cliTelefono"));
 			 		Temp.setCliFax(datoclientevisitado.getString("cliFax"));
 			 		Temp.setCliEmail(datoclientevisitado.getString("cliEmail"));
-			 		Temp.setCliWeb(datoclientevisitado.getString("cliCWeb"));
+			 		Temp.setCliWeb(datoclientevisitado.getString("cliWeb"));
 			 		Temp.setFingreso(datoclientevisitado.getString("fingreso"));
 			 		Temp.setCliDesnormal(datoclientevisitado.getString("cliDesnormal"));
-			 		Temp.setCliDes1(datoclientevisitado.getString("cliCDes1"));
+			 		Temp.setCliDes1(datoclientevisitado.getString("cliDes1"));
 			 		Temp.setCliDes2(datoclientevisitado.getString("cliDes2"));
 			 		Temp.setCliDes3(datoclientevisitado.getString("cliDes3"));
 			 		Temp.setCliLimite(datoclientevisitado.getString("clilimite"));
@@ -417,33 +423,33 @@ public class RequestDB {
 			 		Temp.setCliTelefonoCasa(datoclientevisitado.getString("cliTelefonoCasa"));
 			 		Temp.setCliTelefonoMovil(datoclientevisitado.getString("cliTelefonoMovil"));
 			 		Temp.setCliNit(datoclientevisitado.getString("cliNit"));
-			 		Temp.setSemana(Integer.parseInt(datoclientevisitado.getString("Semana")));
+			 		Temp.setSemana(datoclientevisitado.getString("Semana"));
 			 		Temp.setDiaVisita(datoclientevisitado.getString("diaVisita"));
-			 		Temp.setVisitado(Boolean.parseBoolean(datoclientevisitado.getString("visitado")));
+			 		Temp.setVisitado(datoclientevisitado.getString("visitado"));
 				
-			 		clientev2[a]=Temp;
+			 		clientes[a]=Temp;
 			 		a++;
 				}
-				return clientep;
-			}	
-		
+				return clientes;
 		 }	
 			catch(Exception msj)
 			{
+				Log.e("TT", "RequestDB.clientePendienteDB error = " + msj);
 				msj.printStackTrace();
 				return null;
 			}
 		}
 //recibe user y pass
-		public RespuestaWS  verificaLoginDB(String usuario, String password)
+		public RespuestaWS  verificaLoginDB(Context context, String usuario, String password)
 		{
+			Log.e("TT", "RequestDB.verificaLoginDB 1");
 			RespuestaWS respuesta = new RespuestaWS();
-		
 			try
 			{
-				
-				List<Entity> categories = DataFramework.getInstance().getEntityList("usuario","usuario=" + usuario + " and password=" + password);
-				{
+				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+				Log.e("TT", "RequestDB.verificaLoginDB 2");
+				List<Entity> categories = DataFramework.getInstance().getEntityList("usuario","usuario=" + usuario);
+				Log.e("TT", "RequestDB.verificaLoginDB 3");
 					if(categories.size()>0)
 					{
 						respuesta.setResultado(true);
@@ -451,27 +457,25 @@ public class RequestDB {
 					 else {
 						respuesta.setResultado(false);
 					 }
-					
-				}
+				
 			}
-			
 			catch(Exception msj)
 			{
+				Log.e("TT", "RequestDB.verificaLoginDB error = " + msj);
+				respuesta.setResultado(false);
 			 msj.printStackTrace();
 			}
-						
 			return respuesta;
 		}
 		
 //buscacliente
-		public Cliente buscacliente(String codigocliente)
+		public Cliente buscaCliente(Context context, String codigocliente)
 		{
 			Cliente cliente = new Cliente();
-			
 			try
 			{
+				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
 				List<Entity> categories = DataFramework.getInstance().getEntityList("cliente","cliCodigo=" + codigocliente);
-				{
 					Iterator e = categories.iterator();
 					while(e.hasNext())
 					{
@@ -485,12 +489,15 @@ public class RequestDB {
 					 cliente.setCliFax(d.getString("cliFax"));
 					 cliente.setCliContacto(d.getString("cliContacto"));
 					}
-				}
 				return cliente;
-				
 			}catch(Exception exception){
 				return null;
 			}
 		}
 //ultima llave
+		
+		
+//Borrar registros
+		
+		
 }

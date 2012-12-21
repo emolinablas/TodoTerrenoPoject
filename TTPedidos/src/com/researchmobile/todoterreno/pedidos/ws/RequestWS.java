@@ -11,11 +11,14 @@ import com.researchmobile.todoterreno.pedidos.entity.ListaArticulos;
 import com.researchmobile.todoterreno.pedidos.entity.ListaClientes;
 import com.researchmobile.todoterreno.pedidos.entity.LoginEntity;
 import com.researchmobile.todoterreno.pedidos.entity.Portafolio;
+import com.researchmobile.todoterreno.pedidos.entity.RespuestaWS;
 import com.researchmobile.todoterreno.pedidos.entity.Ruta;
+import com.researchmobile.todoterreno.pedidos.entity.Usuario;
+import com.researchmobile.todoterreno.pedidos.entity.Vendedor;
 
 public class RequestWS {
 	private static String WS_LOGIN = "ws_login.php?a=login&";
-	private static String WS_CLIENTES = "ws_cliente?";
+	private static String WS_CLIENTES = "ws_clientes.php?";
 
 	// Metodo que llena el Entity del login
 	@SuppressWarnings("unused")
@@ -23,28 +26,30 @@ public class RequestWS {
 		
 		String url = WS_LOGIN + "usuario=" + usuario + "&" + "password=" + password; // string de conexi—n
 		JSONObject jsonObject = ConnectWS.obtenerJson(url.replace(" ", "%20"));
-		System.out.println("RESPUESTA WS LOGIN:" + jsonObject.toString());
+		Log.e("TT", "respuesta ws login = " + jsonObject.toString());
 		LoginEntity loginEntity = new LoginEntity();
 		try {
 			if(jsonObject.has("resultado")){ // si se produjo un error al consumir el WS
 				// creamos el LoginEntity y le asignamos el resultado recibido
 				
-				
+				loginEntity.setRespuesta(new RespuestaWS());
 				loginEntity.getRespuesta().setResultado(jsonObject.getBoolean("resultado"));
 				loginEntity.getRespuesta().setMensaje(jsonObject.getString("mensaje"));
-				
-				if(jsonObject.getBoolean("resultado")){ //  si existe resultado relleno los campos del usuario
+				Log.e("TT", "RequestWS - login. resultado = " + loginEntity.getRespuesta().isResultado());
+				if(loginEntity.getRespuesta().isResultado()){ //  si existe resultado relleno los campos del usuario
+					loginEntity.setUsuario(new Usuario());
 					JSONArray usuarioJsonArray = jsonObject.getJSONArray("usuario");
-					JSONObject usuarioJsonObject = usuarioJsonArray.getJSONObject(1);
+					JSONObject usuarioJsonObject = usuarioJsonArray.getJSONObject(0);
 					loginEntity.getUsuario().setActivo(usuarioJsonObject.getString("activo"));
 					loginEntity.getUsuario().setUsuario(usuarioJsonObject.getString("usuario"));
 					loginEntity.getUsuario().setPassword(usuarioJsonObject.getString("password"));
 					loginEntity.getUsuario().setLastLogin(usuarioJsonObject.getString("lastLogin"));
 					loginEntity.getUsuario().setId(usuarioJsonObject.getString("id"));
-					
+					Log.e("TT", "RequestWS.login Usuario");
 					if(jsonObject.has("vendedor")){ // si viene el Array de vendedor tambien ingreso los resultados al Entity del Login
+						loginEntity.setVendedor(new Vendedor());
 						JSONArray vendedorJsonArray = jsonObject.getJSONArray("vendedor");
-						JSONObject vendedorJsonObject = vendedorJsonArray.getJSONObject(1);
+						JSONObject vendedorJsonObject = vendedorJsonArray.getJSONObject(0);
 						loginEntity.getVendedor().setVendedor(nullToString(vendedorJsonObject.getString("Vendedor")));
 						loginEntity.getVendedor().setNombre(nullToString(vendedorJsonObject.getString("Nombre")));
 						loginEntity.getVendedor().setDireccion(nullToString(vendedorJsonObject.getString("Direccion")));
@@ -59,6 +64,7 @@ public class RequestWS {
 						loginEntity.getVendedor().setTurno(nullToString(vendedorJsonObject.getString("turno")));
 						loginEntity.getVendedor().setOtnumero(nullToString(vendedorJsonObject.getString("otnumero")));
 						loginEntity.getVendedor().setIdusuario(nullToString(vendedorJsonObject.getString("idusuario")));
+						Log.e("TT", "RequestWS.login Vendedor");
 					}else{
 						System.out.println("No se obtuvieron datos del vendedor");
 					}
@@ -67,7 +73,7 @@ public class RequestWS {
 						int tamano = portafoliosJsonArray.length();
 						Portafolio[] portafolios = new Portafolio[tamano];
 						for(int i=0; i < tamano; i++){
-						JSONObject portafoliosJsonObject = portafoliosJsonArray.getJSONObject(1);
+						JSONObject portafoliosJsonObject = portafoliosJsonArray.getJSONObject(0);
 						Portafolio temp = new Portafolio();
 						temp.setIdPortafolio(nullToString(portafoliosJsonObject.getString("IDportafolio")));
 						temp.setDescripcion(nullToString(portafoliosJsonObject.getString("descripcion")));
@@ -77,6 +83,7 @@ public class RequestWS {
 						temp.setUsuario(nullToString(portafoliosJsonObject.getString("usuario")));
 						portafolios[i] = temp;
 						} loginEntity.setPortafolio(portafolios);
+						Log.e("TT", "RequestWS.login Portafolios");
 					}else{
 						System.out.println("No se obtuvieron datos del portafolios");
 					}
@@ -85,13 +92,13 @@ public class RequestWS {
 						int tamano = rutasJsonArray.length();
 						Ruta[] rutas = new Ruta[tamano];
 						for(int i=0; i < tamano; i++){ // recorro el Array para asignar cada registro a una variable a un objeto temporal y luego agregarlo al Array de listaClientes
-						JSONObject rutasJsonObject = rutasJsonArray.getJSONObject(1);
+						JSONObject rutasJsonObject = rutasJsonArray.getJSONObject(0);
 						Ruta temp = new Ruta();
 						//temp.setIdPortafolio(nullToString(rutasJsonObject.getString("IDportafolio")));
 						temp.setId(nullToString(rutasJsonObject.getString("ID")));
 						temp.setDescripcion(nullToString(rutasJsonObject.getString("Descripcion")));
-						temp.setTipovehiculo(nullToString(rutasJsonObject.getString("fechadecreacion")));
-						temp.setOrigen(nullToString(rutasJsonObject.getString("destino")));
+						temp.setTipovehiculo(nullToString(rutasJsonObject.getString("tipovehiculo")));
+						temp.setOrigen(nullToString(rutasJsonObject.getString("origen")));
 						temp.setDestino(nullToString(rutasJsonObject.getString("destino")));
 						temp.setPrecioventa(nullToString(rutasJsonObject.getString("precioventa")));
 						temp.setCombustible(nullToString(rutasJsonObject.getString("combustible")));
@@ -101,6 +108,8 @@ public class RequestWS {
 						
 						rutas[i] = temp;
 						} loginEntity.setRuta(rutas);
+						Log.e("TT", "RequestWS.login Rutas");
+						return loginEntity;
 						
 					}else{
 						System.out.println("No se obtuvieron datos de las rutas");
@@ -122,7 +131,7 @@ public class RequestWS {
 	
 	// Metodo que retorna la lista de clientes obtenidas desde el WS se necesita como parametros el cat‡logo y la ruta del vendedor
 	public ListaClientes listaClientes(String catalogo, String ruta){
-		String url = WS_LOGIN + "a=" + catalogo + "&" + "idruta=" + ruta; // string de conexi—n
+		String url = WS_CLIENTES + "a=" + catalogo + "&" + "idruta=" + ruta; // string de conexi—n
 
 		JSONObject jsonObject = ConnectWS.obtenerJson(url);
 		System.out.println("RESPUESTA WS LOGIN:" + jsonObject.toString());
@@ -130,9 +139,9 @@ public class RequestWS {
 		try {
 				if(jsonObject.has("resultado")){ // si se produjo un error al consumir el WS
 				// creamos el listaClientes y le asignamos el resultado recibido
+					listaClientes.setRespuesta(new RespuestaWS());
 					listaClientes.getRespuesta().setResultado(jsonObject.getBoolean("resultado"));
 					listaClientes.getRespuesta().setMensaje(jsonObject.getString("mensaje"));
-					
 					if(jsonObject.has("cliente")){
 						JSONArray clientesJsonArray = jsonObject.getJSONArray("cliente"); // obtengo el Array de clientes que viene el el JSON
 						Cliente[] clientes = new Cliente[clientesJsonArray.length()];
@@ -142,26 +151,32 @@ public class RequestWS {
 							temp.setCliCodigo(nullToString(clientesJsonObject.getString("clicodigo")));
 							temp.setCliCheque(nullToString(clientesJsonObject.getString("clicheque")));
 							temp.setCliContacto(nullToString(clientesJsonObject.getString("clicontacto")));
+							temp.setCodCatCliete(nullToString(clientesJsonObject.getString("codcatclientes")));
 							temp.setCliDes1(nullToString(clientesJsonObject.getString("clides1")));
 							temp.setCliDes2(nullToString(clientesJsonObject.getString("clides2")));
 							temp.setCliDes3(nullToString(clientesJsonObject.getString("clides3")));
 							temp.setCliDesnormal(nullToString(clientesJsonObject.getString("clidesnormal")));
 							temp.setCliDireccion(nullToString(clientesJsonObject.getString("clidireccion")));
-							temp.setCliDireccionParticular(nullToString(clientesJsonObject.getString("direccionparticular")));
+							temp.setCliDireccionParticular(nullToString(clientesJsonObject.getString("clidireccionparticular")));
 							temp.setCliEmail(nullToString(clientesJsonObject.getString("cliemail")));
 							temp.setCliEmpresa(nullToString(clientesJsonObject.getString("cliempresa")));
 							temp.setCliFax(nullToString(clientesJsonObject.getString("clifax")));
 							temp.setCliLimite(nullToString(clientesJsonObject.getString("clilimite")));
 							temp.setCliNit(nullToString(clientesJsonObject.getString("clinit")));
-							temp.setCliRuta(nullToString(clientesJsonObject.getString("cliruta")));
+							temp.setCliRuta(nullToString(clientesJsonObject.getString("clruta")));
 							temp.setCliSaldo(nullToString(clientesJsonObject.getString("clisaldo")));
 							temp.setCliTelefono(nullToString(clientesJsonObject.getString("clitelefono")));
 							temp.setCliTelefonoCasa(nullToString(clientesJsonObject.getString("clitelecasa")));
 							temp.setCliTelefonoMovil(nullToString(clientesJsonObject.getString("clitelecel")));
 							temp.setCliWeb(nullToString(clientesJsonObject.getString("cliweb")));
+							temp.setFingreso(nullToString(clientesJsonObject.getString("clifingreso")));
+							temp.setDiaVisita(nullToString(clientesJsonObject.getString("diavisita")));
+							temp.setVisitado(nullToString(clientesJsonObject.getString("visitado")));
+							temp.setSemana(nullToString(clientesJsonObject.getString("semana")));
 							clientes[i]=temp;
 							
 						} listaClientes.setCliente(clientes);
+						return listaClientes;
 						
 					}else{
 						System.out.println("No se obtuvo el Array de clientes");
@@ -246,6 +261,15 @@ public class RequestWS {
 		}else{
 		return variable;
 			}
+	}
+	
+	public int nullToInteger(String variable){
+		if (variable == null){
+			return 0;
+		}else{
+			int va = Integer.parseInt(variable);
+			return va;
+		}
 	}
 
 }

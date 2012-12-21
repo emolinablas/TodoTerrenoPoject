@@ -1,10 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    <database name="todoterreno006" version="1">
+	
+	<!-- U S U A R I O -->
+    <table name="usuario" to-string="%usuario%">
     
-    <database name="todoterreno" version="1">
+    <field name="id"			obligatory="false" 	type="text" size="10"/>    
+    <field name="usuario"		obligatory="false" 	type="text" size="20"/>    
+    <field name="password"		obligatory="false" 	type="text" size="20"/>    
+    <field name="lastLogin"		obligatory="false" 	type="text" size="20"/>
+    <field name="activo"		obligatory="false" 	type="text" size="10"/>    
+        
+    </table>
+	
 	
     <!-- A R T I C U L O -->
     <table name="articulo" to-string="%articulo%">
@@ -55,9 +61,9 @@
     <field name="cliTelefonoCasa"	obligatory="false"	type="text" size="80"/>
 	<field name="cliTelefonoMovil"	obligatory="false" 	type="text" size="80"/>
 	<field name="cliNit"			obligatory="false"	type="text" size="80"/>
-    <field name="Semana"			obligatory="false"	type="integer"/>
+    <field name="Semana"			obligatory="false"	type="text"/>
 	<field name="diaVisita"			obligatory="false" 	type="text" size="80"/>
-	<field name="visitado"			obligatory="false"	type="boolean"/>    
+	<field name="visitado"			obligatory="false"	type="integer"/>    
         
     </table>
     
@@ -87,17 +93,6 @@
     <field name="otrosgastos"	obligatory="false" 	type="text" size="50"/>
     <field name="kilometros"	obligatory="false" 	type="text" size="80"/>    
     
-    </table>
-    
-    <!-- U S U A R I O -->
-    <table name="usuario" to-string="%usuario%">
-    
-    <field name="id"			obligatory="false" 	type="text" size="10"/>    
-    <field name="usuario"		obligatory="false" 	type="text" size="20"/>    
-    <field name="password"		obligatory="false" 	type="text" size="20"/>    
-    <field name="lastLogin"		obligatory="false" 	type="text" size="20"/>
-    <field name="activo"		obligatory="false" 	type="text" size="10"/>    
-        
     </table>
     
     <!-- V E N D E D O R -->
@@ -146,8 +141,4 @@
 	    
 	</table>
 	    
-	    
 </database>
-    
-
-</LinearLayout>

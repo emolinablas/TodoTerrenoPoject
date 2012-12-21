@@ -1,5 +1,6 @@
 package com.researchmobile.todoterreno.pedidos.view;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.app.Activity;
@@ -9,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,7 +31,7 @@ import com.researchmobile.todoterreno.pedidos.ws.Peticion;
 
 public class Rol extends Activity implements OnClickListener, OnKeyListener, TextWatcher, OnItemClickListener{
 	
-	private ProgressDialog pd = null;
+private ProgressDialog pd = null;
 	
 	private ImageButton borrarImageButton;
 	private EditText buscarEditText;
@@ -40,6 +42,7 @@ public class Rol extends Activity implements OnClickListener, OnKeyListener, Tex
 	private ListaClientes listaClientes;
 	private Peticion peticion;
 	private boolean visitados;
+	private ArrayList<HashMap<String, String>> clientesPendientesHashMap;
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -110,6 +113,7 @@ public class Rol extends Activity implements OnClickListener, OnKeyListener, Tex
 		// Metodo que prepara lo que usara en background, Prepara el progress
 		@Override
 		protected void onPreExecute() {
+			
 			pd = ProgressDialog.show(Rol.this, "VERIFICANDO DATOS", "ESPERE UN MOMENTO");
 			pd.setCancelable(false);
 		}
@@ -118,8 +122,8 @@ public class Rol extends Activity implements OnClickListener, OnKeyListener, Tex
 		@Override
 		protected Integer doInBackground(String... urlString) {
 			try {
-				llenaListaPendientes();
-
+				cargarClientesPendientes();
+			
 			} catch (Exception exception) {
 
 			}
@@ -127,8 +131,9 @@ public class Rol extends Activity implements OnClickListener, OnKeyListener, Tex
 		}
 
 		private void llenaListaPendientes() {
+			
 			setSimpleAdapter(new SimpleAdapter(Rol.this, 
-					getPeticion().ListaClientesPendientes(), 
+					getClientesPendientesHashMap(), 
 					R.layout.fila_lista_clientes,
 					new String[] {"codigoCliente",
 						"empresa",
@@ -142,11 +147,14 @@ public class Rol extends Activity implements OnClickListener, OnKeyListener, Tex
 						 R.id.fila_lista_clientes_codigo_direccion_textview,
 						 R.id.fila_lista_clientes_telefono_textview,
 						 R.id.fila_lista_clientes_nit_textview}));
+			getClientesListView().setAdapter(getSimpleAdapter());
+			Log.e("TT", "async");
 		}
 
 		// Metodo con las instrucciones al finalizar lo ejectuado en background
 		protected void onPostExecute(Integer resultado) {
 			pd.dismiss();
+			llenaListaPendientes();
 		}
 	}
 	
@@ -164,17 +172,24 @@ public class Rol extends Activity implements OnClickListener, OnKeyListener, Tex
 		@Override
 		protected Integer doInBackground(String... urlString) {
 			try {
-				llenaListaVisitados();
-
+				cargarClientesVisitados();
 			} catch (Exception exception) {
+				
 
 			}
 			return null;
 		}
 
+		// Metodo con las instrucciones al finalizar lo ejectuado en background
+		protected void onPostExecute(Integer resultado) {
+			pd.dismiss();
+			llenaListaVisitados();
+			
+		}
+		
 		private void llenaListaVisitados() {
 			setSimpleAdapter(new SimpleAdapter(Rol.this, 
-					getPeticion().ListaClientesVisitados(), 
+					getClientesPendientesHashMap(), 
 					R.layout.fila_lista_clientes,
 					new String[] {"codigoCliente",
 						"empresa",
@@ -188,12 +203,19 @@ public class Rol extends Activity implements OnClickListener, OnKeyListener, Tex
 						 R.id.fila_lista_clientes_codigo_direccion_textview,
 						 R.id.fila_lista_clientes_telefono_textview,
 						 R.id.fila_lista_clientes_nit_textview}));
+			getClientesListView().setAdapter(getSimpleAdapter());
+			Log.e("TT", "async");
+			
 		}
-
-		// Metodo con las instrucciones al finalizar lo ejectuado en background
-		protected void onPostExecute(Integer resultado) {
-			pd.dismiss();
-		}
+	}
+	
+	private void cargarClientesPendientes() {
+		setClientesPendientesHashMap(getPeticion().ListaClientesPendientes(Rol.this));
+		
+	}
+	
+	private void cargarClientesVisitados() {
+		setClientesPendientesHashMap(getPeticion().ListaClientesVisitados(Rol.this));
 	}
 	
 	/**
@@ -301,5 +323,14 @@ public class Rol extends Activity implements OnClickListener, OnKeyListener, Tex
 	}
 	public void setVisitados(boolean visitados) {
 		this.visitados = visitados;
+	}
+
+	public ArrayList<HashMap<String, String>> getClientesPendientesHashMap() {
+		return clientesPendientesHashMap;
+	}
+
+	public void setClientesPendientesHashMap(
+			ArrayList<HashMap<String, String>> clientesPendientesHashMap) {
+		this.clientesPendientesHashMap = clientesPendientesHashMap;
 	}
 }

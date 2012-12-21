@@ -27,10 +27,10 @@ public class Cliente implements Serializable{
 	private String cliTelefonoCasa;
 	private String cliTelefonoMovil;
 	private String cliNit;
-	private int Semana;
+	private String Semana;
 	private String diaVisita;
-	private boolean visitado;
 	private RespuestaWS respuesta;
+	private String visitado;
 	public String getCliCodigo() {
 		return cliCodigo;
 	}
@@ -163,10 +163,11 @@ public class Cliente implements Serializable{
 	public void setCliNit(String cliNit) {
 		this.cliNit = cliNit;
 	}
-	public int getSemana() {
+	
+	public String getSemana() {
 		return Semana;
 	}
-	public void setSemana(int semana) {
+	public void setSemana(String semana) {
 		Semana = semana;
 	}
 	public String getDiaVisita() {
@@ -175,16 +176,18 @@ public class Cliente implements Serializable{
 	public void setDiaVisita(String diaVisita) {
 		this.diaVisita = diaVisita;
 	}
-	public boolean isVisitado() {
-		return visitado;
-	}
-	public void setVisitado(boolean visitado) {
-		this.visitado = visitado;
-	}
 	public RespuestaWS getRespuesta() {
 		return respuesta;
 	}
 	public void setRespuesta(RespuestaWS respuesta) {
 		this.respuesta = respuesta;
 	}
+	public String getVisitado() {
+		return visitado;
+	}
+	public void setVisitado(String visitado) {
+		this.visitado = visitado;
+	}
+	
+	
 }
