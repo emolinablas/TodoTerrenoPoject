@@ -6,6 +6,7 @@ import java.util.HashMap;
 import android.content.Context;
 import android.util.Log;
 
+import com.researchmobile.todoterreno.pedidos.entity.Articulo;
 import com.researchmobile.todoterreno.pedidos.entity.Cliente;
 import com.researchmobile.todoterreno.pedidos.entity.ListaArticulos;
 import com.researchmobile.todoterreno.pedidos.entity.ListaClientes;
@@ -37,7 +38,7 @@ public class Peticion {
 					Log.e("TT", "Peticion.login resultadoWS = true");
 					guardarDatos(context, loginEntity);
 					cargarClientes(context, loginEntity);
-					//cargarArticulos(context, loginEntity);
+					cargarArticulos(context, loginEntity);
 					return respuesta;
 				}else{
 					Log.e("TT", "Peticion.login resultadoWS = false");
@@ -52,14 +53,14 @@ public class Peticion {
 	}
 
 	private void cargarArticulos(Context context, LoginEntity loginEntity) {
-		/*ListaArticulos listaArticulos = new ListaArticulos();
+		ListaArticulos listaArticulos = new ListaArticulos();
 		int tamanoPortafolio = loginEntity.getPortafolio().length;
 		for (int i = 0; i < tamanoPortafolio; i++){
 			listaArticulos = requestWS.listaArticulos(loginEntity.getPortafolio()[i].getIdPortafolio());
 			if (listaArticulos.getArticulo().length > 0){
 				guardarArticulos(context, listaArticulos);
 			}
-		}*/
+		}
 		
 	}
 
@@ -128,6 +129,26 @@ public class Peticion {
 		return mylist;
 		
 	}
+	
+	public ArrayList<HashMap<String, String>> listaArticulos(Context context) {
+		ArrayList<HashMap<String, String>> mylist = new ArrayList<HashMap<String, String>>();
+		Articulo[] articulo = requestDB.articuloDB(context);
+		int tamano = articulo.length;
+		for (int i = 0; i < tamano; i++){
+			HashMap<String, String> map = new HashMap<String, String>();
+        	map.put("codigoProducto", articulo[i].getArtCodigo());
+        	map.put("nombreProducto", articulo[i].getArtDescripcion());
+        	map.put("cajas", "0");
+        	map.put("unidades", "0");
+        	map.put("valor", String.valueOf(articulo[i].getPrecioVenta()));
+        	map.put("presentacion", String.valueOf(articulo[i].getUnidadesFardo()));
+        	map.put("existencia", "0");
+        	map.put("bonificacion", "0");
+        	map.put("total", "0");
+        	mylist.add(map);
+        }
+		return mylist;
+	}
 
 	public ArrayList<HashMap<String, String>> ListaClientesVisitados (Context context){
 		ArrayList<HashMap<String, String>> mylist = new ArrayList<HashMap<String, String>>();
@@ -156,5 +177,7 @@ public class Peticion {
 		Log.e("TT", "Peticion.detalleCliente = " + cliente.getCliCodigo());
 		return cliente;
 	}
+
+	
 
 }

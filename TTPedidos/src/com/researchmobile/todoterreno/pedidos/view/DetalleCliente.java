@@ -2,6 +2,7 @@ package com.researchmobile.todoterreno.pedidos.view;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -136,7 +137,8 @@ public class DetalleCliente extends Activity{
 
 
 	private void TomarPedido() {
-		
+		Intent intent = new Intent(DetalleCliente.this, TomarPedido.class);
+		startActivity(intent);
 	}
 
 	public Cliente getCliente() {

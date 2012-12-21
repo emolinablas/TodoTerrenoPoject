@@ -19,6 +19,7 @@ import com.researchmobile.todoterreno.pedidos.entity.Vendedor;
 public class RequestWS {
 	private static String WS_LOGIN = "ws_login.php?a=login&";
 	private static String WS_CLIENTES = "ws_clientes.php?";
+	private static String WS_PRODUCTOS = "ws_articulos.php?a=catalogo&idportafolio=";
 
 	// Metodo que llena el Entity del login
 	@SuppressWarnings("unused")
@@ -195,8 +196,9 @@ public class RequestWS {
 	}
 	
 	// Metodo que retorna la lista de clientes obtenidas desde el WS se necesita como parametros el cat‡logo y la ruta del vendedor
-		public ListaArticulos listaArticulos(String portafolio, String ruta){
-			String url = WS_LOGIN + "a=" + portafolio + "&" + "idportafolio=" + ruta; // string de conexi—n
+		public ListaArticulos listaArticulos(String portafolio){
+			String url = WS_PRODUCTOS + portafolio; // string de conexi—n
+			Log.e("TT", "RequestWS.listaArticulos");
 
 			JSONObject jsonObject = ConnectWS.obtenerJson(url);
 			System.out.println("RESPUESTA WS LOGIN:" + jsonObject.toString());
@@ -204,9 +206,10 @@ public class RequestWS {
 			try {
 					if(jsonObject.has("resultado")){ // si se produjo un error al consumir el WS
 					// creamos el listaArticulos y le asignamos el resultado recibido
+						listaArticulos.setRespuesta(new RespuestaWS());
 						listaArticulos.getRespuesta().setResultado(jsonObject.getBoolean("resultado"));
 						listaArticulos.getRespuesta().setMensaje(jsonObject.getString("mensaje"));
-						
+						Log.e("TT", "RequestWS.listaArticulos Respuesta");
 						if(jsonObject.has("articulos")){
 							JSONArray articulosJsonArray = jsonObject.getJSONArray("articulos"); // obtengo el Array de clientes que viene el el JSON
 							Articulo[] articulos = new Articulo[articulosJsonArray.length()];
@@ -237,7 +240,8 @@ public class RequestWS {
 							    articulos[i]=temp; // asigno el articulo temporal al Array de articulos
 								
 							} listaArticulos.setArticulo(articulos);
-							  
+							Log.e("TT", "RequestWS.listaArticulos Articulos");
+							  return listaArticulos;
 						}else{
 							System.out.println("No se obtuvo el Array de articulos");
 						}

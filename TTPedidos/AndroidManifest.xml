@@ -19,8 +19,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="Rol"></activity>
-        <activity android:name="DetalleCliente"></activity>
+        <activity android:name="Rol" android:screenOrientation="portrait" android:configChanges="orientation"></activity>
+        <activity android:name="DetalleCliente" android:screenOrientation="portrait" android:configChanges="orientation"></activity>
+        <activity android:name="TomarPedido" android:screenOrientation="portrait" android:configChanges="orientation"></activity>
     </application>
 
 </manifest>

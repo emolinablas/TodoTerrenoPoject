@@ -278,17 +278,15 @@ public class RequestDB {
 		}
 			
 //recorre articulo
-		public Articulo articuloDB(Context context)
+		public Articulo[] articuloDB(Context context)
 		{
 		 try
 		 {
 			 DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
-			Articulo articulo = new Articulo();
-			
 			List<Entity> categories = DataFramework.getInstance().getEntityList("articulo");
 			{
 				int tamano = categories.size();
-				Articulo[] articulo1 = new Articulo[tamano];
+				Articulo[] articulos = new Articulo[tamano];
 				int i = 0;
 				Iterator d = categories.iterator(); 
 			 		while(d.hasNext())
@@ -314,10 +312,10 @@ public class RequestDB {
 			 			Temp.setLink(datoArticulo.getString("link"));
 			 			Temp.setArtOfertaFecha(datoArticulo.getString("artOfertaFecha"));
 			 		
-			 		articulo1[i]=Temp;
+			 		articulos[i]=Temp;
 			 		i++;
 			 	   }
-			 	return articulo;		
+			 	return articulos;		
 			}
 		 }	
 			 catch(Exception msj)
