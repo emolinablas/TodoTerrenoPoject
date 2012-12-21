@@ -1,7 +1,10 @@
 package com.researchmobile.todoterreno.pedidos.ws;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+
+import org.xmlpull.v1.XmlPullParserException;
 
 import android.content.Context;
 import android.util.Log;
@@ -607,6 +610,137 @@ public class RequestDB {
 				
 				return 0;
 			}
+			
+		}
+		
+		public boolean eliminarArticulos(Context context){ // metodo que vacia la tabla articulos.
+			try{
+			DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+			DataFramework.getInstance().emptyTable("articulo");
+			return true;
+			}catch(Exception e){
+				return false;
+			}
+		}
+		
+		public boolean eliminarClientes(Context context){ // metodo que vacia la tabla cliente.
+			try{
+				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+				DataFramework.getInstance().emptyTable("cliente");
+				return true;
+			}catch(Exception e){
+				return false;
+			}
+			
+		}
+		public boolean eliminarUsuario(Context context){ // metodo que vacia la tabla usuario
+			try{
+				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+				DataFramework.getInstance().emptyTable("usuario");
+				return true;
+			}catch(Exception e){
+				return false;
+			}
+		}
+		public boolean eliminarPortafolio(Context context){ // metodo que vacia la tabla portafolio
+			try {
+				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+				DataFramework.getInstance().emptyTable("portafolio");
+				return true;
+			} catch (Exception e) {
+				// TODO: handle exception
+				return false;
+			}
+		}
+		public boolean eliminarRuta(Context context){ // metodo que vacia la tabla usuario
+			try {
+				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+				DataFramework.getInstance().emptyTable("ruta");
+				return true;
+			} catch (Exception e) {
+				return false;
+			}
+		}
+		public boolean eliminarVendedor(Context context){
+			try {
+				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+				DataFramework.getInstance().emptyTable("vendedor");
+				return true;
+			} catch (Exception e) {
+				return false;
+			}
+		}
+		public boolean eliminarPedido(Context context){
+			try {
+				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+				DataFramework.getInstance().emptyTable("encabezadopedido");
+				return true;
+			} catch (Exception e) {
+				return false;
+			}
+		}
+		public boolean eliminarDetallePedido(Context context){
+			try {
+				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+				DataFramework.getInstance().emptyTable("detallepedido");
+				return true;
+			} catch (Exception e) {
+				// TODO: handle exception
+				return false;
+			}
+		}
+		public boolean eliminarDetallePedidoTemp(Context context){
+			try {
+				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+				DataFramework.getInstance().emptyTable("detallepedido_temp");
+				return true;
+			} catch (Exception e) {
+				// TODO: handle exception
+				return false;
+			}
+		}
+		public boolean eliminarEncabezadoPedidoTemp(Context context){
+			try {
+				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+				DataFramework.getInstance().emptyTable("encabezadopedido_temp");
+				return true;
+			} catch (Exception e) {
+				// TODO: handle exception
+				return false;
+			}
+		}
+		
+		// Metodo que retorna el detalle de pedido de un encabezado en particular
+		public DetallePedido[] buscaDetallePedido (Context context, long numeroPedido){
+			try {
+				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+				List<Entity> detalles = DataFramework.getInstance().getEntityList("detallepedido_temp","idEncabezado_temp = " + String.valueOf(numeroPedido));
+				int tamano = detalles.size();
+				DetallePedido[] totalDetalles = new DetallePedido[tamano];
+				Iterator it = detalles.iterator(); 
+				int a=0;
+				while(it.hasNext())
+				{
+					Entity datoDetalle = (Entity)it.next();
+			 		DetallePedido temp = new DetallePedido();
+			 		
+			 		temp.setCaja(Integer.parseInt(datoDetalle.getString("caja_temp")));
+			 		temp.setCodigo(datoDetalle.getString("codigo_temp"));
+			 		temp.setNombre(datoDetalle.getString("nombre_temp"));
+			 		temp.setPrecio(Float.parseFloat(datoDetalle.getString("precio_temp")));
+			 		temp.setSubTotal(Float.parseFloat(datoDetalle.getString("subtotal_temp")));
+			 		temp.setTotalUnidades(Integer.parseInt(datoDetalle.getString("totalunidades_temp")));
+			 		temp.setUnidad(Integer.parseInt(datoDetalle.getString("unidad_temp")));
+			 		temp.setUnidadesFardo(Integer.parseInt(datoDetalle.getString("unidadesfardo_temp")));
+			 		totalDetalles[a]=temp;
+			 		a++;
+				}
+				return totalDetalles;
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				return null;
+			} 
+			
 			
 		}
 //Borrar registros
