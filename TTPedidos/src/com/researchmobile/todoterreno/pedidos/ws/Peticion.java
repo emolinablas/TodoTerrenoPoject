@@ -96,6 +96,11 @@ public class Peticion {
 		requestDB.guardaPortafolio(context, loginEntity.getPortafolio());
 		requestDB.guardaRuta(context, loginEntity.getRuta());
 	}
+	
+	public void insertaArticuloTemp(Context context, DetallePedido articulo) {
+		requestDB.guardaDetallePedidoTemp(context, articulo);
+		
+	}
 
 	private void cargarDatosWS(LoginEntity loginEntity) {
 		// TODO Auto-generated method stub
@@ -186,7 +191,5 @@ public class Peticion {
 		// TODO Auto-generated method stub
 		return articulo;
 	}
-
-	
 
 }

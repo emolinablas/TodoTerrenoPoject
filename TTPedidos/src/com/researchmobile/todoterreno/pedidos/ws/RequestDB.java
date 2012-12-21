@@ -208,6 +208,31 @@ public class RequestDB {
 				 msj.printStackTrace();
 			 }
 		}
+
+//guarda articulo temporal para el pedido
+		public void guardaDetallePedidoTemp(Context context, DetallePedido articulo)
+		{
+			try
+			{
+				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+				Entity datoArticulo = new Entity("detallepedido_temp");
+				datoArticulo.setValue("idEncabezado_temp", "1");
+				datoArticulo.setValue("codigo_temp", articulo.getCodigo());
+				datoArticulo.setValue("nombre_temp", articulo.getNombre());
+				datoArticulo.setValue("caja_temp", articulo.getCaja());
+				datoArticulo.setValue("unidad_temp", articulo.getUnidad());
+				datoArticulo.setValue("precio_temp", articulo.getPrecio());
+				datoArticulo.setValue("subtotal_temp", articulo.getSubTotal());
+				datoArticulo.setValue("totalunidades_temp", articulo.getTotalUnidades());
+				datoArticulo.setValue("unidadesfardo_temp", articulo.getUnidadesFardo());
+				datoArticulo.save();
+			}
+			 catch(Exception msj)
+			 {
+				 Log.e("TT", "RequestDB.guardaDetallePedidoTemp = " + msj);
+				 msj.printStackTrace();
+			 }
+		}
 //recorre usuario
 		public Usuario usuarioDB(Context context)
 		{

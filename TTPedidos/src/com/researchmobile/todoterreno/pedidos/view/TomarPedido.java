@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import com.researchmobile.todoterreno.pedidos.entity.DetallePedido;
 import com.researchmobile.todoterreno.pedidos.entity.Pedido;
+import com.researchmobile.todoterreno.pedidos.utility.Fecha;
 import com.researchmobile.todoterreno.pedidos.utility.FormatDecimal;
 import com.researchmobile.todoterreno.pedidos.ws.Peticion;
 
@@ -42,12 +43,14 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 	private Pedido pedido;
 	private float total;
 	private DetallePedido articuloSeleccionado;
+	private Fecha fecha;
 	
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.tomar_pedido);
 		
 		setTotal(0);
+		setFecha(new Fecha());
 		setTotalGeneralTextView((TextView)findViewById(R.id.tomar_pedido_total_textview));
 		getTotalGeneralTextView().setText(String.valueOf(getTotal()));
 		setBuscarEditText((EditText)findViewById(R.id.tomar_pedido_buscar_edittext));
@@ -114,9 +117,23 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 		alert.setPositiveButton("   OK   ", new DialogInterface.OnClickListener()
 		{
 			public void onClick(DialogInterface dialog, int whichButton) {
-				
+			insertaDetalle();	
 		
 		}
+
+			private void insertaDetalle() {
+				int cajas = Integer.parseInt(cajaEditText.getText().toString());
+				int unidades = Integer.parseInt(unidadEditText.getText().toString());
+				int totalUnidades = (unidades + (cajas * getArticuloSeleccionado().getUnidadesFardo()));
+				float subTotal = totalUnidades * getArticuloSeleccionado().getPrecio();
+				
+				getArticuloSeleccionado().setCaja(cajas);
+				getArticuloSeleccionado().setUnidad(unidades);
+				getArticuloSeleccionado().setTotalUnidades(totalUnidades);
+				getArticuloSeleccionado().setSubTotal(subTotal);
+				
+				getPeticion().insertaArticuloTemp(TomarPedido.this, getArticuloSeleccionado());
+			}
 		
      });
 
@@ -301,6 +318,14 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 
 	public void setArticuloSeleccionado(DetallePedido articuloSeleccionado) {
 		this.articuloSeleccionado = articuloSeleccionado;
+	}
+
+	public Fecha getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(Fecha fecha) {
+		this.fecha = fecha;
 	}
 	
 }
