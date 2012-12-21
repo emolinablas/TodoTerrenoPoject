@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.researchmobile.todoterreno.pedidos.entity.Articulo;
 import com.researchmobile.todoterreno.pedidos.entity.Cliente;
+import com.researchmobile.todoterreno.pedidos.entity.DetallePedido;
 import com.researchmobile.todoterreno.pedidos.entity.ListaArticulos;
 import com.researchmobile.todoterreno.pedidos.entity.ListaClientes;
 import com.researchmobile.todoterreno.pedidos.entity.LoginEntity;
@@ -176,6 +177,14 @@ public class Peticion {
 		cliente = requestDB.buscaCliente(context, codigoCliente);
 		Log.e("TT", "Peticion.detalleCliente = " + cliente.getCliCodigo());
 		return cliente;
+	}
+
+	public DetallePedido buscaArticulo(Context context, String codigoProducto) {
+		DetallePedido articulo = new DetallePedido();
+		articulo = requestDB.buscaArticulo(context, codigoProducto);
+		
+		// TODO Auto-generated method stub
+		return articulo;
 	}
 
 	

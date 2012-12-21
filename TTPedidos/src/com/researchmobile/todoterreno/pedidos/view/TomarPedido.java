@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
@@ -21,7 +24,9 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import com.researchmobile.todoterreno.pedidos.entity.DetallePedido;
 import com.researchmobile.todoterreno.pedidos.entity.Pedido;
+import com.researchmobile.todoterreno.pedidos.utility.FormatDecimal;
 import com.researchmobile.todoterreno.pedidos.ws.Peticion;
 
 public class TomarPedido extends Activity implements TextWatcher, OnItemClickListener, OnClickListener, OnKeyListener {
@@ -36,6 +41,7 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 	private Peticion peticion;
 	private Pedido pedido;
 	private float total;
+	private DetallePedido articuloSeleccionado;
 	
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -69,9 +75,70 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 		return false;
 	}
 	
+	public DetallePedido seleccionaArticulo(String codigoProducto){
+		DetallePedido articulo = new DetallePedido();
+		articulo = getPeticion().buscaArticulo(TomarPedido.this, codigoProducto);
+		return articulo;
+	}
+	
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		// TODO Auto-generated method stub
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		   @SuppressWarnings("unchecked")
+           HashMap<String, String> selected = (HashMap<String, String>) getSimpleAdapter().getItem(position);
+           String codigoProducto = selected.get("codigoProducto");
+           setArticuloSeleccionado(seleccionaArticulo(codigoProducto));
+           agregarDialog();
+           
+    }
+
+	private void agregarDialog() {
+				
+		LayoutInflater factory = LayoutInflater.from(TomarPedido.this);            
+     
+		final View textEntryView = factory.inflate(R.layout.tomar_pedido_dialog, null);
+		
+		final EditText cajaEditText = (EditText) textEntryView.findViewById(R.id.tomarpedido_dialog_caja_edittext);
+		final EditText unidadEditText = (EditText) textEntryView.findViewById(R.id.tomarpedido_dialog_unidad_edittext);
+		final ImageButton eliminarImageButton = (ImageButton) textEntryView.findViewById(R.id.tomar_pedido_dialog_eliminar_imagebutton);
+		final TextView precioTextViewDialog = (TextView) textEntryView.findViewById(R.id.precioTextViewDialog);
+		
+		cajaEditText.setText(String.valueOf(getArticuloSeleccionado().getCaja()));
+		unidadEditText.setText(String.valueOf(getArticuloSeleccionado().getUnidad()));
+		precioTextViewDialog.setText(String.valueOf(getArticuloSeleccionado().getPrecio()));
+			
+		FormatDecimal formatDecimal = new FormatDecimal();
+		
+		final AlertDialog.Builder alert = new AlertDialog.Builder(TomarPedido.this);
+		alert.setTitle(getArticuloSeleccionado().getNombre());
+		alert.setView(textEntryView);
+		alert.setPositiveButton("   OK   ", new DialogInterface.OnClickListener()
+		{
+			public void onClick(DialogInterface dialog, int whichButton) {
+				
+		
+		}
+		
+     });
+
+     alert.setNegativeButton("CANCELAR", new DialogInterface.OnClickListener()
+     {
+         public void onClick(DialogInterface dialog, int whichButton)
+         {
+         // Canceled.
+         }
+     });
+     
+     eliminarImageButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				cajaEditText.setText("");
+				unidadEditText.setText("");
+				
+			}
+		});
+     
+     alert.show();
 		
 	}
 
@@ -227,7 +294,13 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 	public void setTotal(float total) {
 		this.total = total;
 	}
-	
-	
 
+	public DetallePedido getArticuloSeleccionado() {
+		return articuloSeleccionado;
+	}
+
+	public void setArticuloSeleccionado(DetallePedido articuloSeleccionado) {
+		this.articuloSeleccionado = articuloSeleccionado;
+	}
+	
 }

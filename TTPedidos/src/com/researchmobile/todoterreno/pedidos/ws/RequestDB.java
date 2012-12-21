@@ -10,6 +10,7 @@ import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.researchmobile.todoterreno.pedidos.entity.Articulo;
 import com.researchmobile.todoterreno.pedidos.entity.Cliente;
+import com.researchmobile.todoterreno.pedidos.entity.DetallePedido;
 import com.researchmobile.todoterreno.pedidos.entity.Portafolio;
 import com.researchmobile.todoterreno.pedidos.entity.RespuestaWS;
 import com.researchmobile.todoterreno.pedidos.entity.Ruta;
@@ -497,6 +498,41 @@ public class RequestDB {
 					 
 					}
 				return cliente;
+			}catch(Exception exception){
+				return null;
+			}
+		}
+		
+//buscaArticulo
+		public DetallePedido buscaArticulo(Context context, String codigoArticulo)
+		{
+			Log.e("TT", "RequestDB.buscaCliente - codigoCliente = " + codigoArticulo);
+			DetallePedido articulo = new DetallePedido();
+			try
+			{
+				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+				List<Entity> categories = DataFramework.getInstance().getEntityList("articulo");
+					Iterator e = categories.iterator();
+					while(e.hasNext())
+					{
+					
+					 Entity d = (Entity)e.next();
+					 String codigo = d.getString("artCodigo");
+					 if (codigo.equalsIgnoreCase(codigoArticulo)){
+						 Log.e("TT", "RequestDB.buscaCliente " + codigo + " " + codigoArticulo);
+						 articulo.setCodigo(d.getString("artCodigo"));
+						 articulo.setCaja(0);
+						 articulo.setUnidad(0);
+						 articulo.setNombre(d.getString("artDescripcion"));
+						 articulo.setPrecio(d.getFloat("precioVenta"));
+						 articulo.setSubTotal(0);
+						 articulo.setTotalUnidades(0);
+						 articulo.setUnidadesFardo(d.getInt("unidadesFardo"));
+						 return articulo;
+					 }
+					 
+					}
+				return articulo;
 			}catch(Exception exception){
 				return null;
 			}
