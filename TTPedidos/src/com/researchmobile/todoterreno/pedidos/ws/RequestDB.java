@@ -17,7 +17,7 @@ import com.researchmobile.todoterreno.pedidos.entity.Vendedor;
 
 
 public class RequestDB {
-	//guarda usuario
+//guarda usuario
 		public void guardarUsuario(Context context, Usuario usuario)
 		{
 			try
@@ -37,7 +37,7 @@ public class RequestDB {
 			 }
 		}
 		
-		//guarda vendedor
+//guarda vendedor
 		public void guardarVendedor(Context context, Vendedor vendedor)
 		{
 			try
@@ -66,7 +66,7 @@ public class RequestDB {
 			 }
 		}
 		
-		//guarda portafolio
+//guarda portafolio
 		public void guardarportafolios(Context context, Portafolio[] portafolio)
 		{
 			try
@@ -92,7 +92,7 @@ public class RequestDB {
 			}
 		}
 		
-		//guarda ruta
+//guarda ruta
 		public void guardarrutas(Context context, Ruta[] ruta)
 		{
 			try
@@ -121,7 +121,7 @@ public class RequestDB {
 				 }
 		}
 		
-		//guarda articulo
+//guarda articulo
 		public void guardararticulo(Context context, Articulo[] articulo)
 		{
 			try
@@ -158,7 +158,7 @@ public class RequestDB {
 				 }
 			
 		}
-		//guarda cliente
+//guarda cliente
 		public void guardacliente (Context context, Cliente[] cliente)
 		{
 			try
@@ -461,6 +461,36 @@ public class RequestDB {
 			}
 						
 			return respuesta;
+		}
+		
+//buscacliente
+		public Cliente buscacliente(String codigocliente)
+		{
+			Cliente cliente = new Cliente();
+			
+			try
+			{
+				List<Entity> categories = DataFramework.getInstance().getEntityList("cliente","cliCodigo=" + codigocliente);
+				{
+					Iterator e = categories.iterator();
+					while(e.hasNext())
+					{
+					 Entity d = (Entity)e.next();
+					 cliente.setCliCodigo(d.getString("cliCodigo"));
+					 cliente.setCliEmpresa(d.getString("cliEmpresa"));
+					 cliente.setCliContacto(d.getString("cliContacto"));
+					 cliente.setCodCatCliete(d.getString("CodCatCliete"));
+					 cliente.setCliDireccion(d.getString("cliDireccion"));
+					 cliente.setCliTelefono(d.getString("cliTelefono"));
+					 cliente.setCliFax(d.getString("cliFax"));
+					 cliente.setCliContacto(d.getString("cliContacto"));
+					}
+				}
+				return cliente;
+				
+			}catch(Exception exception){
+				return null;
+			}
 		}
 //ultima llave
 }
