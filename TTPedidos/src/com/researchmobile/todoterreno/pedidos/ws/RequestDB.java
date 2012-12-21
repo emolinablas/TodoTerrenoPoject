@@ -561,10 +561,38 @@ public class RequestDB {
 			}catch(Exception exception){
 				return null;
 			}
+			
+			
 		}
 //ultima llave
 		
-		
+		public int ultimoEncabezado(Context context){
+			int ultimo = 0;
+			try{
+				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+				List<Entity> categories = DataFramework.getInstance().getEntityList("encabezadopedido");
+				@SuppressWarnings("rawtypes")
+				Iterator e = categories.iterator();
+				while(e.hasNext())
+				{
+				
+				 Entity d = (Entity)e.next();
+				 String codigo = d.getString("_id");
+				 
+				 ultimo = Integer.parseInt(codigo);
+				 
+					 //Log.e("TT", "RequestDB.buscaCliente " + codigo + " " + codigoArticulo);
+				}
+				ultimo++;
+				 
+				
+			}catch(Exception e){
+				
+				return 0;
+			}
+			return ultimo;
+			
+		}
 //Borrar registros
 		
 		
