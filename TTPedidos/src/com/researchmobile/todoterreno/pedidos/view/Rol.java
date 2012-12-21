@@ -27,6 +27,7 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.researchmobile.todoterreno.pedidos.entity.ListaClientes;
+import com.researchmobile.todoterreno.pedidos.utility.Fecha;
 import com.researchmobile.todoterreno.pedidos.ws.Peticion;
 
 public class Rol extends Activity implements OnClickListener, OnKeyListener, TextWatcher, OnItemClickListener{
@@ -42,6 +43,7 @@ private ProgressDialog pd = null;
 	private ListaClientes listaClientes;
 	private Peticion peticion;
 	private boolean visitados;
+	private Fecha fecha;
 	private ArrayList<HashMap<String, String>> clientesPendientesHashMap;
 
 	@Override
@@ -49,6 +51,7 @@ private ProgressDialog pd = null;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.rol);
         setPeticion(new Peticion());
+        setFecha(new Fecha());
         setBuscarEditText((EditText)findViewById(R.id.rol_buscar_editText));
         getBuscarEditText().addTextChangedListener(this);
         
@@ -57,6 +60,9 @@ private ProgressDialog pd = null;
 
         setSemanaTextView((TextView)findViewById(R.id.rol_semana_textview));
         setDiaTextView((TextView)findViewById(R.id.rol_dia_textview));
+        getSemanaTextView().setText("Semana " + String.valueOf(getFecha().semanaAnio()));
+        getDiaTextView().setText(getFecha().Dia());
+        
         setClientesListView((ListView)findViewById(R.id.rol_lista_clientes_listView));
         getClientesListView().setOnItemClickListener(this);
         setVisitados(false);
@@ -335,4 +341,14 @@ private ProgressDialog pd = null;
 			ArrayList<HashMap<String, String>> clientesPendientesHashMap) {
 		this.clientesPendientesHashMap = clientesPendientesHashMap;
 	}
+
+	public Fecha getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(Fecha fecha) {
+		this.fecha = fecha;
+	}
+	
+	
 }

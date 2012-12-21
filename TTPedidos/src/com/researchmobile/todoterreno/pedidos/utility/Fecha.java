@@ -7,33 +7,55 @@ import java.util.Date;
 public class Fecha {
 	private Calendar calendar = Calendar.getInstance();
 	
-	public int Semana (){
+	public int semanaMes (){
 		int semana = getCalendar().get(Calendar.WEEK_OF_MONTH);
-		int semanaAño = getCalendar().get(Calendar.WEEK_OF_YEAR);
-		/*if (semana == 1 || semana == 3){
-			semana = 1;
-		}else{
-			semana = 2;
-		}*/
+		
 		return semana;
+	}
+	
+	public int semanaAnio() {
+		int semana = getCalendar().get(Calendar.WEEK_OF_YEAR);
+		
+		return semana;
+	}
+	
+	public String diaLetra() {
+		String dia = null;
+		if (getCalendar().get(Calendar.DAY_OF_WEEK) == 1){
+        	dia = "D";
+        }else if (getCalendar().get(Calendar.DAY_OF_WEEK) == 2){
+        	dia = "L";
+        }else if (getCalendar().get(Calendar.DAY_OF_WEEK) == 3){
+        	dia = "M";
+        } else if (getCalendar().get(Calendar.DAY_OF_WEEK) == 4){
+        	dia = "K";
+        }else if (getCalendar().get(Calendar.DAY_OF_WEEK) == 5){
+        	dia = "J";
+        }else if (getCalendar().get(Calendar.DAY_OF_WEEK) == 6){
+        	dia = "V";
+        }else if (getCalendar().get(Calendar.DAY_OF_WEEK) == 7){
+        	dia = "S";
+        }
+		
+		return dia;
 	}
 	
 	public String Dia (){
 		String dia = null;
 		if (getCalendar().get(Calendar.DAY_OF_WEEK) == 1){
-        	dia = "DOMINGO";
+        	dia = "Domingo";
         }else if (getCalendar().get(Calendar.DAY_OF_WEEK) == 2){
-        	dia = "LUNES";
+        	dia = "Lunes";
         }else if (getCalendar().get(Calendar.DAY_OF_WEEK) == 3){
-        	dia = "MARTES";
+        	dia = "Martes";
         } else if (getCalendar().get(Calendar.DAY_OF_WEEK) == 4){
-        	dia = "MIERCOLES";
+        	dia = "Miercoles";
         }else if (getCalendar().get(Calendar.DAY_OF_WEEK) == 5){
-        	dia = "JUEVES";
+        	dia = "Jueves";
         }else if (getCalendar().get(Calendar.DAY_OF_WEEK) == 6){
-        	dia = "VIERNER";
+        	dia = "Viernes";
         }else if (getCalendar().get(Calendar.DAY_OF_WEEK) == 7){
-        	dia = "SABADO";
+        	dia = "Sabado";
         }
 		
 		return dia;
@@ -90,5 +112,4 @@ public class Fecha {
 	public void setCalendar(Calendar calendar) {
 		this.calendar = calendar;
 	}
-
 }

@@ -7,12 +7,16 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
@@ -25,9 +29,11 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.researchmobile.todoterreno.pedidos.entity.DetallePedido;
+import com.researchmobile.todoterreno.pedidos.entity.EncabezadoPedido;
 import com.researchmobile.todoterreno.pedidos.entity.Pedido;
 import com.researchmobile.todoterreno.pedidos.utility.Fecha;
 import com.researchmobile.todoterreno.pedidos.utility.FormatDecimal;
+import com.researchmobile.todoterreno.pedidos.utility.Mensaje;
 import com.researchmobile.todoterreno.pedidos.ws.Peticion;
 
 public class TomarPedido extends Activity implements TextWatcher, OnItemClickListener, OnClickListener, OnKeyListener {
@@ -43,12 +49,14 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 	private Pedido pedido;
 	private float total;
 	private DetallePedido articuloSeleccionado;
+	private EncabezadoPedido encabezado;
 	private Fecha fecha;
+	private Mensaje mensaje;
 	
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.tomar_pedido);
-		
+		setMensaje(new Mensaje());
 		setTotal(0);
 		setFecha(new Fecha());
 		setTotalGeneralTextView((TextView)findViewById(R.id.tomar_pedido_total_textview));
@@ -93,6 +101,86 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
            agregarDialog();
            
     }
+	
+	/**
+	 * MENU
+	 */
+
+	// To change item text dynamically
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		
+		return true;
+	}
+
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.tomar_pedido_menu, menu);
+		return true;
+	}
+
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.tomar_pedido_ver_pedido_opcion:
+			//setControlMenu(false);
+			//VerPedido();
+			return true;
+		
+		case R.id.tomar_pedido_agregar_opcion:
+			//setControlMenu(true);
+			//AgregarArticulo();
+			return true;
+			
+		case R.id.tomar_pedido_cancelar_opcion:
+			cancelarPedido();
+			return true;
+		case R.id.tomar_pedido_enviar_opcion:
+			enviarPedido();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+	
+	public void enviarPedido(){
+		new AlertDialog.Builder(this)
+        .setTitle("Enviar Pedido")
+        .setMessage("¿Esta seguro de enviar el pedido?")
+        .setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                     terminarPedido();
+                     Intent intent = new Intent(TomarPedido.this, Rol.class);
+                     startActivity(intent);
+                }
+        })
+        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                     
+                }
+        })
+        .show();
+	}
+	
+	public void terminarPedido(){
+		getMensaje().EnProceso(this);
+	}
+	
+	public void cancelarPedido(){
+		new AlertDialog.Builder(this)
+        .setTitle("Cancelar Pedido")
+        .setMessage("¿Esta seguro de cancelar el pedido?")
+        .setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                     finish();
+                }
+        })
+        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                     
+                }
+        })
+        .show();
+
+	}
 
 	private void agregarDialog() {
 				
@@ -117,8 +205,8 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 		alert.setPositiveButton("   OK   ", new DialogInterface.OnClickListener()
 		{
 			public void onClick(DialogInterface dialog, int whichButton) {
-			insertaDetalle();	
-		
+			insertaDetalle();
+			actualizaTotalGeneral();
 		}
 
 			private void insertaDetalle() {
@@ -156,6 +244,14 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 		});
      
      alert.show();
+		
+	}
+
+	protected void actualizaTotalGeneral() {
+		float totalActual = getTotal();
+		float subTotal = getArticuloSeleccionado().getSubTotal();
+		float nuevoTotal = totalActual + subTotal;
+		getTotalGeneralTextView().setText(String.valueOf(nuevoTotal));
 		
 	}
 
@@ -327,5 +423,20 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 	public void setFecha(Fecha fecha) {
 		this.fecha = fecha;
 	}
-	
+
+	public Mensaje getMensaje() {
+		return mensaje;
+	}
+
+	public void setMensaje(Mensaje mensaje) {
+		this.mensaje = mensaje;
+	}
+
+	public EncabezadoPedido getEncabezado() {
+		return encabezado;
+	}
+
+	public void setEncabezado(EncabezadoPedido encabezado) {
+		this.encabezado = encabezado;
+	}
 }
