@@ -55,12 +55,14 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 	private Mensaje mensaje;
 	private int numeroPedido;
 	private String codigoCliente;
+	private String ruta;
 	
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.tomar_pedido);
 		Bundle bundle = (Bundle)getIntent().getExtras();
 		setCodigoCliente((String)bundle.getString("codigoCliente"));
+		setRuta((String)bundle.getString("idRuta"));
 		setMensaje(new Mensaje());
 		setTotal(0);
 		setFecha(new Fecha());
@@ -166,6 +168,13 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 	}
 	
 	public void terminarPedido(){
+		llenaEncabezado();
+		getPeticion().insertaEncabezado(this, getEncabezado());
+		getPeticion().enviarPedido(this, getEncabezado(), getNumeroPedido(), getRuta());
+		
+	}
+	
+	public void llenaEncabezado(){
 		setEncabezado(new EncabezadoPedido());
 		getEncabezado().setCodigoCliente(getCodigoCliente());
 		getEncabezado().setCodigoPedidoTemp(String.valueOf(getNumeroPedido()));
@@ -173,9 +182,6 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 		getEncabezado().setFecha(getFecha().FechaHoy());
 		getEncabezado().setHora(getFecha().Hora());
 		getEncabezado().setTotal(getTotal());
-		
-		getPeticion().insertaEncabezado(this, getEncabezado());
-		getMensaje().EnProceso(this);
 	}
 	
 	public void cancelarPedido(){
@@ -473,7 +479,12 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 	public void setCodigoCliente(String codigoCliente) {
 		this.codigoCliente = codigoCliente;
 	}
-	
-	
-	
+
+	public String getRuta() {
+		return ruta;
+	}
+
+	public void setRuta(String ruta) {
+		this.ruta = ruta;
+	}
 }

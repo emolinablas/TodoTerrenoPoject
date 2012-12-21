@@ -10,16 +10,20 @@ import com.researchmobile.todoterreno.pedidos.entity.Cliente;
 import com.researchmobile.todoterreno.pedidos.entity.ListaArticulos;
 import com.researchmobile.todoterreno.pedidos.entity.ListaClientes;
 import com.researchmobile.todoterreno.pedidos.entity.LoginEntity;
+import com.researchmobile.todoterreno.pedidos.entity.Pedido;
 import com.researchmobile.todoterreno.pedidos.entity.Portafolio;
 import com.researchmobile.todoterreno.pedidos.entity.RespuestaWS;
 import com.researchmobile.todoterreno.pedidos.entity.Ruta;
+import com.researchmobile.todoterreno.pedidos.entity.User;
 import com.researchmobile.todoterreno.pedidos.entity.Usuario;
 import com.researchmobile.todoterreno.pedidos.entity.Vendedor;
+import com.researchmobile.todoterreno.pedidos.utility.rmString;
 
 public class RequestWS {
 	private static String WS_LOGIN = "ws_login.php?a=login&";
 	private static String WS_CLIENTES = "ws_clientes.php?";
 	private static String WS_PRODUCTOS = "ws_articulos.php?a=catalogo&idportafolio=";
+	private static String WS_ENVIO = "json.php?username=";
 
 	// Metodo que llena el Entity del login
 	@SuppressWarnings("unused")
@@ -257,6 +261,30 @@ public class RequestWS {
 					}
 			
 		}
+ //Metodo para enviar el pedido		
+		public RespuestaWS enviaPedido(Pedido pedido, String ruta, String vendedor) {
+			try{
+				
+			
+			RespuestaWS respuesta = new RespuestaWS();
+			rmString rm = new rmString();
+			String jsonString = rm.jsonPedido(pedido, ruta, vendedor);
+			String urlTemp = WS_ENVIO + User.getUsername() + "&password=" + User.getClave() + "&action=pedido&json=" + jsonString; // string de conexi—n
+			Log.e("TT", "RequestWS.enviaPedido - url = " + urlTemp);
+			String url = urlTemp.replace(" ", "%20");
+			
+			JSONObject jsonObject = ConnectWS.obtenerJson(url);
+			Log.e("TT", "RequestWS.enviaPedido respuesta = " + jsonObject.toString());
+			if (jsonObject.has("resultado") ){
+				respuesta.setResultado(jsonObject.getBoolean("resultado"));
+				respuesta.setMensaje(jsonObject.getString("mensaje"));
+				return respuesta;
+			}
+			}catch(Exception exception){
+				return null;
+			}
+			return null;
+		}
 	
 	// Metodo convierte un valor null ingresado a un String y devuelve un espacio en blanco
 	public String nullToString(String variable){
@@ -275,5 +303,7 @@ public class RequestWS {
 			return va;
 		}
 	}
+
+	
 
 }

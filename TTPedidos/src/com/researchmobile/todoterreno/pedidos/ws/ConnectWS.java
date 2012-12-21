@@ -35,6 +35,25 @@ public class ConnectWS {
         return jsonObject;
     }
     
+    public static JSONObject enviaPedidoJson(String url) {
+    	Log.e("TT", "ConnectWS.obtenerJson");
+        JSONObject jsonObject = null;
+        try {
+            URL urlCon = new URL("http", IP_SERVER, PUERTO, "/megainfo/" + url);
+            HttpURLConnection urlConnection = (HttpURLConnection) urlCon.openConnection();
+            System.out.println("Login - url = " + urlCon);
+            InputStream inputStream = urlConnection.getInputStream();
+            
+            String responseInputStream = convertStreamToString(inputStream);
+            System.out.println(responseInputStream);
+            jsonObject = new JSONObject(responseInputStream);
+        } catch (Exception exception) {
+            System.out.println(exception);
+            return jsonObject;
+        }
+        return jsonObject;
+    }
+    
     private static String convertStreamToString(InputStream is) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         StringBuilder sb = new StringBuilder(); 

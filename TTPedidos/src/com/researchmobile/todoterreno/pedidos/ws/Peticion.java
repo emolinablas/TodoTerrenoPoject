@@ -13,8 +13,10 @@ import com.researchmobile.todoterreno.pedidos.entity.EncabezadoPedido;
 import com.researchmobile.todoterreno.pedidos.entity.ListaArticulos;
 import com.researchmobile.todoterreno.pedidos.entity.ListaClientes;
 import com.researchmobile.todoterreno.pedidos.entity.LoginEntity;
+import com.researchmobile.todoterreno.pedidos.entity.Pedido;
 import com.researchmobile.todoterreno.pedidos.entity.RespuestaWS;
 import com.researchmobile.todoterreno.pedidos.entity.User;
+import com.researchmobile.todoterreno.pedidos.entity.Vendedor;
 
 public class Peticion {
 	//Temp
@@ -203,5 +205,18 @@ public class Peticion {
 		int numero = 0;
 		numero = requestDB.ultimoEncabezado(context);
 		return numero;
+	}
+
+	public void enviarPedido(Context context, EncabezadoPedido encabezado, int numeroPedido, String ruta) {
+		Pedido pedido = new Pedido();
+		pedido.setEncabezadoPedido(encabezado);
+		pedido.setDetallePedido(requestDB.buscaDetallePedido(numeroPedido));
+		Vendedor vendedor = new Vendedor();
+		vendedor = requestDB.vendedorDB(context);
+		RespuestaWS respuesta = new RespuestaWS();
+		respuesta = requestWS.enviaPedido(pedido, ruta, vendedor.getIdusuario());
+		if (respuesta.isResultado()){
+			Log.e("TT", "resultado del envio = " + respuesta.getMensaje());
+		}
 	}
 }
