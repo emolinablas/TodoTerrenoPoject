@@ -118,6 +118,7 @@
     <!-- D E T A L L E   P E D I D O -->
 	<table name="detallepedido" to-string="%detallepedido%">
 	    
+	<field name="idEncabezado"		obligatory="false"	type="text"	size="20"/>
 	<field name="codigo"		obligatory="false"	type="text"	size="20"/>
 	<field name="nombre"		obligatory="false"	type="text"	size="80"/>
 	<field name="caja"			obligatory="false"	type="integer"/>
@@ -140,5 +141,33 @@
 	<field name="sinc"			obligatory="false"	type="integer"/>    
 	    
 	</table>
+	
+	<!-- D E T A L L E   P E D I D O  T E M P O R A L-->
+	<table name="detallepedido_temp" to-string="%detallepedido_temp%">
+	    
+	<field name="idEncabezado_temp"		obligatory="false"	type="text"	size="20"/>
+	<field name="codigo_temp"		obligatory="false"	type="text"	size="20"/>
+	<field name="nombre_temp"		obligatory="false"	type="text"	size="80"/>
+	<field name="caja_temp"			obligatory="false"	type="integer"/>
+	<field name="unidad_temp"		obligatory="false"	type="integer"/>
+	<field name="precio_temp"		obligatory="false"	type="float"/>
+	<field name="subtotal_temp"		obligatory="false"	type="float"/>
+	<field name="totalunidades_temp"	obligatory="false"	type="integer"/>
+	<field name="unidadesfardo_temp"	obligatory="false"	type="integer"/>
+	
+	</table>
+	
+	<!-- E N C A B E Z A D O   P E D I D O  T E M P O R A L-->
+	<table name="encabezadopedido_temp"	to-string="%encabezadopedido_temp%">
+	
+	<field name="codigocliente_temp"	obligatory="false"	type="text"	size="20"/>
+	<field name="total_temp"			obligatory="false"	type="float"/>
+	<field name="fecha_temp"			obligatory="false"	type="text"	size="50"/>
+	<field name="hora_temp"			obligatory="false"	type="text"	size="50"/>
+	<field name="credito_temp"		obligatory="false"	type="text"	size="80"/>
+	<field name="sinc_temp"			obligatory="false"	type="integer"/>    
+	    
+	</table>
+	    
 	    
 </database>
