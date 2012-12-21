@@ -47,11 +47,13 @@ public class DetalleCliente extends Activity{
         setSaldoTextView((TextView)findViewById(R.id.detalle_cliente_saldo_textview));
         setDescuento1TextView((TextView)findViewById(R.id.detalle_cliente_descuento_textview));
         
-        ClienteSeleccionado();
+        new detalleClienteAsync().execute("");
     }
 	
 	private void ClienteSeleccionado() {
-		
+		Peticion peticion = new Peticion();
+		setCliente(peticion.DetalleCliente(this, getCodigoCliente()));
+		getCodigoClienteTextView().setText(getCliente().getCliCodigo());
 	}
 
 	/**
@@ -88,8 +90,7 @@ public class DetalleCliente extends Activity{
 		// Metodo que prepara lo que usara en background, Prepara el progress
 		@Override
 		protected void onPreExecute() {
-			pd = ProgressDialog.show(DetalleCliente.this, "VERIFICANDO DATOS",
-					"ESPERE UN MOMENTO");
+			pd = ProgressDialog.show(DetalleCliente.this, "VERIFICANDO DATOS", "ESPERE UN MOMENTO");
 			pd.setCancelable(false);
 		}
 
@@ -105,12 +106,6 @@ public class DetalleCliente extends Activity{
 			return null;
 		}
 
-		private void BuscarDetalleCliente() {
-			Peticion peticion = new Peticion();
-			setCliente(peticion.DetalleCliente(DetalleCliente.this, getCodigoCliente()));
-			
-		}
-
 		// Metodo con las instrucciones al finalizar lo ejectuado en background
 		protected void onPostExecute(Integer resultado) {
 			pd.dismiss();
@@ -118,17 +113,25 @@ public class DetalleCliente extends Activity{
 
 		}
 
-		private void MostrarDetalleCliente() {
-			getCodigoClienteTextView().setText(getCliente().getCliCodigo());
-	        getEmpresaTextView().setText(getCliente().getCliEmpresa());
-	        getContactoTextView().setText(getCliente().getCliContacto());
-	        getDireccionTextView().setText(getCliente().getCliDireccion());
-	        getTelefonoTextView().setText(getCliente().getCliTelefono());
-	        getLimiteTextView().setText(getCliente().getCliLimite());
-	        getSaldoTextView().setText(getCliente().getCliSaldo());
-	        getDescuento1TextView().setText(getCliente().getCliDes1());
-			
-		}
+	}
+	
+	private void BuscarDetalleCliente() {
+		
+		Peticion peticion = new Peticion();
+		setCliente(peticion.DetalleCliente(DetalleCliente.this, getCodigoCliente()));
+		
+	}
+	
+	private void MostrarDetalleCliente() {
+		getCodigoClienteTextView().setText(getCliente().getCliCodigo());
+        getEmpresaTextView().setText(getCliente().getCliEmpresa());
+        getContactoTextView().setText(getCliente().getCliContacto());
+        getDireccionTextView().setText(getCliente().getCliDireccion());
+        getTelefonoTextView().setText(getCliente().getCliTelefono());
+        getLimiteTextView().setText(getCliente().getCliLimite());
+        getSaldoTextView().setText(getCliente().getCliSaldo());
+        getDescuento1TextView().setText(getCliente().getCliDes1());
+		
 	}
 
 

@@ -153,6 +153,7 @@ public class Peticion {
 	public Cliente DetalleCliente(Context context, String codigoCliente) {
 		Cliente cliente = new Cliente();
 		cliente = requestDB.buscaCliente(context, codigoCliente);
+		Log.e("TT", "Peticion.detalleCliente = " + cliente.getCliCodigo());
 		return cliente;
 	}
 

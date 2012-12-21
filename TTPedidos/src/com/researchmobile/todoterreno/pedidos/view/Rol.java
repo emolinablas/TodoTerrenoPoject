@@ -58,6 +58,7 @@ private ProgressDialog pd = null;
         setSemanaTextView((TextView)findViewById(R.id.rol_semana_textview));
         setDiaTextView((TextView)findViewById(R.id.rol_dia_textview));
         setClientesListView((ListView)findViewById(R.id.rol_lista_clientes_listView));
+        getClientesListView().setOnItemClickListener(this);
         setVisitados(false);
         
         new ClientesPendientesAsync().execute("");
@@ -68,12 +69,13 @@ private ProgressDialog pd = null;
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		   @SuppressWarnings("unchecked")
            HashMap<String, String> selected = (HashMap<String, String>) getSimpleAdapter().getItem(position);
-           String idCliente = (String) selected.get("codigoCliente");
+           String idCliente = selected.get("codigoCliente");
            detalleActivity(idCliente);
     }
 	
 	public void detalleActivity(String idCliente){
 		Intent intent = new Intent(Rol.this, DetalleCliente.class);
+		intent.putExtra("codigoCliente", idCliente);
 		startActivity(intent);
 	}
 	

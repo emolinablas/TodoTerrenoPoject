@@ -448,10 +448,11 @@ public class RequestDB {
 			{
 				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
 				Log.e("TT", "RequestDB.verificaLoginDB 2");
-				List<Entity> categories = DataFramework.getInstance().getEntityList("usuario","usuario=" + usuario);
+				List<Entity> categories = DataFramework.getInstance().getEntityList("usuario");
 				Log.e("TT", "RequestDB.verificaLoginDB 3");
 					if(categories.size()>0)
 					{
+						
 						respuesta.setResultado(true);
 					}
 					 else {
@@ -471,23 +472,31 @@ public class RequestDB {
 //buscacliente
 		public Cliente buscaCliente(Context context, String codigocliente)
 		{
+			Log.e("TT", "RequestDB.buscaCliente - codigoCliente = " + codigocliente);
 			Cliente cliente = new Cliente();
 			try
 			{
 				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
-				List<Entity> categories = DataFramework.getInstance().getEntityList("cliente","cliCodigo=" + codigocliente);
+				List<Entity> categories = DataFramework.getInstance().getEntityList("cliente");
 					Iterator e = categories.iterator();
 					while(e.hasNext())
 					{
+					
 					 Entity d = (Entity)e.next();
-					 cliente.setCliCodigo(d.getString("cliCodigo"));
-					 cliente.setCliEmpresa(d.getString("cliEmpresa"));
-					 cliente.setCliContacto(d.getString("cliContacto"));
-					 cliente.setCodCatCliete(d.getString("CodCatCliete"));
-					 cliente.setCliDireccion(d.getString("cliDireccion"));
-					 cliente.setCliTelefono(d.getString("cliTelefono"));
-					 cliente.setCliFax(d.getString("cliFax"));
-					 cliente.setCliContacto(d.getString("cliContacto"));
+					 String codigo = d.getString("cliCodigo");
+					 if (codigo.equalsIgnoreCase(codigocliente)){
+						 Log.e("TT", "RequestDB.buscaCliente " + codigo + " " + codigocliente);
+						 cliente.setCliCodigo(d.getString("cliCodigo"));
+						 cliente.setCliEmpresa(d.getString("cliEmpresa"));
+						 cliente.setCliContacto(d.getString("cliContacto"));
+						 cliente.setCodCatCliete(d.getString("codCatCliete"));
+						 cliente.setCliDireccion(d.getString("cliDireccion"));
+						 cliente.setCliTelefono(d.getString("cliTelefono"));
+						 cliente.setCliFax(d.getString("cliFax"));
+						 cliente.setCliContacto(d.getString("cliContacto"));
+						 return cliente;
+					 }
+					 
 					}
 				return cliente;
 			}catch(Exception exception){
