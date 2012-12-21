@@ -596,20 +596,17 @@ public class RequestDB {
 				{
 				
 				 Entity d = (Entity)e.next();
-				 String codigo = d.getString("_id");
+				 long codigo = d.getId();
+				 ultimo = (int)codigo;
 				 
-				 ultimo = Integer.parseInt(codigo);
-				 
-					 //Log.e("TT", "RequestDB.buscaCliente " + codigo + " " + codigoArticulo);
 				}
 				ultimo++;
-				 
+				return ultimo;
 				
 			}catch(Exception e){
 				
 				return 0;
 			}
-			return ultimo;
 			
 		}
 //Borrar registros
