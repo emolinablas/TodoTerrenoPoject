@@ -381,7 +381,7 @@ public class RequestDB {
 		 try
 		 {
 			 DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
-			List<Entity> categories = DataFramework.getInstance().getEntityList("cliente","visitado=1");
+			 List<Entity> categories = DataFramework.getInstance().getEntityList("cliente");
 			
 			int tamano = categories.size();
 			Cliente[] clientes = new Cliente[tamano];
@@ -390,20 +390,21 @@ public class RequestDB {
 				Iterator it = categories.iterator(); 
 				while(it.hasNext())
 				{
+					
 					Entity datoclientevisitado = (Entity)it.next();
 			 		Cliente Temp = new Cliente();
 			 		Temp.setCliCodigo(datoclientevisitado.getString("cliCodigo"));
 			 		Temp.setCliEmpresa(datoclientevisitado.getString("cliEmpresa"));
 			 		Temp.setCliContacto(datoclientevisitado.getString("cliContacto"));
-			 		Temp.setCodCatCliete(datoclientevisitado.getString("codcatCliete"));
+			 		Temp.setCodCatCliete(datoclientevisitado.getString("codCatCliete"));
 			 		Temp.setCliDireccion(datoclientevisitado.getString("cliDireccion"));
 			 		Temp.setCliTelefono(datoclientevisitado.getString("cliTelefono"));
 			 		Temp.setCliFax(datoclientevisitado.getString("cliFax"));
 			 		Temp.setCliEmail(datoclientevisitado.getString("cliEmail"));
-			 		Temp.setCliWeb(datoclientevisitado.getString("cliCWeb"));
+			 		Temp.setCliWeb(datoclientevisitado.getString("cliWeb"));
 			 		Temp.setFingreso(datoclientevisitado.getString("fingreso"));
 			 		Temp.setCliDesnormal(datoclientevisitado.getString("cliDesnormal"));
-			 		Temp.setCliDes1(datoclientevisitado.getString("cliCDes1"));
+			 		Temp.setCliDes1(datoclientevisitado.getString("cliDes1"));
 			 		Temp.setCliDes2(datoclientevisitado.getString("cliDes2"));
 			 		Temp.setCliDes3(datoclientevisitado.getString("cliDes3"));
 			 		Temp.setCliLimite(datoclientevisitado.getString("clilimite"));
