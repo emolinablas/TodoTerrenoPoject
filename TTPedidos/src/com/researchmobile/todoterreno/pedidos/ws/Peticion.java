@@ -206,20 +206,28 @@ public class Peticion {
 
 	public ArrayList<HashMap<String, String>> ListaClientesVisitados (Context context){
 		ArrayList<HashMap<String, String>> mylist = new ArrayList<HashMap<String, String>>();
-		Cliente[] cliente = requestDB.clienteVisitadoDB(context);
-		int tamano = cliente.length;
-		for (int i = 0; i < tamano; i++){
+		Cliente[] cliente = requestDB.clientePendienteDB(context);
+		//int tamano = cliente.length;
+		for (int i = 0; i < cliente.length; i++){
 			String visitado = cliente[i].getVisitado();
 			if (visitado.equalsIgnoreCase("1")){
 				HashMap<String, String> map = new HashMap<String, String>();
 				map.put("codigoCliente", cliente[i].getCliCodigo());
-				map.put("empresa", cliente[i].getCliEmpresa());
-				map.put("contacto", cliente[i].getCliContacto());
-				map.put("direccion", cliente[i].getCliDireccion());
-				map.put("telefono", cliente[i].getCliTelefono());
-				map.put("nit", cliente[i].getCliNit());
-				mylist.add(map);
+		        map.put("empresa", cliente[i].getCliEmpresa());
+		        map.put("contacto", cliente[i].getCliContacto());
+		        map.put("direccion", cliente[i].getCliDireccion());
+		        map.put("telefono", cliente[i].getCliTelefono());
+		        map.put("nit", cliente[i].getCliNit());
+		        mylist.add(map);
 			}
+			
+			/*map.put("codigoCliente", "001");
+	        map.put("empresa", "Mi Empresa");
+	        map.put("contacto", "Mi Contacto");
+	        map.put("direccion", "Mi Direccion");
+	        map.put("telefono", "Mi Telefono");
+	        map.put("nit", "Mi Nit");*/
+	        
 		}
 		return mylist;
 	}

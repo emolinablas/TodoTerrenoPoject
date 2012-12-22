@@ -47,6 +47,7 @@ private ProgressDialog pd = null;
 	private boolean visitados;
 	private Fecha fecha;
 	private ArrayList<HashMap<String, String>> clientesPendientesHashMap;
+	private ArrayList<HashMap<String, String>> clientesVisitadosHashMap;
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -211,35 +212,36 @@ private ProgressDialog pd = null;
 			
 		}
 		
-		private void llenaListaVisitados() {
-			setSimpleAdapter(new SimpleAdapter(Rol.this, 
-					getClientesPendientesHashMap(), 
-					R.layout.fila_lista_clientes,
-					new String[] {"codigoCliente",
-						"empresa",
-						"contacto",
-						"direccion",
-						"telefono",
-						"nit"},
-					new int[] {R.id.fila_lista_clientes_codigo_cliente_textview,
-					 R.id.fila_lista_clientes_empresa_textview, 
-						 R.id.fila_lista_clientes_contacto_textview,
-						 R.id.fila_lista_clientes_codigo_direccion_textview,
-						 R.id.fila_lista_clientes_telefono_textview,
-						 R.id.fila_lista_clientes_nit_textview}));
-			getClientesListView().setAdapter(getSimpleAdapter());
-			Log.e("TT", "async");
-			
-		}
+		
 	}
 	
+	private void llenaListaVisitados() {
+		setSimpleAdapter(new SimpleAdapter(Rol.this, 
+				getClientesVisitadosHashMap(), 
+				R.layout.fila_lista_clientes,
+				new String[] {"codigoCliente",
+					"empresa",
+					"contacto",
+					"direccion",
+					"telefono",
+					"nit"},
+				new int[] {R.id.fila_lista_clientes_codigo_cliente_textview,
+				 R.id.fila_lista_clientes_empresa_textview, 
+					 R.id.fila_lista_clientes_contacto_textview,
+					 R.id.fila_lista_clientes_codigo_direccion_textview,
+					 R.id.fila_lista_clientes_telefono_textview,
+					 R.id.fila_lista_clientes_nit_textview}));
+		getClientesListView().setAdapter(getSimpleAdapter());
+		Log.e("TT", "async");
+		
+	}
 	private void cargarClientesPendientes() {
 		setClientesPendientesHashMap(getPeticion().ListaClientesPendientes(Rol.this));
 		
 	}
 	
 	private void cargarClientesVisitados() {
-		setClientesPendientesHashMap(getPeticion().ListaClientesVisitados(Rol.this));
+		setClientesVisitadosHashMap(getPeticion().ListaClientesVisitados(Rol.this));
 	}
 	
 	/**
@@ -270,7 +272,7 @@ private ProgressDialog pd = null;
 			return true;
 			
 		case R.id.pedido_menu_salir_opcion:
-			//Salir();
+			salir();
 			return true;
 			
 		case R.id.pedido_menu_sincronizar_opcion:
@@ -282,6 +284,12 @@ private ProgressDialog pd = null;
 		}
 	}
 	
+	private void salir() {
+		Intent intent = new Intent(Rol.this, Login.class);
+		startActivity(intent);
+		
+	}
+	
 	public void listaPedidosActivity(){
 		Intent intent = new Intent(Rol.this, ListaPedidos.class);
 		startActivity(intent);
@@ -289,14 +297,26 @@ private ProgressDialog pd = null;
 
 	private void RellenarLista() {
 		if (isVisitados()){
-			new ClientesVisitadosAsync().execute("");
+			new ClientesPendientesAsync().execute("");
 			setVisitados(false);
 		}else{
-			new ClientesPendientesAsync().execute("");
+			new ClientesVisitadosAsync().execute("");
+			
 			setVisitados(true);
 		}
 		
 	}
+	
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			// Preventing default implementation previous to
+			// android.os.Build.VERSION_CODES.ECLAIR
+			return true;
+		}
+
+		return super.onKeyDown(keyCode, event);
+	}
+
 	public ImageButton getBorrarImageButton() {
 		return borrarImageButton;
 	}
@@ -371,4 +391,14 @@ private ProgressDialog pd = null;
 		this.fecha = fecha;
 	}
 
+	public ArrayList<HashMap<String, String>> getClientesVisitadosHashMap() {
+		return clientesVisitadosHashMap;
+	}
+
+	public void setClientesVisitadosHashMap(
+			ArrayList<HashMap<String, String>> clientesVisitadosHashMap) {
+		this.clientesVisitadosHashMap = clientesVisitadosHashMap;
+	}
+
+	
 }

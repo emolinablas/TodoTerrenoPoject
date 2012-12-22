@@ -39,8 +39,8 @@ public class Login extends Activity implements OnClickListener, OnKeyListener{
         getContraseniaEditText().setOnKeyListener(this);
         setEntrarButton((Button)findViewById(R.id.login_entrar_button));
         getEntrarButton().setOnClickListener(this);
-        getUsuarioEditText().setText("albao");
-        getContraseniaEditText().setText("123");
+        //getUsuarioEditText().setText("albao");
+        //getContraseniaEditText().setText("123");
     }
 
 	@Override
@@ -117,6 +117,19 @@ public class Login extends Activity implements OnClickListener, OnKeyListener{
 		}
 
 	}
+	
+	//Inhabilitar boton "back"
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+        	
+        	getUsuarioEditText().setText("");
+        	getContraseniaEditText().setText("");
+            moveTaskToBack(true);
+              return true;
+        }
+        
+        return super.onKeyDown(keyCode, event);
+      }
 
 	public EditText getUsuarioEditText() {
 		return usuarioEditText;

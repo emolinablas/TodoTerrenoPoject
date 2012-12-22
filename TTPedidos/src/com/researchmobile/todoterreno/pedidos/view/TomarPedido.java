@@ -477,6 +477,16 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 		getArticulosListView().setAdapter(getSimpleAdapter());
     }
     
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+              // Preventing default implementation previous to android.os.Build.VERSION_CODES.ECLAIR     
+              return true;
+        }
+        
+        return super.onKeyDown(keyCode, event);
+      }
+
+    
     public void buscaPedido(){
     	setPedidoHashMap(getPeticion().pedidoTemp(this, getNumeroPedido()));
     }
