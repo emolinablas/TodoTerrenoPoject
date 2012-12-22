@@ -6,6 +6,7 @@ import java.util.HashMap;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -21,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
@@ -76,6 +78,7 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 		setPedido(new Pedido());
 		
 		getBuscarEditText().setOnKeyListener(this);
+		getBuscarEditText().addTextChangedListener(this);
 		getBorrarImageButton().setOnClickListener(this);
 		getArticulosListView().setOnItemClickListener(this);
 		
@@ -84,15 +87,28 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 
 	@Override
 	public void onClick(View view) {
-		// TODO Auto-generated method stub
+		if (view == getBorrarImageButton()){
+			getBuscarEditText().setText("");
+		}
 		
 	}	
 	
 	@Override
-	public boolean onKey(View v, int keyCode, KeyEvent event) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    public boolean onKey(View v, int keyCode, KeyEvent event)
+    {
+        if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP)
+        {
+       	 InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(getBuscarEditText().getWindowToken(), 0);
+       	 return true;
+        }
+        if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN)
+        {
+            //TODO: When the enter key is pressed
+            return true;
+        }
+        return false;
+    }
 	
 	public DetallePedido seleccionaArticulo(String codigoProducto){
 		DetallePedido articulo = new DetallePedido();
@@ -302,7 +318,8 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 
 	@Override
 	public void onTextChanged(CharSequence s, int start, int before, int count) {
-		// TODO Auto-generated method stub
+		getSimpleAdapter().getFilter().filter(s);
+		getSimpleAdapter().notifyDataSetChanged();
 		
 	}
 	
