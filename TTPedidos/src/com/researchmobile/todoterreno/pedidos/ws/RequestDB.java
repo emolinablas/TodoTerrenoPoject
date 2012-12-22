@@ -753,7 +753,7 @@ public class RequestDB {
 			try{
 				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
 				 Entity cliente = new Entity("cliente");
-				 cliente = DataFramework.getInstance().getTopEntity("cliente", "cliCodigo = " + cliCodigo, "cliCodigo");
+				 cliente = DataFramework.getInstance().getTopEntity("cliente", "cliCodigo = " + String.valueOf(cliCodigo), "_id");
 				 cliente.setValue("visitado", 1);
 				 cliente.save();
 				 return true;
@@ -776,5 +776,158 @@ public class RequestDB {
 			}
 			
 		}
+		
+		//metodo que retorna la cantidad de clientes pendientes
+		public int clientesPendientes(Context context){
+			try{
+				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+				int cantidad=0;
+				cantidad = DataFramework.getInstance().getEntityListCount("cliente", "visitado=0");
+				return cantidad;
+			}catch(Exception e){
+				return 0;
+			}
+		}
+		
+		//metodo que retorna la cantidad de clientes visitados
+				public int clientesVisitados(Context context){
+					try{
+						DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+						int cantidad=0;
+						cantidad = DataFramework.getInstance().getEntityListCount("cliente", "visitado=1");
+						return cantidad;
+					}catch(Exception e){
+						return 0;
+					}
+				}
+				
+		//metodo que retorna la cantidad de clientes 
+				
+				public int totalClientes(Context context){
+					try{
+						DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+						int cantidad=0;
+						cantidad = DataFramework.getInstance().getEntityListCount("cliente","visitado=1 OR visitado=0");
+						return cantidad;
+					}catch(Exception e){
+						return 0;
+					}
+				}
+				
+				//metodo que retorna la cantidad pedidos sincronizados
+				public int pedidosSincronizados(Context context){
+					try{
+						DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+						int cantidad=0;
+						cantidad = DataFramework.getInstance().getEntityListCount("encabezadopedido", "sinc=1");
+						return cantidad;
+					}catch(Exception e){
+						return 0;
+					}
+				}
+				
+				//metodo que retorna la cantidad pedidos no sincronizados
+				public int pedidosNoSincronizados(Context context){
+					try{
+						DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+						int cantidad=0;
+						cantidad = DataFramework.getInstance().getEntityListCount("encabezadopedido", "sinc=0");
+						return cantidad;
+					}catch(Exception e){
+						return 0;
+					}
+				}
+				
+				// Metodo que retorna el listado de encabezado pedidos sincronizados
+				public EncabezadoPedido[] encabezadoPedidoSinc(Context context){
+					try {
+						DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+						List<Entity> encabezadoPedidoSinced = DataFramework.getInstance().getEntityList("encabezadopedido","sinc = 1");
+						int tamano = encabezadoPedidoSinced.size();
+						EncabezadoPedido[] totalEncabezadosSinced = new EncabezadoPedido[tamano];
+						Iterator it = encabezadoPedidoSinced.iterator(); 
+						int a=0;
+						while(it.hasNext())
+						{
+							Entity datoEncabezado = (Entity)it.next();
+					 		EncabezadoPedido temp = new EncabezadoPedido();
+					 		
+					 		temp.setCodigoCliente(datoEncabezado.getString("codigocliente"));
+					 		temp.setTotal(Float.parseFloat(datoEncabezado.getString("total")));
+					 		temp.setFecha(datoEncabezado.getString("fecha"));
+					 		temp.setHora(datoEncabezado.getString("hora"));
+					 		temp.setCredito(datoEncabezado.getString("credito"));
+					 		temp.setSinc(Integer.parseInt(datoEncabezado.getString("sinc")));
+					 		
+					 		totalEncabezadosSinced[a]=temp;
+					 		a++;
+						}
+						return totalEncabezadosSinced;
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						return null;
+					} 
+					
+					
+				}
+				public EncabezadoPedido[] encabezadoPedidoNoSinc(Context context){
+					try {
+						DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+						List<Entity> encabezadoPedidoNoSinced = DataFramework.getInstance().getEntityList("encabezadopedido","sinc = 0");
+						int tamano = encabezadoPedidoNoSinced.size();
+						EncabezadoPedido[] totalEncabezadosNoSinced = new EncabezadoPedido[tamano];
+						Iterator it = encabezadoPedidoNoSinced.iterator(); 
+						int a=0;
+						while(it.hasNext())
+						{
+							Entity datoEncabezado = (Entity)it.next();
+					 		EncabezadoPedido temp = new EncabezadoPedido();
+					 		
+					 		temp.setCodigoCliente(datoEncabezado.getString("codigocliente"));
+					 		temp.setTotal(Float.parseFloat(datoEncabezado.getString("total")));
+					 		temp.setFecha(datoEncabezado.getString("fecha"));
+					 		temp.setHora(datoEncabezado.getString("hora"));
+					 		temp.setCredito(datoEncabezado.getString("credito"));
+					 		temp.setSinc(Integer.parseInt(datoEncabezado.getString("sinc")));
+					 		
+					 		totalEncabezadosNoSinced[a]=temp;
+					 		a++;
+						}
+						return totalEncabezadosNoSinced;
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						return null;
+					} 
+					
+					
+				}
+				
+				//Encuentra el total de ventas de todos los pedidos realizados		
+				public float totalVentas(Context context)
+				{
+					try
+					{
+						DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+						List<Entity> encabezadoPedido = DataFramework.getInstance().getEntityList("encabezadopedido");
+								Float total = (float) 0;
+								Float subTotal = (float) 0;
+								Iterator c = encabezadoPedido.iterator();
+								while(c.hasNext())
+								{
+								subTotal = (float) 0;
+								Entity datoEncabezadoPedido = (Entity)c.next();
+								subTotal = datoEncabezadoPedido.getFloat("total");
+								total = total + subTotal;
+								}
+								return total;
+							
+					}
+					catch(Exception msj)
+					{
+						msj.printStackTrace();
+						return (float) 0;
+					}
+				}
+				
 		
 }
