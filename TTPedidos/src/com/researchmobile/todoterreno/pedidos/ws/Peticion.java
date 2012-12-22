@@ -202,7 +202,22 @@ public class Peticion {
 			}
 		}
 		return mylist;
-		
+	}
+	
+	public ArrayList<HashMap<String, String>> listaPedidos(Context context) {
+		ArrayList<HashMap<String, String>> mylist = new ArrayList<HashMap<String, String>>();
+		EncabezadoPedido[] encabezados = requestDB.encabezadoPedido(context);
+		int tamano = encabezados.length;
+		Log.e("Peticion", "encabezados = " + tamano);
+		for (int i = 0; i < tamano; i++){
+				HashMap<String, String> map = new HashMap<String, String>();
+				map.put("codigoCliente", encabezados[i].getCodigoCliente());
+				map.put("total", String.valueOf(encabezados[i].getTotal()));
+				map.put("fecha", encabezados[i].getFecha());
+				map.put("hora", encabezados[i].getHora());
+				mylist.add(map);
+		}
+		return mylist;
 	}
 
 	public Cliente DetalleCliente(Context context, String codigoCliente) {
@@ -246,17 +261,19 @@ public class Peticion {
 	}
 
 	public float totalGeneral(Context context) {
-		//float total = requestDB.totalGeneral(context);
-		return 0;
+		float total = requestDB.totalVentas(context);
+		return total;
 	}
 	
 	public int totalEnviados(Context context) {
-		//float total = requestDB.totalGeneral(context);
-		return 0;
+		int total = requestDB.pedidosSincronizados(context);
+		return total;
 	}
 	
 	public int totalPendientes(Context context) {
-		//float total = requestDB.totalGeneral(context);
-		return 0;
+		int total = requestDB.pedidosNoSincronizados(context);
+		return total;
 	}
+
+	
 }

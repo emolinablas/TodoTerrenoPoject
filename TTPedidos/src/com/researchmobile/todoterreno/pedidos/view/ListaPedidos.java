@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -70,6 +71,7 @@ public class ListaPedidos extends Activity implements OnItemClickListener{
                 	buscaPedidos();
 
                } catch (Exception exception) {
+            	   Log.e("TT", "ListaPedidos error = " + exception);
 
                }
                 return null ;
@@ -78,6 +80,7 @@ public class ListaPedidos extends Activity implements OnItemClickListener{
           // Metodo con las instrucciones al finalizar lo ejectuado en background
           protected void onPostExecute(Integer resultado) {
                 pd.dismiss();
+                llenaPedidos();
          }
    }
     
@@ -85,6 +88,29 @@ public class ListaPedidos extends Activity implements OnItemClickListener{
     	setTotalGeneral(getPeticion().totalGeneral(this));
     	setEnviados(getPeticion().totalEnviados(this));
     	setPendientes(getPeticion().totalPendientes(this));
+    	
+    	setPedidosHashMap(getPeticion().listaPedidos(ListaPedidos.this));
+    	Log.e("TT", "ListaPedidos.buscaPedidos");
+    }
+    
+    public void llenaPedidos(){
+    	getTotalGenralTextView().setText(String.valueOf(getTotalGeneral()));
+    	getEnviadosTextView().setText(String.valueOf(getEnviados()));
+    	getPendientesTextView().setText(String.valueOf(getPendientes()));
+    	setSimpleAdapter(new SimpleAdapter(ListaPedidos.this, 
+				getPedidosHashMap(), 
+				R.layout.fila_lista_pedidos,
+				new String[] {"codigoCliente",
+					"total",
+					"fecha",
+					"hora"},
+				new int[] {R.id.fila_lista_pedidos_codigo_textview,
+				 R.id.fila_lista_pedidos_total_textview, 
+					 R.id.fila_lista_pedidos_fecha_textview,
+					 R.id.fila_lista_pedidos_hora_textview}));
+		
+    	getPedidosListView().setAdapter(getSimpleAdapter());
+		Log.e("TT", "async");
     	
     }
 

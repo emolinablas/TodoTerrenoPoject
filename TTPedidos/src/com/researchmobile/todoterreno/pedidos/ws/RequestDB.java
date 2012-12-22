@@ -870,6 +870,39 @@ public class RequestDB {
 					
 					
 				}
+				
+				// Metodo que retorna todos los encabezados pedidos
+				public EncabezadoPedido[] encabezadoPedido(Context context){
+					try {
+						DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+						List<Entity> encabezadoPedido = DataFramework.getInstance().getEntityList("encabezadopedido");
+						int tamano = encabezadoPedido.size();
+						EncabezadoPedido[] totalEncabezados = new EncabezadoPedido[tamano];
+						Iterator it = encabezadoPedido.iterator(); 
+						int a=0;
+						while(it.hasNext())
+						{
+							Entity datoEncabezado = (Entity)it.next();
+					 		EncabezadoPedido temp = new EncabezadoPedido();
+					 		
+					 		temp.setCodigoCliente(datoEncabezado.getString("codigocliente"));
+					 		temp.setTotal(Float.parseFloat(datoEncabezado.getString("total")));
+					 		temp.setFecha(datoEncabezado.getString("fecha"));
+					 		temp.setHora(datoEncabezado.getString("hora"));
+					 		temp.setCredito(datoEncabezado.getString("credito"));
+					 		temp.setSinc(Integer.parseInt(datoEncabezado.getString("sinc")));
+					 		
+					 		totalEncabezados[a]=temp;
+					 		a++;
+						}
+						return totalEncabezados;
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						return null;
+					} 
+					
+					
+				}
 				public EncabezadoPedido[] encabezadoPedidoNoSinc(Context context){
 					try {
 						DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
