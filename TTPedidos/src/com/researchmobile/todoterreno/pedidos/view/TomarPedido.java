@@ -44,6 +44,7 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 	private EditText buscarEditText;
 	private ImageButton borrarImageButton;
 	private ArrayList<HashMap<String, String>> articulosHashMap;
+	private ArrayList<HashMap<String, String>> pedidoHashMap;
 	private SimpleAdapter simpleAdapter;
 	private ListView articulosListView;
 	private Peticion peticion;
@@ -115,7 +116,11 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 
 	// To change item text dynamically
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		
+		if (getTotal() < 0.1){
+			menu.getItem(3).setEnabled(false);
+		}else{
+			menu.getItem(3).setEnabled(true);
+		}
 		return true;
 	}
 
@@ -129,12 +134,12 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 		switch (item.getItemId()) {
 		case R.id.tomar_pedido_ver_pedido_opcion:
 			//setControlMenu(false);
-			//VerPedido();
+			verPedido();
 			return true;
 		
 		case R.id.tomar_pedido_agregar_opcion:
 			//setControlMenu(true);
-			//AgregarArticulo();
+			agregarArticulo();
 			return true;
 			
 		case R.id.tomar_pedido_cancelar_opcion:
@@ -146,6 +151,13 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+	public void agregarArticulo(){
+		new articulosAsync().execute("");
+	}
+	
+	public void verPedido(){
+		new pedidoAsync().execute("");
 	}
 	
 	public void enviarPedido(){
@@ -359,6 +371,66 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 
    }
 
+ // Clase para ejecutar en Background
+    class pedidoAsync extends AsyncTask<String, Integer, Integer> {
+
+          // Metodo que prepara lo que usara en background, Prepara el progress
+          @Override
+          protected void onPreExecute() {
+                pd = ProgressDialog. show(TomarPedido.this, "VERIFICANDO DATOS", "ESPERE UN MOMENTO");
+                pd.setCancelable( false);
+         }
+
+          // Metodo con las instrucciones que se realizan en background
+          @Override
+          protected Integer doInBackground(String... urlString) {
+                try {
+                	buscaPedido();
+               
+               } catch (Exception exception) {
+
+               }
+                return null ;
+         }
+
+          // Metodo con las instrucciones al finalizar lo ejectuado en background
+          protected void onPostExecute(Integer resultado) {
+                pd.dismiss();
+                llenaListaPedido();
+
+         }
+
+   }
+    public void llenaListaPedido(){
+    	setSimpleAdapter( 
+	        	new SimpleAdapter(this, 
+	        					  getPedidoHashMap(),	
+	        					  R.layout.fila_lista_productos,
+	        					  new String[] {"codigoProducto",
+	        									"nombreProducto", 
+	        									"cajas",
+												"unidades",
+												"valor",
+												"presentacion",
+												"existencia",
+												"bonificacion",
+												"total"},
+	        					  new int[] {R.id.fila_lista_producto_codigo_textview, 
+	        								 R.id.fila_lista_producto_nombreProducto_textview, 
+	        								 R.id.fila_lista_producto_cajas_textview,
+	        								 R.id.fila_lista_producto_unidades_textview,
+	        								 R.id.fila_lista_producto_precioi_textview,
+	        								 R.id.fila_lista_producto_presentacion_textview,
+	        								 R.id.fila_lista_producto_existencia_textview,
+	        								 R.id.fila_lista_producto_bonificacion_textview,
+	        								 R.id.fila_lista_producto_valor_textview}));
+		getArticulosListView().setAdapter(getSimpleAdapter());
+    }
+    
+    public void buscaPedido(){
+    	setPedidoHashMap(getPeticion().pedidoTemp(this, getNumeroPedido()));
+    }
+    
 	public EditText getBuscarEditText() {
 		return buscarEditText;
 	}
@@ -487,4 +559,13 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 	public void setRuta(String ruta) {
 		this.ruta = ruta;
 	}
+
+	public ArrayList<HashMap<String, String>> getPedidoHashMap() {
+		return pedidoHashMap;
+	}
+
+	public void setPedidoHashMap(ArrayList<HashMap<String, String>> pedidoHashMap) {
+		this.pedidoHashMap = pedidoHashMap;
+	}
+	
 }

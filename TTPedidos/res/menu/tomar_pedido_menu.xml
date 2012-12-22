@@ -7,7 +7,7 @@
     
     <item 
         android:id="@+id/tomar_pedido_agregar_opcion" 
-        android:title="AGREGAR ARTICULO"
+        android:title="TOMAR PEDIDO"
         android:icon="@drawable/agregar"></item>
     
     <item 

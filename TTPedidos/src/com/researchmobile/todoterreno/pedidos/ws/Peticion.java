@@ -176,6 +176,26 @@ public class Peticion {
         }
 		return mylist;
 	}
+	
+	public ArrayList<HashMap<String, String>> pedidoTemp(Context context, int numeroPedido) {
+		ArrayList<HashMap<String, String>> mylist = new ArrayList<HashMap<String, String>>();
+		DetallePedido[] articulo = requestDB.buscaDetallePedido(context, numeroPedido);
+		int tamano = articulo.length;
+		for (int i = 0; i < tamano; i++){
+			HashMap<String, String> map = new HashMap<String, String>();
+        	map.put("codigoProducto", articulo[i].getCodigo());
+        	map.put("nombreProducto", articulo[i].getNombre());
+        	map.put("cajas", String.valueOf(articulo[i].getCaja()));
+        	map.put("unidades", String.valueOf(articulo[i].getUnidad()));
+        	map.put("valor", String.valueOf(articulo[i].getPrecio()));
+        	map.put("presentacion", String.valueOf(articulo[i].getUnidadesFardo()));
+        	map.put("existencia", "0");
+        	map.put("bonificacion", "0");
+        	map.put("total", String.valueOf(articulo[i].getSubTotal()));
+        	mylist.add(map);
+        }
+		return mylist;
+	}
 
 	public ArrayList<HashMap<String, String>> ListaClientesVisitados (Context context){
 		ArrayList<HashMap<String, String>> mylist = new ArrayList<HashMap<String, String>>();
@@ -267,6 +287,5 @@ public class Peticion {
 		int total = requestDB.pedidosNoSincronizados(context);
 		return total;
 	}
-
 	
 }
