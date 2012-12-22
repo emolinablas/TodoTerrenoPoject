@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
@@ -53,6 +55,7 @@ private ProgressDialog pd = null;
         setPeticion(new Peticion());
         setFecha(new Fecha());
         setBuscarEditText((EditText)findViewById(R.id.rol_buscar_editText));
+        getBuscarEditText().setOnKeyListener(this);
         getBuscarEditText().addTextChangedListener(this);
         
         setBorrarImageButton((ImageButton)findViewById(R.id.rol_borrar_imagebutton));
@@ -85,17 +88,29 @@ private ProgressDialog pd = null;
 		startActivity(intent);
 	}
 	
-	@Override
-	public boolean onKey(View view, int keyCode, KeyEvent event) {
-		if (view == getBorrarImageButton()){
-			getBuscarEditText().setText("");
-		}
-		return false;
-	}
+	 @Override
+     public boolean onKey(View v, int keyCode, KeyEvent event)
+     {
+         if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP)
+         {
+        	 InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+             imm.hideSoftInputFromWindow(getBuscarEditText().getWindowToken(), 0);
+        	 return true;
+         }
+         if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN)
+         {
+             //TODO: When the enter key is pressed
+             return true;
+         }
+         return false;
+     }
+
 
 	@Override
 	public void onClick(View view) {
-		// TODO Auto-generated method stub
+		if (view == getBorrarImageButton()){
+			getBuscarEditText().setText("");
+		}
 		
 	}
 	@Override
@@ -111,7 +126,8 @@ private ProgressDialog pd = null;
 	}
 	@Override
 	public void onTextChanged(CharSequence s, int start, int before, int count) {
-		// TODO Auto-generated method stub
+		getSimpleAdapter().getFilter().filter(s);
+		getSimpleAdapter().notifyDataSetChanged();
 		
 	}
 	
