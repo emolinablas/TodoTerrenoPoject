@@ -17,6 +17,7 @@ import com.researchmobile.todoterreno.pedidos.entity.Pedido;
 import com.researchmobile.todoterreno.pedidos.entity.RespuestaWS;
 import com.researchmobile.todoterreno.pedidos.entity.User;
 import com.researchmobile.todoterreno.pedidos.entity.Vendedor;
+import com.researchmobile.todoterreno.pedidos.utility.ConnectState;
 
 public class Peticion {
 	//Temp
@@ -26,34 +27,53 @@ public class Peticion {
 	private RequestWS requestWS = new RequestWS();
 	private RequestDB requestDB = new RequestDB();
 	private RespuestaWS respuesta = new RespuestaWS();
+	private ConnectState connectState = new ConnectState();
 
 	public RespuestaWS login(Context context) {
 		try{
 			respuesta = requestDB.verificaLoginDB(context, User.getUsername(), User.getClave());
 			if(respuesta.isResultado()){
-				Log.e("TT", "Peticion.login resultadoDB = true");
 				return respuesta;
 			}else{
-				Log.e("TT", "Peticion.login resultadoDB = false");
-				LoginEntity loginEntity = new LoginEntity();
-				loginEntity = requestWS.login(User.getUsername(), User.getClave());
-				respuesta = loginEntity.getRespuesta();
-				if (respuesta.isResultado()){
-					Log.e("TT", "Peticion.login resultadoWS = true");
-					guardarDatos(context, loginEntity);
-					cargarClientes(context, loginEntity);
-					cargarArticulos(context, loginEntity);
-					return respuesta;
+				if (connectState.isConnectedToInternet(context)){
+					LoginEntity loginEntity = new LoginEntity();
+					loginEntity = requestWS.login(User.getUsername(), User.getClave());
+					respuesta = loginEntity.getRespuesta();
+					if (respuesta.isResultado()){
+						reiniciaDB(context);
+						guardarDatos(context, loginEntity);
+						cargarClientes(context, loginEntity);
+						cargarArticulos(context, loginEntity);
+						return respuesta;
+					}else{
+						return respuesta;
+					}
 				}else{
-					Log.e("TT", "Peticion.login resultadoWS = false");
+					respuesta.setResultado(false);
+					respuesta.setMensaje("No cuenta con conexion a internet");
 					return respuesta;
 				}
 			}
 		}catch(Exception exception){
 			Log.e("TT", "Peticion.login - " + exception);
+			respuesta.setResultado(false);
+			respuesta.setMensaje("Verifique sus datos, Intente nuevamente");
+			return respuesta;
+			
 		}
-		// TODO Auto-generated method stub
-		return null;
+	}
+	
+	private void reiniciaDB(Context context){
+		requestDB.eliminarUsuario(context);
+		requestDB.eliminarVendedor(context);
+		requestDB.eliminarPortafolio(context);
+		requestDB.eliminarRuta(context);
+		requestDB.eliminarArticulos(context);
+		requestDB.eliminarClientes(context);
+		requestDB.eliminarDetallePedido(context);
+		requestDB.eliminarDetallePedidoTemp(context);
+		requestDB.eliminarEncabezadoPedidoTemp(context);
+		requestDB.eliminarPedido(context);
 	}
 
 	private void cargarArticulos(Context context, LoginEntity loginEntity) {
@@ -69,7 +89,6 @@ public class Peticion {
 	}
 	
 	public void insertaEncabezado(Context context, EncabezadoPedido encabezadoPedido) {
-		Log.e("TT", "Peticion.insertaEncabezado");
 		requestDB.guardaEncabezadoPedido(context, encabezadoPedido);
 		
 	}
@@ -208,15 +227,20 @@ public class Peticion {
 	}
 
 	public void enviarPedido(Context context, EncabezadoPedido encabezado, int numeroPedido, String ruta) {
-		Pedido pedido = new Pedido();
-		pedido.setEncabezadoPedido(encabezado);
-		pedido.setDetallePedido(requestDB.buscaDetallePedido(context, numeroPedido));
-		Vendedor vendedor = new Vendedor();
-		vendedor = requestDB.vendedorDB(context);
-		RespuestaWS respuesta = new RespuestaWS();
-		respuesta = requestWS.enviaPedido(pedido, ruta, vendedor.getIdusuario());
-		if (respuesta.isResultado()){
-			Log.e("TT", "resultado del envio = " + respuesta.getMensaje());
+		if (connectState.isConnectedToInternet(context)){
+			Pedido pedido = new Pedido();
+			pedido.setEncabezadoPedido(encabezado);
+			pedido.setDetallePedido(requestDB.buscaDetallePedido(context, numeroPedido));
+			Vendedor vendedor = new Vendedor();
+			vendedor = requestDB.vendedorDB(context);
+			RespuestaWS respuesta = new RespuestaWS();
+			respuesta = requestWS.enviaPedido(pedido, ruta, vendedor.getIdusuario());
+			if (respuesta.isResultado()){
+				requestDB.actualizarClienteVisitado(context, encabezado.getCodigoCliente());
+				requestDB.actualizarPedidoSinc(context, numeroPedido);
+				Log.e("TT", "resultado del envio = " + respuesta.getMensaje());
+			}
 		}
+		
 	}
 }

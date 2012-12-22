@@ -34,6 +34,7 @@ public class RequestWS {
 		Log.e("TT", "respuesta ws login = " + jsonObject.toString());
 		LoginEntity loginEntity = new LoginEntity();
 		try {
+			
 			if(jsonObject.has("resultado")){ // si se produjo un error al consumir el WS
 				// creamos el LoginEntity y le asignamos el resultado recibido
 				
