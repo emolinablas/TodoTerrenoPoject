@@ -35,18 +35,18 @@ public class rmString {
 			encabezadoJson.put("movhora", pedido.getEncabezadoPedido().getHora());
 			encabezadoJson.put("movcredito", pedido.getEncabezadoPedido().getCredito());
 			encabezadoJson.put("movtotal", pedido.getEncabezadoPedido().getTotal());
-			encabezadoJson.put("idvendor", vendedor);
-			encabezadoJson.put("idruta", ruta);
+			encabezadoJson.put("movefectivo", "0");
+			encabezadoJson.put("movcheque", "0");
 			encabezadoJsonArray.put(encabezadoJson);
 			int tamano = pedido.getDetallePedido().length;
 			for (int i = 0; i < tamano; i++){
 				JSONObject temp = new JSONObject();
-				temp.put("idencabezado", pedido.getEncabezadoPedido().getCodigoPedidoTemp());
+				//temp.put("idencabezado", pedido.getEncabezadoPedido().getCodigoPedidoTemp());
 				temp.put("movprecio", pedido.getDetallePedido()[i].getPrecio());
 				temp.put("movunidades", pedido.getDetallePedido()[i].getTotalUnidades());
 				temp.put("artcodigo", pedido.getDetallePedido()[i].getCodigo());
-				temp.put("unidadesxfardo", pedido.getDetallePedido()[i].getUnidadesFardo());
-				temp.put("movfechaentregar", pedido.getEncabezadoPedido().getFecha());
+				//temp.put("unidadesxfardo", pedido.getDetallePedido()[i].getUnidadesFardo());
+				//temp.put("movfechaentregar", pedido.getEncabezadoPedido().getFecha());
 				detalleJsonArray.put(temp);
 			}
 			allDataJson.put("encabezado", encabezadoJsonArray);

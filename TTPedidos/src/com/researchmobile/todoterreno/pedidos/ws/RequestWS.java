@@ -30,7 +30,7 @@ public class RequestWS {
 	public LoginEntity login(String usuario, String password) {
 		
 		String url = WS_LOGIN + "usuario=" + usuario + "&" + "password=" + password; // string de conexi—n
-		JSONObject jsonObject = ConnectWS.obtenerJson(url.replace(" ", "%20"));
+		JSONObject jsonObject = ConnectWS.obtenerJson(url);
 		Log.e("TT", "respuesta ws login = " + jsonObject.toString());
 		LoginEntity loginEntity = new LoginEntity();
 		try {
@@ -273,10 +273,10 @@ public class RequestWS {
 			Log.e("TT", "RequestWS.enviaPedido - url = " + urlTemp);
 			String url = urlTemp.replace(" ", "%20");
 			
-			JSONObject jsonObject = ConnectWS.obtenerJson(url);
+			JSONObject jsonObject = ConnectWS.enviaPedidoJson(url);
 			Log.e("TT", "RequestWS.enviaPedido respuesta = " + jsonObject.toString());
-			if (jsonObject.has("resultado") ){
-				respuesta.setResultado(jsonObject.getBoolean("resultado"));
+			if (jsonObject.has("error") ){
+				respuesta.setResultado(jsonObject.getBoolean("error"));
 				respuesta.setMensaje(jsonObject.getString("mensaje"));
 				return respuesta;
 			}

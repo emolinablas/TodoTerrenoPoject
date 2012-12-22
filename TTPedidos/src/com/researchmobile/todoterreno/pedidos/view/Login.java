@@ -14,6 +14,7 @@ import android.widget.EditText;
 
 import com.researchmobile.todoterreno.pedidos.entity.RespuestaWS;
 import com.researchmobile.todoterreno.pedidos.entity.User;
+import com.researchmobile.todoterreno.pedidos.utility.Mensaje;
 import com.researchmobile.todoterreno.pedidos.ws.Peticion;
 
 public class Login extends Activity implements OnClickListener, OnKeyListener{
@@ -23,6 +24,7 @@ public class Login extends Activity implements OnClickListener, OnKeyListener{
 	private Button entrarButton;
 	private ProgressDialog pd = null;
 	private RespuestaWS respuesta;
+	private Mensaje mensaje;
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,7 @@ public class Login extends Activity implements OnClickListener, OnKeyListener{
         setContentView(R.layout.login);
         
         setRespuesta(new RespuestaWS());
+        setMensaje(new Mensaje());
         setUsuarioEditText((EditText)findViewById(R.id.login_usuario_edittext));
         setContraseniaEditText((EditText)findViewById(R.id.login_contrasenia_edittext));
         getUsuarioEditText().setOnKeyListener(this);
@@ -100,9 +103,11 @@ public class Login extends Activity implements OnClickListener, OnKeyListener{
 		// Metodo con las instrucciones al finalizar lo ejectuado en background
 		protected void onPostExecute(Integer resultado) {
 			pd.dismiss();
-			//if (getRespuesta().isResultado()){
+			if (getRespuesta().isResultado()){
 				activityRol();
-			//}
+			}else{
+				getMensaje().VerMensaje(Login.this, getRespuesta().getMensaje());
+			}
 
 		}
 
@@ -144,6 +149,15 @@ public class Login extends Activity implements OnClickListener, OnKeyListener{
 	public void setRespuesta(RespuestaWS respuesta) {
 		this.respuesta = respuesta;
 	}
+
+	public Mensaje getMensaje() {
+		return mensaje;
+	}
+
+	public void setMensaje(Mensaje mensaje) {
+		this.mensaje = mensaje;
+	}
+	
 	
 	
 

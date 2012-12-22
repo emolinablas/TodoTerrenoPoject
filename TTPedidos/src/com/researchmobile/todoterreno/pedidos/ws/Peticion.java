@@ -210,7 +210,7 @@ public class Peticion {
 	public void enviarPedido(Context context, EncabezadoPedido encabezado, int numeroPedido, String ruta) {
 		Pedido pedido = new Pedido();
 		pedido.setEncabezadoPedido(encabezado);
-		pedido.setDetallePedido(requestDB.buscaDetallePedido(numeroPedido));
+		pedido.setDetallePedido(requestDB.buscaDetallePedido(context, numeroPedido));
 		Vendedor vendedor = new Vendedor();
 		vendedor = requestDB.vendedorDB(context);
 		RespuestaWS respuesta = new RespuestaWS();

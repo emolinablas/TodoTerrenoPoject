@@ -488,23 +488,27 @@ public class RequestDB {
 //recibe user y pass
 		public RespuestaWS  verificaLoginDB(Context context, String usuario, String password)
 		{
-			Log.e("TT", "RequestDB.verificaLoginDB 1");
 			RespuestaWS respuesta = new RespuestaWS();
 			try
 			{
 				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
-				Log.e("TT", "RequestDB.verificaLoginDB 2");
 				List<Entity> categories = DataFramework.getInstance().getEntityList("usuario");
-				Log.e("TT", "RequestDB.verificaLoginDB 3");
 					if(categories.size()>0)
 					{
-						
-						respuesta.setResultado(true);
+						Iterator e = categories.iterator();
+						while(e.hasNext())
+						{
+							Entity ent = (Entity)e.next();
+							if (usuario.equalsIgnoreCase(ent.getString("usuario")) && password.equalsIgnoreCase(ent.getString("password"))){
+								respuesta.setResultado(true);
+							}else{
+								respuesta.setResultado(false);
+							}
+						}
 					}
 					 else {
 						respuesta.setResultado(false);
 					 }
-				
 			}
 			catch(Exception msj)
 			{
