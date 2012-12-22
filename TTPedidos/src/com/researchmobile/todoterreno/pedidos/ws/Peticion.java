@@ -152,6 +152,13 @@ public class Peticion {
 		        mylist.add(map);
 			}
 			
+			/*map.put("codigoCliente", "001");
+	        map.put("empresa", "Mi Empresa");
+	        map.put("contacto", "Mi Contacto");
+	        map.put("direccion", "Mi Direccion");
+	        map.put("telefono", "Mi Telefono");
+	        map.put("nit", "Mi Nit");*/
+	        
 		}
 		return mylist;
 		

@@ -45,7 +45,6 @@ private ProgressDialog pd = null;
 	private boolean visitados;
 	private Fecha fecha;
 	private ArrayList<HashMap<String, String>> clientesPendientesHashMap;
-	private ArrayList<HashMap<String, String>> clientesVisitadosHashMap;
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -196,28 +195,26 @@ private ProgressDialog pd = null;
 			
 		}
 		
-		
-	}
-	
-	private void llenaListaVisitados() {
-		setSimpleAdapter(new SimpleAdapter(Rol.this, 
-				getClientesVisitadosHashMap(), 
-				R.layout.fila_lista_clientes,
-				new String[] {"codigoCliente",
-					"empresa",
-					"contacto",
-					"direccion",
-					"telefono",
-					"nit"},
-				new int[] {R.id.fila_lista_clientes_codigo_cliente_textview,
-				 R.id.fila_lista_clientes_empresa_textview, 
-					 R.id.fila_lista_clientes_contacto_textview,
-					 R.id.fila_lista_clientes_codigo_direccion_textview,
-					 R.id.fila_lista_clientes_telefono_textview,
-					 R.id.fila_lista_clientes_nit_textview}));
-		getClientesListView().setAdapter(getSimpleAdapter());
-		Log.e("TT", "async");
-		
+		private void llenaListaVisitados() {
+			setSimpleAdapter(new SimpleAdapter(Rol.this, 
+					getClientesPendientesHashMap(), 
+					R.layout.fila_lista_clientes,
+					new String[] {"codigoCliente",
+						"empresa",
+						"contacto",
+						"direccion",
+						"telefono",
+						"nit"},
+					new int[] {R.id.fila_lista_clientes_codigo_cliente_textview,
+					 R.id.fila_lista_clientes_empresa_textview, 
+						 R.id.fila_lista_clientes_contacto_textview,
+						 R.id.fila_lista_clientes_codigo_direccion_textview,
+						 R.id.fila_lista_clientes_telefono_textview,
+						 R.id.fila_lista_clientes_nit_textview}));
+			getClientesListView().setAdapter(getSimpleAdapter());
+			Log.e("TT", "async");
+			
+		}
 	}
 	
 	private void cargarClientesPendientes() {
@@ -226,7 +223,7 @@ private ProgressDialog pd = null;
 	}
 	
 	private void cargarClientesVisitados() {
-		setClientesVisitadosHashMap(getPeticion().ListaClientesVisitados(Rol.this));
+		setClientesPendientesHashMap(getPeticion().ListaClientesVisitados(Rol.this));
 	}
 	
 	/**
@@ -276,10 +273,10 @@ private ProgressDialog pd = null;
 
 	private void RellenarLista() {
 		if (isVisitados()){
-			new ClientesPendientesAsync().execute("");
+			new ClientesVisitadosAsync().execute("");
 			setVisitados(false);
 		}else{
-			new ClientesVisitadosAsync().execute("");
+			new ClientesPendientesAsync().execute("");
 			setVisitados(true);
 		}
 		
@@ -358,14 +355,4 @@ private ProgressDialog pd = null;
 		this.fecha = fecha;
 	}
 
-	public ArrayList<HashMap<String, String>> getClientesVisitadosHashMap() {
-		return clientesVisitadosHashMap;
-	}
-
-	public void setClientesVisitadosHashMap(
-			ArrayList<HashMap<String, String>> clientesVisitadosHashMap) {
-		this.clientesVisitadosHashMap = clientesVisitadosHashMap;
-	}
-
-	
 }
