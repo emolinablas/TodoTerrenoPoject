@@ -747,5 +747,34 @@ public class RequestDB {
 			
 			
 		}
-//Borrar registros
+
+		// metodo que actualiza el campo visitado y lo cambia a 1 esto significa que el cliente ya fue visitado
+		public boolean actualizarCampoVisitado(Context context, String cliCodigo ){ 
+			try{
+				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+				 Entity cliente = new Entity("cliente");
+				 cliente = DataFramework.getInstance().getTopEntity("cliente", "cliCodigo = " + cliCodigo, "cliCodigo");
+				 cliente.setValue("visitado", 1);
+				 cliente.save();
+				 return true;
+			}catch(Exception e){
+				return false;
+			}	
+		}
+		
+		// metodo que actualiza el encabezado pedido para indicar que ya fue sincronizado
+		public boolean actualizarSincEncabezadoPedido(Context context, long codigoPedido){
+			try{
+				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+				Entity encabezadoPedido = new Entity("encabezadopedido");
+				encabezadoPedido = DataFramework.getInstance().getTopEntity("encabezadopedido", "_id = " + String.valueOf(codigoPedido), "_id");
+				encabezadoPedido.setValue("sinc", 1);
+				encabezadoPedido.save();
+				return true;
+			}catch(Exception e){
+				return false;
+			}
+			
+		}
+		
 }
