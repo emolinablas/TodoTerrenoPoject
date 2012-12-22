@@ -166,9 +166,8 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
         .setMessage("¿Esta seguro de enviar el pedido?")
         .setPositiveButton("Si", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
-                     terminarPedido();
-                     Intent intent = new Intent(TomarPedido.this, Rol.class);
-                     startActivity(intent);
+                     new enviarAsync().execute("");
+                     
                 }
         })
         .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -401,6 +400,40 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
          }
 
    }
+    
+ // Clase para ejecutar en Background
+    class enviarAsync extends AsyncTask<String, Integer, Integer> {
+
+          // Metodo que prepara lo que usara en background, Prepara el progress
+          @Override
+          protected void onPreExecute() {
+                pd = ProgressDialog. show(TomarPedido.this, "VERIFICANDO DATOS", "ESPERE UN MOMENTO");
+                pd.setCancelable( false);
+         }
+
+          // Metodo con las instrucciones que se realizan en background
+          @Override
+          protected Integer doInBackground(String... urlString) {
+                try {
+                	terminarPedido();
+               
+               } catch (Exception exception) {
+
+               }
+                return null ;
+         }
+
+          // Metodo con las instrucciones al finalizar lo ejectuado en background
+          protected void onPostExecute(Integer resultado) {
+                pd.dismiss();
+                Intent intent = new Intent(TomarPedido.this, Rol.class);
+                startActivity(intent);
+         
+         }
+
+   }
+    
+    
     public void llenaListaPedido(){
     	setSimpleAdapter( 
 	        	new SimpleAdapter(this, 
