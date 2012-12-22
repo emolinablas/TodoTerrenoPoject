@@ -751,13 +751,28 @@ public class RequestDB {
 		// metodo que actualiza el campo visitado y lo cambia a 1 esto significa que el cliente ya fue visitado
 		public boolean actualizarCampoVisitado(Context context, String cliCodigo ){ 
 			try{
+				
 				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
-				 Entity cliente = new Entity("cliente");
-				 cliente = DataFramework.getInstance().getTopEntity("cliente", "cliCodigo = " + String.valueOf(cliCodigo), "_id");
-				 cliente.setValue("visitado", 1);
-				 cliente.save();
-				 return true;
-			}catch(Exception e){
+				List<Entity> campo = DataFramework.getInstance().getEntityList("cliente");
+				int tamano = campo.size();
+				Cliente[] totalEncabezadosSinced = new Cliente[tamano];
+				Iterator it = campo.iterator(); 
+				int a=0;
+				while(it.hasNext())
+				{
+					Entity datoCliente = (Entity)it.next();
+			 		String codigo = datoCliente.getString("cliCodigo");
+			 		if (codigo.equalsIgnoreCase(cliCodigo)){
+			 			long id = datoCliente.getId();
+			 			Entity cliente = new Entity("cliente", id);
+			 			cliente.setValue("visitado", 1);
+			 			cliente.save();
+			 			return true;
+			 		}
+			 		a++;
+				}
+				return false;
+				}catch(Exception e){
 				return false;
 			}	
 		}
