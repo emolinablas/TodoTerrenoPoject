@@ -250,7 +250,7 @@ private ProgressDialog pd = null;
 
 			return true;
 		case R.id.pedido_menu_listapedidos_opcion:
-			//ListaPedidosActivity();
+			listaPedidosActivity();
 			return true;
 			
 		case R.id.pedido_menu_salir_opcion:
@@ -264,6 +264,11 @@ private ProgressDialog pd = null;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+	
+	public void listaPedidosActivity(){
+		Intent intent = new Intent(Rol.this, ListaPedidos.class);
+		startActivity(intent);
 	}
 
 	private void RellenarLista() {

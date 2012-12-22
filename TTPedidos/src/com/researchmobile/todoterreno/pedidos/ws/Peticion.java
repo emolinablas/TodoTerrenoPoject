@@ -235,12 +235,28 @@ public class Peticion {
 			vendedor = requestDB.vendedorDB(context);
 			RespuestaWS respuesta = new RespuestaWS();
 			respuesta = requestWS.enviaPedido(pedido, ruta, vendedor.getIdusuario());
-			if (respuesta.isResultado()){
-				requestDB.actualizarClienteVisitado(context, encabezado.getCodigoCliente());
-				requestDB.actualizarPedidoSinc(context, numeroPedido);
+			if (!respuesta.isResultado()){
 				Log.e("TT", "resultado del envio = " + respuesta.getMensaje());
+				requestDB.actualizarCampoVisitado(context, encabezado.getCodigoCliente());
+				requestDB.actualizarSincEncabezadoPedido(context, numeroPedido);
+				
 			}
 		}
 		
+	}
+
+	public float totalGeneral(Context context) {
+		//float total = requestDB.totalGeneral(context);
+		return 0;
+	}
+	
+	public int totalEnviados(Context context) {
+		//float total = requestDB.totalGeneral(context);
+		return 0;
+	}
+	
+	public int totalPendientes(Context context) {
+		//float total = requestDB.totalGeneral(context);
+		return 0;
 	}
 }
