@@ -29,8 +29,22 @@ public class Peticion {
 	private RespuestaWS respuesta = new RespuestaWS();
 	private ConnectState connectState = new ConnectState();
 
+	public void limpiaDB(Context context){
+		requestDB.eliminarArticulos(context);
+		requestDB.eliminarClientes(context);
+		requestDB.eliminarDetallePedido(context);
+		requestDB.eliminarDetallePedidoTemp(context);
+		requestDB.eliminarEncabezadoPedidoTemp(context);
+		requestDB.eliminarPedido(context);
+		requestDB.eliminarPortafolio(context);
+		requestDB.eliminarRuta(context);
+		requestDB.eliminarUsuario(context);
+		requestDB.eliminarVendedor(context);
+		requestDB.eliminarNoVenta(context);
+	}
 	public RespuestaWS login(Context context) {
 		try{
+			limpiaDB(context);
 			respuesta = requestDB.verificaLoginDB(context, User.getUsername(), User.getClave());
 			if(respuesta.isResultado()){
 				if (connectState.isConnectedToInternet(context)){
@@ -127,6 +141,7 @@ public class Peticion {
 		requestDB.guardaVendedor(context, loginEntity.getVendedor());
 		requestDB.guardaPortafolio(context, loginEntity.getPortafolio());
 		requestDB.guardaRuta(context, loginEntity.getRuta());
+		requestDB.guardaNoVenta(context, loginEntity.getNoVenta());
 	}
 	
 	public void insertaArticuloTemp(Context context, DetallePedido articulo, int numeroPedido) {

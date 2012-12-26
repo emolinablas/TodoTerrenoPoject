@@ -9,6 +9,7 @@ public class LoginEntity implements Serializable{
 	private Vendedor vendedor;
 	private Portafolio[] portafolio;
 	private Ruta[] ruta;
+	private NoVenta[] noVenta;
 	private RespuestaWS respuesta;
 	
 	public Usuario getUsuario() {
@@ -41,5 +42,13 @@ public class LoginEntity implements Serializable{
 	public void setRespuesta(RespuestaWS respuesta) {
 		this.respuesta = respuesta;
 	}
+	public NoVenta[] getNoVenta() {
+		return noVenta;
+	}
+	public void setNoVenta(NoVenta[] noVenta) {
+		this.noVenta = noVenta;
+	}
+	
+	
 	
 }

@@ -10,6 +10,7 @@ import com.researchmobile.todoterreno.pedidos.entity.Cliente;
 import com.researchmobile.todoterreno.pedidos.entity.ListaArticulos;
 import com.researchmobile.todoterreno.pedidos.entity.ListaClientes;
 import com.researchmobile.todoterreno.pedidos.entity.LoginEntity;
+import com.researchmobile.todoterreno.pedidos.entity.NoVenta;
 import com.researchmobile.todoterreno.pedidos.entity.Pedido;
 import com.researchmobile.todoterreno.pedidos.entity.Portafolio;
 import com.researchmobile.todoterreno.pedidos.entity.RespuestaWS;
@@ -115,12 +116,28 @@ public class RequestWS {
 						rutas[i] = temp;
 						} loginEntity.setRuta(rutas);
 						Log.e("TT", "RequestWS.login Rutas");
-						return loginEntity;
-						
 					}else{
 						System.out.println("No se obtuvieron datos de las rutas");
 					}
 					
+					if(jsonObject.has("motivonoventa")){ // si viene el Array de motivos no venta asigno los campos al array de no venta y lo envio al LoginEntity
+						JSONArray noVentaJsonArray = jsonObject.getJSONArray("motivonoventa");
+						int tamano = noVentaJsonArray.length();
+						NoVenta[] noVenta = new NoVenta[tamano];
+						for(int i=0; i < tamano; i++){ // recorro el Array para asignar cada registro a una variable a un objeto temporal y luego agregarlo al Array de listaClientes
+						JSONObject noVentaJsonObject = noVentaJsonArray.getJSONObject(i);
+						NoVenta temp = new NoVenta();
+						//temp.setIdPortafolio(nullToString(rutasJsonObject.getString("IDportafolio")));
+						temp.setId(nullToString(noVentaJsonObject.getString("IDnoventa")));
+						temp.setDescripcion(nullToString(noVentaJsonObject.getString("descripnoventa")));
+						noVenta[i] = temp;
+						} loginEntity.setNoVenta(noVenta);
+						Log.e("TT", "RequestWS.login No Venta");
+						return loginEntity;
+						
+					}else{
+						System.out.println("No se obtuvieron datos de los motivos No Venta");
+					}
 				}
 				return loginEntity;
 			}else{

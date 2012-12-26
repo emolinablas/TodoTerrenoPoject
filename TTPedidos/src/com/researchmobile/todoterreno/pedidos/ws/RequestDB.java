@@ -44,15 +44,20 @@ public class RequestDB {
 		}
 		
 //guarda Motivo no Venta
-		public void guardaNoVenta(Context context, NoVenta noVenta)
+		public void guardaNoVenta(Context context, NoVenta[] noVenta)
 		{
 			try
 			{
 				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
-				Entity datoUsuario = new Entity("usuario");
-				datoUsuario.setValue("id", noVenta.getId());
-				datoUsuario.setValue("usuario", noVenta.getDescripcion());
-				datoUsuario.save();
+				int tamano = noVenta.length;
+				for (int i = 0; i < tamano; i++){
+					Entity datoUsuario = new Entity("noventa");
+					datoUsuario.setValue("id", noVenta[i].getId());
+					datoUsuario.setValue("descripcion", noVenta[i].getDescripcion());
+					datoUsuario.save();
+					Log.e("TT", "motivo guardado = " + noVenta[i].getDescripcion());
+				}
+				
 			}
 			 catch(Exception msj)
 			 {
@@ -741,6 +746,16 @@ public class RequestDB {
 			try {
 				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
 				DataFramework.getInstance().emptyTable("vendedor");
+				return true;
+			} catch (Exception e) {
+				return false;
+			}
+		}
+		
+		public boolean eliminarNoVenta(Context context){
+			try {
+				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+				DataFramework.getInstance().emptyTable("noventa");
 				return true;
 			} catch (Exception e) {
 				return false;
