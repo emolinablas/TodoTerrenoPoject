@@ -95,6 +95,13 @@
     
     </table>
     
+    <!-- M O T I V O  N O  V E N T A -->
+    <table name="noventa" to-string="%noventa%">
+    
+    <field name="id"	obligatory="false" 	type="text" size="10"/>
+    <field name="descripcion"	obligatory="false" 	type="text" size="80"/>    
+    </table>
+    
     <!-- V E N D E D O R -->
     <table name="vendedor" to-string="%vendedor%">
     

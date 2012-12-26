@@ -1,10 +1,7 @@
 package com.researchmobile.todoterreno.pedidos.ws;
 
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
-
-import org.xmlpull.v1.XmlPullParserException;
 
 import android.content.Context;
 import android.util.Log;
@@ -15,6 +12,7 @@ import com.researchmobile.todoterreno.pedidos.entity.Articulo;
 import com.researchmobile.todoterreno.pedidos.entity.Cliente;
 import com.researchmobile.todoterreno.pedidos.entity.DetallePedido;
 import com.researchmobile.todoterreno.pedidos.entity.EncabezadoPedido;
+import com.researchmobile.todoterreno.pedidos.entity.NoVenta;
 import com.researchmobile.todoterreno.pedidos.entity.Portafolio;
 import com.researchmobile.todoterreno.pedidos.entity.RespuestaWS;
 import com.researchmobile.todoterreno.pedidos.entity.Ruta;
@@ -41,6 +39,24 @@ public class RequestDB {
 			 catch(Exception msj)
 			 {
 				 Log.e("TT", "RequestDB.guardaUsuario = " + msj);
+				 msj.printStackTrace();
+			 }
+		}
+		
+//guarda Motivo no Venta
+		public void guardaNoVenta(Context context, NoVenta noVenta)
+		{
+			try
+			{
+				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+				Entity datoUsuario = new Entity("usuario");
+				datoUsuario.setValue("id", noVenta.getId());
+				datoUsuario.setValue("usuario", noVenta.getDescripcion());
+				datoUsuario.save();
+			}
+			 catch(Exception msj)
+			 {
+				 Log.e("TT", "RequestDB.guardaNoVenta = " + msj);
 				 msj.printStackTrace();
 			 }
 		}
@@ -276,6 +292,38 @@ public class RequestDB {
 			 			}
 			 		}
 			 		return usuario;	
+			 }
+			  catch(Exception msj)
+			  {
+				msj.printStackTrace();
+				return null;
+			  }
+			 	
+		}
+		
+//recorre motivos no venta
+		public NoVenta[] noVentaDB(Context context)
+		{
+			try
+			{
+				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+				List<Entity> categories = DataFramework.getInstance().getEntityList("noventa");
+			 			int tamano = categories.size();
+			 			NoVenta[] noVenta = new NoVenta[tamano];
+			 			if (tamano > 0){
+			 				Iterator iter = categories.iterator();
+			 				int i = 0;
+				 			while(iter.hasNext())
+				 			{
+				 			Entity datoNoVenta = (Entity)iter.next();
+				 			NoVenta temp = new NoVenta();
+				 			temp.setId(datoNoVenta.getString("id"));
+				 			temp.setDescripcion(datoNoVenta.getString("descripcion"));
+				 			noVenta[i] = temp;
+				 			i++;
+				 			}
+			 			}
+			 		return noVenta;	
 			 }
 			  catch(Exception msj)
 			  {
