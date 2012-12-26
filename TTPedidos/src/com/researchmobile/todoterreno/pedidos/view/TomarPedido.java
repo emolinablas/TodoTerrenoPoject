@@ -197,7 +197,8 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 	
 	public void terminarPedido(){
 		llenaEncabezado();
-		getPeticion().insertaEncabezado(this, getEncabezado());
+		getPeticion().insertaEncabezado(this, getEncabezado());	
+		getPeticion().pedidosPendientes(this);
 		getPeticion().enviarPedido(this, getEncabezado(), getNumeroPedido(), getRuta());
 		
 	}

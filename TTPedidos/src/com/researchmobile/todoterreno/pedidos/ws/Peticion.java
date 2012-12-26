@@ -33,9 +33,13 @@ public class Peticion {
 		try{
 			respuesta = requestDB.verificaLoginDB(context, User.getUsername(), User.getClave());
 			if(respuesta.isResultado()){
+				if (connectState.isConnectedToInternet(context)){
+					pedidosPendientes(context);
+				}
 				return respuesta;
 			}else{
 				if (connectState.isConnectedToInternet(context)){
+					pedidosPendientes(context);
 					LoginEntity loginEntity = new LoginEntity();
 					loginEntity = requestWS.login(User.getUsername(), User.getClave());
 					respuesta = loginEntity.getRespuesta();
@@ -256,12 +260,14 @@ public class Peticion {
 	}
 	
 	public void pedidosPendientes(Context context){
-		EncabezadoPedido[] pedidos = requestDB.encabezadoPedidoNoSinc(context);
-		int tamano = pedidos.length;
-		for (int i = 0; i < tamano; i++){
-			String ruta = rutaCliente(context, pedidos[i]);
-			enviarPedido(context, pedidos[i], (int)pedidos[i].getId(), ruta);
-			Log.e("TT", "Peticion.pedidosPendientes " + i);
+		if (connectState.isConnectedToInternet(context)){
+			EncabezadoPedido[] pedidos = requestDB.encabezadoPedidoNoSinc(context);
+			int tamano = pedidos.length;
+			for (int i = 0; i < tamano; i++){
+				String ruta = rutaCliente(context, pedidos[i]);
+				enviarPedido(context, pedidos[i], (int)pedidos[i].getId(), ruta);
+				Log.e("TT", "Peticion.pedidosPendientes " + i);
+			}
 		}
 	}
 	
