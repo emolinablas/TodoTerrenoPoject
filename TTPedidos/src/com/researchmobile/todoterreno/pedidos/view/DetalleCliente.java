@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -138,6 +139,7 @@ public class DetalleCliente extends Activity{
 
 	private void TomarPedido() {
 		Intent intent = new Intent(DetalleCliente.this, TomarPedido.class);
+		Log.e("TT", "idruta = " + getCliente().getCliRuta());
 		intent.putExtra("codigoCliente", getCodigoCliente());
 		intent.putExtra("idRuta", getCliente().getCliRuta());
 		startActivity(intent);

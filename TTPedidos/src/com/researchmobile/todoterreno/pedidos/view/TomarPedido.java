@@ -66,6 +66,7 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 		Bundle bundle = (Bundle)getIntent().getExtras();
 		setCodigoCliente((String)bundle.getString("codigoCliente"));
 		setRuta((String)bundle.getString("idRuta"));
+		Log.e("TT", "idruta = " + getRuta());
 		setMensaje(new Mensaje());
 		setTotal(0);
 		setFecha(new Fecha());

@@ -11,6 +11,7 @@ public class EncabezadoPedido implements Serializable{
 	private String hora;
 	private String credito;
 	private int sinc;
+	private long id;
 	
 	
 	private int motivo;
@@ -73,4 +74,12 @@ public class EncabezadoPedido implements Serializable{
 	public void setMotivoNoCompra(String motivoNoCompra) {
 		this.motivoNoCompra = motivoNoCompra;
 	}
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
+	
+	
 }

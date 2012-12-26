@@ -254,6 +254,21 @@ public class Peticion {
 		Log.e("TT", "Peticion.detalleCliente = " + cliente.getCliCodigo());
 		return cliente;
 	}
+	
+	public void pedidosPendientes(Context context){
+		EncabezadoPedido[] pedidos = requestDB.encabezadoPedidoNoSinc(context);
+		int tamano = pedidos.length;
+		for (int i = 0; i < tamano; i++){
+			String ruta = rutaCliente(context, pedidos[i]);
+			enviarPedido(context, pedidos[i], (int)pedidos[i].getId(), ruta);
+			Log.e("TT", "Peticion.pedidosPendientes " + i);
+		}
+	}
+	
+	public String rutaCliente (Context context, EncabezadoPedido encabezado){
+		String ruta = requestDB.rutaCliente(context, encabezado.getCodigoCliente());
+		return ruta;
+	}
 
 	public DetallePedido buscaArticulo(Context context, String codigoProducto) {
 		DetallePedido articulo = new DetallePedido();
@@ -285,7 +300,6 @@ public class Peticion {
 				
 			}
 		}
-		
 	}
 
 	public float totalGeneral(Context context) {

@@ -9,17 +9,20 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.researchmobile.todoterreno.pedidos.ws.Peticion;
 
-public class ListaPedidos extends Activity implements OnItemClickListener{
+public class ListaPedidos extends Activity implements OnItemClickListener, OnClickListener{
 	
 	private TextView totalGenralTextView;
+	private Button enviarPendientesButton;
 	private TextView enviadosTextView;
 	private TextView pendientesTextView;
 	private ListView pedidosListView;
@@ -42,6 +45,8 @@ public class ListaPedidos extends Activity implements OnItemClickListener{
         setEnviadosTextView((TextView)findViewById(R.id.listapedidos_enviados_textview));
         setPendientesTextView((TextView)findViewById(R.id.listapedidos_pendientes_textview));
         setPedidosListView((ListView)findViewById(R.id.listapedidos_listView));
+        setEnviarPendientesButton((Button)findViewById(R.id.listapedidos_enviar_button));
+        getEnviarPendientesButton().setOnClickListener(this);
         getPedidosListView().setOnItemClickListener(this);
         
         new pedidosAsync().execute("");
@@ -53,7 +58,7 @@ public class ListaPedidos extends Activity implements OnItemClickListener{
 		
 	}
 	
-	// Clase para ejecutar en Background
+	// Clase para buscar estado de los pedidos en Background
     class pedidosAsync extends AsyncTask<String, Integer, Integer> {
 
           // Metodo que prepara lo que usara en background, Prepara el progress
@@ -84,6 +89,41 @@ public class ListaPedidos extends Activity implements OnItemClickListener{
          }
    }
     
+ // Clase para enviar los pedidos pendientes en Background
+    class pendientesAsync extends AsyncTask<String, Integer, Integer> {
+
+          // Metodo que prepara lo que usara en background, Prepara el progress
+          @Override
+          protected void onPreExecute() {
+                pd = ProgressDialog. show(ListaPedidos.this, "ENVIANDO PEDIDOS", "ESPERE UN MOMENTO");
+                pd.setCancelable( false);
+         }
+
+          // Metodo con las instrucciones que se realizan en background
+          @Override
+          protected Integer doInBackground(String... urlString) {
+                try {
+                	enviarPedidosPendientes();
+               } catch (Exception exception) {
+
+               }
+                return null ;
+         }
+
+          // Metodo con las instrucciones al finalizar lo ejectuado en background
+          protected void onPostExecute(Integer resultado) {
+                pd.dismiss();
+                new pedidosAsync().execute("");
+
+         }
+   }
+    
+    public void enviarPedidosPendientes(){
+    	getPeticion().pedidosPendientes(this);
+    	
+    }
+
+    
     public void buscaPedidos(){
     	setTotalGeneral(getPeticion().totalGeneral(this));
     	setEnviados(getPeticion().totalEnviados(this));
@@ -113,6 +153,14 @@ public class ListaPedidos extends Activity implements OnItemClickListener{
 		Log.e("TT", "async");
     	
     }
+    
+	@Override
+	public void onClick(View view) {
+		if (view == getEnviarPendientesButton()){
+			new pendientesAsync().execute("");
+		}
+		
+	}
 
 
 	public TextView getTotalGenralTextView() {
@@ -194,5 +242,13 @@ public class ListaPedidos extends Activity implements OnItemClickListener{
 	public void setPendientes(int pendientes) {
 		this.pendientes = pendientes;
 	}
-	
+
+	public Button getEnviarPendientesButton() {
+		return enviarPendientesButton;
+	}
+
+	public void setEnviarPendientesButton(Button enviarPendientesButton) {
+		this.enviarPendientesButton = enviarPendientesButton;
+	}
+
 }

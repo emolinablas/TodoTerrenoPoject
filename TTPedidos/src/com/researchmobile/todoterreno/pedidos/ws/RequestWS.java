@@ -270,7 +270,7 @@ public class RequestWS {
 			RespuestaWS respuesta = new RespuestaWS();
 			rmString rm = new rmString();
 			String jsonString = rm.jsonPedido(pedido, ruta, vendedor);
-			String urlTemp = WS_ENVIO + User.getUsername() + "&password=" + User.getClave() + "&action=pedido&json=" + jsonString; // string de conexi—n
+			String urlTemp = WS_ENVIO + User.getUsername() + "&password=" + User.getClave() + "&action=pedido&idruta=" + ruta + "&json=" + jsonString; // string de conexi—n
 			Log.e("TT", "RequestWS.enviaPedido - url = " + urlTemp);
 			String url = urlTemp.replace(" ", "%20");
 			

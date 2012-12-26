@@ -519,6 +519,29 @@ public class RequestDB {
 			return respuesta;
 		}
 		
+		public String rutaCliente(Context context, String codigoCliente){
+			String ruta = "";
+			try{
+				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+				List<Entity> categories = DataFramework.getInstance().getEntityList("cliente");
+					Iterator e = categories.iterator();
+					while(e.hasNext())
+					{
+					
+					 Entity d = (Entity)e.next();
+					 String codigo = d.getString("cliCodigo");
+					 if (codigo.equalsIgnoreCase(codigoCliente)){
+						 
+						 ruta = d.getString("cliRuta");
+						 return ruta;
+					 }
+					}
+				return null;
+			}catch(Exception exception){
+				return null;
+			}
+		}
+		
 //buscacliente
 		public Cliente buscaCliente(Context context, String codigocliente)
 		{
@@ -544,6 +567,7 @@ public class RequestDB {
 						 cliente.setCliTelefono(d.getString("cliTelefono"));
 						 cliente.setCliFax(d.getString("cliFax"));
 						 cliente.setCliContacto(d.getString("cliContacto"));
+						 cliente.setCliRuta(d.getString("cliRuta"));
 						 return cliente;
 					 }
 					 
@@ -930,7 +954,7 @@ public class RequestDB {
 						{
 							Entity datoEncabezado = (Entity)it.next();
 					 		EncabezadoPedido temp = new EncabezadoPedido();
-					 		
+					 		temp.setId(datoEncabezado.getId());
 					 		temp.setCodigoCliente(datoEncabezado.getString("codigocliente"));
 					 		temp.setTotal(Float.parseFloat(datoEncabezado.getString("total")));
 					 		temp.setFecha(datoEncabezado.getString("fecha"));
@@ -976,6 +1000,7 @@ public class RequestDB {
 						return (float) 0;
 					}
 				}
+
 				
-		
+
 }
