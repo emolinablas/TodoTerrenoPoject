@@ -13,6 +13,7 @@ import com.researchmobile.todoterreno.pedidos.entity.EncabezadoPedido;
 import com.researchmobile.todoterreno.pedidos.entity.ListaArticulos;
 import com.researchmobile.todoterreno.pedidos.entity.ListaClientes;
 import com.researchmobile.todoterreno.pedidos.entity.LoginEntity;
+import com.researchmobile.todoterreno.pedidos.entity.NoVenta;
 import com.researchmobile.todoterreno.pedidos.entity.Pedido;
 import com.researchmobile.todoterreno.pedidos.entity.RespuestaWS;
 import com.researchmobile.todoterreno.pedidos.entity.User;
@@ -44,7 +45,7 @@ public class Peticion {
 	}
 	public RespuestaWS login(Context context) {
 		try{
-			limpiaDB(context);
+			//limpiaDB(context);
 			respuesta = requestDB.verificaLoginDB(context, User.getUsername(), User.getClave());
 			if(respuesta.isResultado()){
 				if (connectState.isConnectedToInternet(context)){
@@ -75,7 +76,7 @@ public class Peticion {
 		}catch(Exception exception){
 			Log.e("TT", "Peticion.login - " + exception);
 			respuesta.setResultado(false);
-			respuesta.setMensaje("Verifique sus datos, Intente nuevamente");
+			respuesta.setMensaje("Error 0040. Verifique sus datos, Intente nuevamente");
 			return respuesta;
 			
 		}
@@ -322,6 +323,26 @@ public class Peticion {
 			}
 		}
 	}
+	
+	public RespuestaWS enviarMotivo(Context context, String codigoCliente, String motivoSeleccionado) {
+		int numeroPedido = requestDB.ultimoEncabezado(context); 
+		requestDB.enviarMotivo(context, codigoCliente, motivoSeleccionado);
+		RespuestaWS respuesta = new RespuestaWS();
+		Vendedor vendedor = new Vendedor();
+		vendedor = requestDB.vendedorDB(context);
+		String ruta = requestDB.rutaCliente(context, codigoCliente);
+		if (connectState.isConnectedToInternet(context)){
+			respuesta = requestWS.enviarMotivo(codigoCliente, ruta, vendedor.getIdusuario(), motivoSeleccionado);
+			if (!respuesta.isResultado()){
+				requestDB.actualizarCampoVisitado(context, codigoCliente);
+				requestDB.actualizarSincEncabezadoPedido(context, numeroPedido);
+			}
+		}else{
+			respuesta.setResultado(false);
+			respuesta.setMensaje("No cuenta con conexión a Internet");
+		}
+		return null;
+	}
 
 	public float totalGeneral(Context context) {
 		float total = requestDB.totalVentas(context);
@@ -336,6 +357,10 @@ public class Peticion {
 	public int totalPendientes(Context context) {
 		int total = requestDB.pedidosNoSincronizados(context);
 		return total;
+	}
+	public NoVenta[] noVenta(Context context) {
+		NoVenta[] noVenta = requestDB.noVentaDB(context);
+		return noVenta;
 	}
 	
 }

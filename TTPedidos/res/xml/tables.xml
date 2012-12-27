@@ -1,4 +1,4 @@
-    <database name="todoterreno013" version="1">
+    <database name="todoterreno014" version="1">
 	
 	<!-- U S U A R I O -->
     <table name="usuario" to-string="%usuario%">
@@ -145,7 +145,9 @@
 	<field name="fecha"			obligatory="false"	type="text"	size="50"/>
 	<field name="hora"			obligatory="false"	type="text"	size="50"/>
 	<field name="credito"		obligatory="false"	type="text"	size="80"/>
-	<field name="sinc"			obligatory="false"	type="integer"/>    
+	<field name="sinc"			obligatory="false"	type="integer"/>
+	<field name="noventa"		obligatory="false"	type="integer"/>
+	<field name="idNoventa"		obligatory="false"	type="integer"/>    
 	    
 	</table>
 	

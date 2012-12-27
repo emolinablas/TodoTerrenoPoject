@@ -9,12 +9,22 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.researchmobile.todoterreno.pedidos.entity.Cliente;
+import com.researchmobile.todoterreno.pedidos.entity.NoVenta;
+import com.researchmobile.todoterreno.pedidos.entity.RespuestaWS;
+import com.researchmobile.todoterreno.pedidos.utility.Mensaje;
 import com.researchmobile.todoterreno.pedidos.ws.Peticion;
 
-public class DetalleCliente extends Activity{
+public class DetalleCliente extends Activity implements OnClickListener{
 	
 	private Cliente cliente;
 	private String codigoCliente;
@@ -30,13 +40,23 @@ public class DetalleCliente extends Activity{
 	private TextView descuento2TextView;
 	private TextView descuento3TextView;
 	private TextView saldo2TextView;
+	private Button enviarNoVentaButton;
+	private CheckBox noVentaCheckBox;
+	private Spinner noVentaSpinner;
+	private LinearLayout noVentaLinearLayout;
+	private Peticion peticion;
+	private NoVenta[] noventa;
+	private ArrayAdapter<NoVenta> noVentaAdapter;
+	private Mensaje mensaje;
+	private String motivoSeleccionado;
 	private ProgressDialog pd = null;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detalle_cliente);
-        
+        setPeticion(new Peticion());
+        setMensaje(new Mensaje());
         setCodigoCliente((String)this.getIntent().getSerializableExtra("codigoCliente"));
         
         setCodigoClienteTextView((TextView)findViewById(R.id.detalle_cliente_codigo_textview));
@@ -47,17 +67,39 @@ public class DetalleCliente extends Activity{
         setDiasCreditoTextView((TextView)findViewById(R.id.detalle_cliente_dias_credito_textview));
         setLimiteTextView((TextView)findViewById(R.id.detalle_cliente_limite_textview));
         setSaldoTextView((TextView)findViewById(R.id.detalle_cliente_saldo_textview));
+        setEnviarNoVentaButton((Button)findViewById(R.id.detalle_cliente_enviarnovente_button));
+        setNoVentaCheckBox((CheckBox)findViewById(R.id.detalle_cliente_noventa_checkbox));
+        setNoVentaSpinner((Spinner)findViewById(R.id.detalle_cliente_motivos_spinner));
         setDescuento1TextView((TextView)findViewById(R.id.detalle_cliente_descuento_textview));
+        setNoVentaLinearLayout((LinearLayout)findViewById(R.id.detalle_cliente_noventa_layout));
+        getNoVentaLinearLayout().setVisibility(View.INVISIBLE);
+        getEnviarNoVentaButton().setOnClickListener(this);
+        getNoVentaCheckBox().setOnClickListener(this);
         
         new detalleClienteAsync().execute("");
     }
 	
-	private void ClienteSeleccionado() {
-		Peticion peticion = new Peticion();
-		setCliente(peticion.DetalleCliente(this, getCodigoCliente()));
-		getCodigoClienteTextView().setText(getCliente().getCliCodigo());
+	@Override
+	public void onClick(View view) {
+		if (view == getEnviarNoVentaButton()){
+			new motivoAsync().execute("");
+		}else if (view == getNoVentaCheckBox()){
+			if (getNoVentaCheckBox().isChecked()){
+				fillDataSpinner();
+				getNoVentaLinearLayout().setVisibility(View.VISIBLE);
+			}else{
+				getNoVentaLinearLayout().setVisibility(View.INVISIBLE);
+			}
+		}
+		
 	}
-
+	
+	public void fillDataSpinner(){
+		setNoventa(getPeticion().noVenta(this));
+		setNoVentaAdapter(new ArrayAdapter<NoVenta>(this, R.layout.item_spinner, R.id.item_spinner_textview, getNoventa()));
+		getNoVentaSpinner().setAdapter(getNoVentaAdapter());
+	}
+	
 	/**
 	 * MENU
 	 */
@@ -117,6 +159,45 @@ public class DetalleCliente extends Activity{
 
 	}
 	
+	// Clase para enviar el motivo
+	class motivoAsync extends AsyncTask<String, Integer, Integer> {
+
+		// Metodo que prepara lo que usara en background, Prepara el progress
+		@Override
+		protected void onPreExecute() {
+			pd = ProgressDialog.show(DetalleCliente.this, "ENVIANDO UN MOTIVO", "ESPERE UN MOMENTO");
+			pd.setCancelable(false);
+		}
+
+		// Metodo con las instrucciones que se realizan en background
+		@Override
+		protected Integer doInBackground(String... urlString) {
+			try {
+				enviarMotivo();
+
+			} catch (Exception exception) {
+
+			}
+			return null;
+		}
+
+		// Metodo con las instrucciones al finalizar lo ejectuado en background
+		protected void onPostExecute(Integer resultado) {
+			pd.dismiss();
+			Intent intent = new Intent(DetalleCliente.this, Rol.class);
+			startActivity(intent);
+
+		}
+
+	}
+	
+	public void enviarMotivo(){
+		
+		setMotivoSeleccionado(((NoVenta)getNoVentaSpinner().getSelectedItem()).getId());
+		RespuestaWS respuesta = new RespuestaWS();
+		respuesta = getPeticion().enviarMotivo(this, getCodigoCliente(), getMotivoSeleccionado());
+		getMensaje().VerMensaje(this, respuesta.getMensaje());
+	}
 	private void BuscarDetalleCliente() {
 		
 		Peticion peticion = new Peticion();
@@ -257,4 +338,75 @@ public class DetalleCliente extends Activity{
 		this.codigoCliente = codigoCliente;
 	}
 
+	public Button getEnviarNoVentaButton() {
+		return enviarNoVentaButton;
+	}
+
+	public void setEnviarNoVentaButton(Button enviarNoVentaButton) {
+		this.enviarNoVentaButton = enviarNoVentaButton;
+	}
+
+	public CheckBox getNoVentaCheckBox() {
+		return noVentaCheckBox;
+	}
+
+	public void setNoVentaCheckBox(CheckBox noVentaCheckBox) {
+		this.noVentaCheckBox = noVentaCheckBox;
+	}
+
+	public Spinner getNoVentaSpinner() {
+		return noVentaSpinner;
+	}
+
+	public void setNoVentaSpinner(Spinner noVentaSpinner) {
+		this.noVentaSpinner = noVentaSpinner;
+	}
+
+	public LinearLayout getNoVentaLinearLayout() {
+		return noVentaLinearLayout;
+	}
+
+	public void setNoVentaLinearLayout(LinearLayout noVentaLinearLayout) {
+		this.noVentaLinearLayout = noVentaLinearLayout;
+	}
+
+	public Peticion getPeticion() {
+		return peticion;
+	}
+
+	public void setPeticion(Peticion peticion) {
+		this.peticion = peticion;
+	}
+
+	public NoVenta[] getNoventa() {
+		return noventa;
+	}
+
+	public void setNoventa(NoVenta[] noventa) {
+		this.noventa = noventa;
+	}
+
+	public ArrayAdapter<NoVenta> getNoVentaAdapter() {
+		return noVentaAdapter;
+	}
+
+	public void setNoVentaAdapter(ArrayAdapter<NoVenta> noVentaAdapter) {
+		this.noVentaAdapter = noVentaAdapter;
+	}
+
+	public Mensaje getMensaje() {
+		return mensaje;
+	}
+
+	public void setMensaje(Mensaje mensaje) {
+		this.mensaje = mensaje;
+	}
+
+	public String getMotivoSeleccionado() {
+		return motivoSeleccionado;
+	}
+
+	public void setMotivoSeleccionado(String motivoSeleccionado) {
+		this.motivoSeleccionado = motivoSeleccionado;
+	}
 }

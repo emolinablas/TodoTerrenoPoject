@@ -7,6 +7,11 @@ public class NoVenta implements Serializable{
 	
 	private String id;
 	private String descripcion;
+	
+	public String toString() {
+    	return descripcion;
+    }
+	
 	public String getId() {
 		return id;
 	}

@@ -61,4 +61,21 @@ public class rmString {
 		return null;
 	}
 
+	public String jsonMotivo(String codigoCliente, String ruta, String idusuario, String motivoSeleccionado) {
+		JSONObject jsonString = new JSONObject();
+		try {
+			jsonString.put("clicodigo", codigoCliente);
+			jsonString.put("movfecha", fecha.FechaHoy());
+			jsonString.put("movhora", fecha.Hora());
+			jsonString.put("idnoventa", motivoSeleccionado);
+			jsonString.put("idvendedor", idusuario);
+			String finalString = jsonString.toString();
+			return finalString;
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 }

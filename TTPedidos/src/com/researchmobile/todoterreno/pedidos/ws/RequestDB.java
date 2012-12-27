@@ -18,6 +18,7 @@ import com.researchmobile.todoterreno.pedidos.entity.RespuestaWS;
 import com.researchmobile.todoterreno.pedidos.entity.Ruta;
 import com.researchmobile.todoterreno.pedidos.entity.Usuario;
 import com.researchmobile.todoterreno.pedidos.entity.Vendedor;
+import com.researchmobile.todoterreno.pedidos.utility.Fecha;
 
 
 public class RequestDB {
@@ -41,6 +42,33 @@ public class RequestDB {
 				 Log.e("TT", "RequestDB.guardaUsuario = " + msj);
 				 msj.printStackTrace();
 			 }
+		}
+		
+//guarda Motivo seleccionado
+		public void enviarMotivo(Context context, String codigoCliente, String motivoSeleccionado) {
+			{
+				Fecha fecha = new Fecha();
+			
+				try
+				{
+					DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+					Entity datoUsuario = new Entity("encabezadopedido");
+					datoUsuario.setValue("codigocliente", codigoCliente);
+					datoUsuario.setValue("total", 0);
+					datoUsuario.setValue("fecha", fecha.FechaHoy());
+					datoUsuario.setValue("hora", fecha.Hora());
+					datoUsuario.setValue("credito", "0");
+					datoUsuario.setValue("sinc", 0);
+					datoUsuario.setValue("noventa", 1);
+					datoUsuario.setValue("idNoventa", motivoSeleccionado);
+					datoUsuario.save();
+				}
+				 catch(Exception msj)
+				 {
+					 Log.e("TT", "RequestDB.enviarMotivo = " + msj);
+					 msj.printStackTrace();
+				 }
+			}
 		}
 		
 //guarda Motivo no Venta
@@ -77,6 +105,8 @@ public class RequestDB {
 				encabezado.setValue("hora", encabezadoPedido.getHora());
 				encabezado.setValue("credito", "0");
 				encabezado.setValue("sinc", 0);
+				encabezado.setValue("noventa", 0);
+				encabezado.setValue("idNoventa", 0);
 				encabezado.save();
 			}catch(Exception exception){
 				Log.e("TT", "RequestDB.guardaEncabezadoPedido error = " + exception);
@@ -1063,7 +1093,5 @@ public class RequestDB {
 						return (float) 0;
 					}
 				}
-
-				
 
 }

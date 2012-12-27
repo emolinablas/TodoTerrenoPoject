@@ -25,6 +25,7 @@ public class RequestWS {
 	private static String WS_CLIENTES = "ws_clientes.php?";
 	private static String WS_PRODUCTOS = "ws_articulos.php?a=catalogo&idportafolio=";
 	private static String WS_ENVIO = "json.php?username=";
+	private static String WS_ENVIAMOTIVO = "json.php?username=";
 
 	// Metodo que llena el Entity del login
 	@SuppressWarnings("unused")
@@ -303,6 +304,27 @@ public class RequestWS {
 			}
 			return null;
 		}
+		
+// Metodo para enviar el motivo no compra
+		public RespuestaWS enviarMotivo(String codigoCliente, String ruta, String idusuario, String motivoSeleccionado) {
+			try{
+				RespuestaWS respuesta = new RespuestaWS();
+				rmString rm = new rmString();
+				String jsonMotivo = rm.jsonMotivo(codigoCliente, ruta, idusuario, motivoSeleccionado);
+				String urlTemp = WS_ENVIAMOTIVO + User.getUsername() + "&password=" + User.getClave() + "&action=noventa&json=" + jsonMotivo;
+				String url = urlTemp.replace(" ", "%20");
+				
+				JSONObject jsonObject = ConnectWS.enviaMotivoJson(url);
+				if (jsonObject.has("error")){
+					respuesta.setResultado(jsonObject.getBoolean("error"));
+					respuesta.setMensaje(jsonObject.getString("mensaje"));
+					return respuesta;
+				}
+			}catch(Exception exception){
+				return null;
+			}
+			return null;
+		}
 	
 	// Metodo convierte un valor null ingresado a un String y devuelve un espacio en blanco
 	public String nullToString(String variable){
@@ -321,7 +343,4 @@ public class RequestWS {
 			return va;
 		}
 	}
-
-	
-
 }
