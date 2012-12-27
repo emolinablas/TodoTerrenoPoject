@@ -57,7 +57,7 @@ public class ConnectWS {
     public static JSONObject enviaMotivoJson(String url) {
 		JSONObject jsonObject = null;
 		try{
-			URL urlCon = new URL("http", IP_SERVER, PUERTO, "/megainfo/" + url);
+			URL urlCon = new URL("http", IP_SERVER, PUERTO, "/megainfo/ws/" + url);
             HttpURLConnection urlConnection = (HttpURLConnection) urlCon.openConnection();
             System.out.println("ENVIAR_MOTIVO - url = " + urlCon);
             InputStream inputStream = urlConnection.getInputStream();

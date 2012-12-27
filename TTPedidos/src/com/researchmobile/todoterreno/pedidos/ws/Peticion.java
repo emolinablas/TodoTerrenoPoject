@@ -274,11 +274,13 @@ public class Peticion {
 				//Enviar Pedidos
 				EncabezadoPedido[] pedidos = requestDB.encabezadoPedidoNoSinc(context);
 				int tamano = pedidos.length;
+				Log.e("TT", "Peticion.pedidosPendientes - tamano == " + tamano);
 				for (int i = 0; i < tamano; i++){
 					if (pedidos[i].getMotivo() == 0){
 						String ruta = rutaCliente(context, pedidos[i]);
 						enviarPedido(context, pedidos[i], (int)pedidos[i].getId(), ruta);
 					}else{
+						Log.e("TT", "Peticion.pedidosPendientes - motivo == 1");
 						enviarMotivoPendiente(context, pedidos[i].getId(), pedidos[i].getCodigoCliente(), pedidos[i].getMotivoNoCompra());
 					}
 					
@@ -350,8 +352,6 @@ public class Peticion {
 	}
 	
 	public RespuestaWS enviarMotivoPendiente(Context context,Long numeroPedido, String codigoCliente, String motivoSeleccionado) {
-		//int numeroPedido = requestDB.ultimoEncabezado(context); 
-		//requestDB.enviarMotivo(context, codigoCliente, motivoSeleccionado);
 		RespuestaWS respuesta = new RespuestaWS();
 		Vendedor vendedor = new Vendedor();
 		vendedor = requestDB.vendedorDB(context);
@@ -359,7 +359,8 @@ public class Peticion {
 		String ruta = requestDB.rutaCliente(context, codigoCliente);
 		if (connectState.isConnectedToInternet(context)){
 			respuesta = requestWS.enviarMotivo(codigoCliente, ruta, vendedor.getIdusuario(), motivoSeleccionado);
-			if (!respuesta.isResultado()){
+			Log.e("TT", "Peticion.enviarMotivoPendiente - respuesta = " + respuesta.isResultado());
+			if (respuesta.isResultado()){
 				Log.e("TT", "Peticion.enviarMotivoPendiente");
 				requestDB.actualizarCampoVisitado(context, codigoCliente);
 				requestDB.actualizarSincEncabezadoPedido(context, numeroPedido);

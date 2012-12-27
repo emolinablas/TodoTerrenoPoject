@@ -18,6 +18,7 @@ import com.researchmobile.todoterreno.pedidos.entity.Ruta;
 import com.researchmobile.todoterreno.pedidos.entity.User;
 import com.researchmobile.todoterreno.pedidos.entity.Usuario;
 import com.researchmobile.todoterreno.pedidos.entity.Vendedor;
+import com.researchmobile.todoterreno.pedidos.utility.Fecha;
 import com.researchmobile.todoterreno.pedidos.utility.rmString;
 
 public class RequestWS {
@@ -25,7 +26,7 @@ public class RequestWS {
 	private static String WS_CLIENTES = "ws_clientes.php?";
 	private static String WS_PRODUCTOS = "ws_articulos.php?a=catalogo&idportafolio=";
 	private static String WS_ENVIO = "json.php?username=";
-	private static String WS_ENVIAMOTIVO = "json.php?username=";
+	private static String WS_ENVIAMOTIVO = "ws_noventa.php?cliente=";
 
 	// Metodo que llena el Entity del login
 	@SuppressWarnings("unused")
@@ -308,15 +309,13 @@ public class RequestWS {
 // Metodo para enviar el motivo no compra
 		public RespuestaWS enviarMotivo(String codigoCliente, String ruta, String idusuario, String motivoSeleccionado) {
 			try{
+				Fecha fecha = new Fecha();
 				RespuestaWS respuesta = new RespuestaWS();
-				rmString rm = new rmString();
-				String jsonMotivo = rm.jsonMotivo(codigoCliente, ruta, idusuario, motivoSeleccionado);
-				String urlTemp = WS_ENVIAMOTIVO + User.getUsername() + "&password=" + User.getClave() + "&action=noventa&json=" + jsonMotivo;
+				String urlTemp = WS_ENVIAMOTIVO + codigoCliente + "&fecha=" + fecha.FechaHoy() + "&hora=" + fecha.Hora() + "&idnoventa=" + motivoSeleccionado + "&vendedor=" + idusuario; 
 				String url = urlTemp.replace(" ", "%20");
-				
 				JSONObject jsonObject = ConnectWS.enviaMotivoJson(url);
-				if (jsonObject.has("error")){
-					respuesta.setResultado(jsonObject.getBoolean("error"));
+				if (jsonObject.has("resultado")){
+					respuesta.setResultado(jsonObject.getBoolean("resultado"));
 					respuesta.setMensaje(jsonObject.getString("mensaje"));
 					return respuesta;
 				}
