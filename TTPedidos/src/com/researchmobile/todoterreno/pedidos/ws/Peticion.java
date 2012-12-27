@@ -50,6 +50,7 @@ public class Peticion {
 			if(respuesta.isResultado()){
 				if (connectState.isConnectedToInternet(context)){
 					pedidosPendientes(context);
+					Log.e("TT", "Peticion.login - pendientes");
 				}
 				return respuesta;
 			}else{
@@ -276,15 +277,25 @@ public class Peticion {
 	}
 	
 	public void pedidosPendientes(Context context){
-		if (connectState.isConnectedToInternet(context)){
-			EncabezadoPedido[] pedidos = requestDB.encabezadoPedidoNoSinc(context);
-			int tamano = pedidos.length;
-			for (int i = 0; i < tamano; i++){
-				String ruta = rutaCliente(context, pedidos[i]);
-				enviarPedido(context, pedidos[i], (int)pedidos[i].getId(), ruta);
-				Log.e("TT", "Peticion.pedidosPendientes " + i);
+		try{
+			if (connectState.isConnectedToInternet(context)){
+				//Enviar Pedidos
+				EncabezadoPedido[] pedidos = requestDB.encabezadoPedidoNoSinc(context);
+				int tamano = pedidos.length;
+				for (int i = 0; i < tamano; i++){
+					if (pedidos[i].getMotivo() == 0){
+						String ruta = rutaCliente(context, pedidos[i]);
+						enviarPedido(context, pedidos[i], (int)pedidos[i].getId(), ruta);
+					}else{
+						enviarMotivoPendiente(context, pedidos[i].getId(), pedidos[i].getCodigoCliente(), pedidos[i].getMotivoNoCompra());
+					}
+					
+				}
 			}
+		}catch(Exception exception){
+			
 		}
+		
 	}
 	
 	public String rutaCliente (Context context, EncabezadoPedido encabezado){
@@ -337,6 +348,29 @@ public class Peticion {
 				requestDB.actualizarCampoVisitado(context, codigoCliente);
 				requestDB.actualizarSincEncabezadoPedido(context, numeroPedido);
 			}
+		}else{
+			respuesta.setResultado(false);
+			respuesta.setMensaje("No cuenta con conexión a Internet");
+		}
+		return null;
+	}
+	
+	public RespuestaWS enviarMotivoPendiente(Context context,Long numeroPedido, String codigoCliente, String motivoSeleccionado) {
+		//int numeroPedido = requestDB.ultimoEncabezado(context); 
+		//requestDB.enviarMotivo(context, codigoCliente, motivoSeleccionado);
+		RespuestaWS respuesta = new RespuestaWS();
+		Vendedor vendedor = new Vendedor();
+		vendedor = requestDB.vendedorDB(context);
+		
+		String ruta = requestDB.rutaCliente(context, codigoCliente);
+		if (connectState.isConnectedToInternet(context)){
+			respuesta = requestWS.enviarMotivo(codigoCliente, ruta, vendedor.getIdusuario(), motivoSeleccionado);
+			if (!respuesta.isResultado()){
+				Log.e("TT", "Peticion.enviarMotivoPendiente");
+				requestDB.actualizarCampoVisitado(context, codigoCliente);
+				requestDB.actualizarSincEncabezadoPedido(context, numeroPedido);
+				return respuesta;
+			}return respuesta;
 		}else{
 			respuesta.setResultado(false);
 			respuesta.setMensaje("No cuenta con conexión a Internet");

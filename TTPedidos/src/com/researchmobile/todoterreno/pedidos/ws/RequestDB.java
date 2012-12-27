@@ -584,6 +584,7 @@ public class RequestDB {
 							Entity ent = (Entity)e.next();
 							if (usuario.equalsIgnoreCase(ent.getString("usuario")) && password.equalsIgnoreCase(ent.getString("password"))){
 								respuesta.setResultado(true);
+								
 							}else{
 								respuesta.setResultado(false);
 							}
@@ -1045,9 +1046,11 @@ public class RequestDB {
 						int a=0;
 						while(it.hasNext())
 						{
+							Log.e("TT", "RequestDB.encabezadoPedidoNoSinc, si funciona el while");
 							Entity datoEncabezado = (Entity)it.next();
 					 		EncabezadoPedido temp = new EncabezadoPedido();
 					 		temp.setId(datoEncabezado.getId());
+					 		temp.setMotivo(datoEncabezado.getInt("noventa"));
 					 		temp.setCodigoCliente(datoEncabezado.getString("codigocliente"));
 					 		temp.setTotal(Float.parseFloat(datoEncabezado.getString("total")));
 					 		temp.setFecha(datoEncabezado.getString("fecha"));
