@@ -275,10 +275,6 @@ private ProgressDialog pd = null;
 			salir();
 			return true;
 			
-		case R.id.pedido_menu_sincronizar_opcion:
-			//Sincronizar();
-			//Productos();
-			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}

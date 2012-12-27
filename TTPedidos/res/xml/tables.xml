@@ -1,4 +1,4 @@
-    <database name="todoterreno014" version="1">
+    <database name="todoterreno015" version="1">
 	
 	<!-- U S U A R I O -->
     <table name="usuario" to-string="%usuario%">
@@ -154,7 +154,7 @@
 	<!-- D E T A L L E   P E D I D O  T E M P O R A L-->
 	<table name="detallepedido_temp" to-string="%detallepedido_temp%">
 	    
-	<field name="idEncabezado_temp"		obligatory="false"	type="text"	size="20"/>
+	<field name="idEncabezado_temp"		obligatory="false"	type="integer"	size="20"/>
 	<field name="codigo_temp"		obligatory="false"	type="text"	size="20"/>
 	<field name="nombre_temp"		obligatory="false"	type="text"	size="80"/>
 	<field name="caja_temp"			obligatory="false"	type="integer"/>

@@ -289,7 +289,7 @@ public class RequestDB {
 			{
 				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
 				Entity datoArticulo = new Entity("detallepedido_temp");
-				datoArticulo.setValue("idEncabezado_temp", String.valueOf(numeroPedido));
+				datoArticulo.setValue("idEncabezado_temp", numeroPedido);
 				datoArticulo.setValue("codigo_temp", articulo.getCodigo());
 				datoArticulo.setValue("nombre_temp", articulo.getNombre());
 				datoArticulo.setValue("caja_temp", articulo.getCaja());
@@ -832,6 +832,29 @@ public class RequestDB {
 			}
 		}
 		
+		//Cancelar pedido (Elimina detalle pedido de un numero Pedido
+		public void cancelarPedido(Context context, int numeroPedido) {
+			try {
+				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+				List<Entity> detallePedido = DataFramework.getInstance().getEntityList("detallepedido_temp");
+				int tamano = detallePedido.size();
+				DetallePedido[] detalle = new DetallePedido[tamano];
+				Iterator it = detallePedido.iterator(); 
+				while(it.hasNext())
+				{
+					Entity datoPedido = (Entity)it.next();
+					int encabezado = datoPedido.getInt("idEncabezado_temp");
+					if (encabezado == numeroPedido){
+						long id = datoPedido.getId();
+						Entity ent = new Entity("detallepedido_temp", id);
+						ent.delete();
+					}
+			 	}
+			} catch (Exception exception) {
+				Log.e("TT", "RequestDB.cancelarPedido - error = " + exception);
+			} 
+			
+		}
 		// Metodo que retorna el detalle de pedido de un encabezado en particular
 		public DetallePedido[] buscaDetallePedido (Context context, long numeroPedido){
 			try {
@@ -1096,5 +1119,4 @@ public class RequestDB {
 						return (float) 0;
 					}
 				}
-
 }

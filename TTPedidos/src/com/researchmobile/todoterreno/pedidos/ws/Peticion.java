@@ -241,14 +241,6 @@ public class Peticion {
 		        map.put("nit", cliente[i].getCliNit());
 		        mylist.add(map);
 			}
-			
-			/*map.put("codigoCliente", "001");
-	        map.put("empresa", "Mi Empresa");
-	        map.put("contacto", "Mi Contacto");
-	        map.put("direccion", "Mi Direccion");
-	        map.put("telefono", "Mi Telefono");
-	        map.put("nit", "Mi Nit");*/
-	        
 		}
 		return mylist;
 	}
@@ -318,6 +310,7 @@ public class Peticion {
 	}
 
 	public void enviarPedido(Context context, EncabezadoPedido encabezado, int numeroPedido, String ruta) {
+		requestDB.actualizarCampoVisitado(context, encabezado.getCodigoCliente());
 		if (connectState.isConnectedToInternet(context)){
 			Pedido pedido = new Pedido();
 			pedido.setEncabezadoPedido(encabezado);
@@ -336,6 +329,7 @@ public class Peticion {
 	}
 	
 	public RespuestaWS enviarMotivo(Context context, String codigoCliente, String motivoSeleccionado) {
+		requestDB.actualizarCampoVisitado(context, codigoCliente);
 		int numeroPedido = requestDB.ultimoEncabezado(context); 
 		requestDB.enviarMotivo(context, codigoCliente, motivoSeleccionado);
 		RespuestaWS respuesta = new RespuestaWS();
@@ -397,4 +391,8 @@ public class Peticion {
 		return noVenta;
 	}
 	
+	public void cancelarPedido(Context context, int numeroPedido) {
+		requestDB.cancelarPedido(context, numeroPedido);
+		
+	}
 }

@@ -197,10 +197,9 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 	
 	public void terminarPedido(){
 		llenaEncabezado();
-		getPeticion().insertaEncabezado(this, getEncabezado());	
 		getPeticion().pedidosPendientes(this);
+		getPeticion().insertaEncabezado(this, getEncabezado());	
 		getPeticion().enviarPedido(this, getEncabezado(), getNumeroPedido(), getRuta());
-		
 	}
 	
 	public void llenaEncabezado(){
@@ -219,6 +218,7 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
         .setMessage("¿Esta seguro de cancelar el pedido?")
         .setPositiveButton("Si", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
+                	getPeticion().cancelarPedido(TomarPedido.this, getNumeroPedido());
                      finish();
                 }
         })
