@@ -11,13 +11,17 @@ public class rmString {
 	
 	public boolean diaVisitaHoy(String diaVisita){
 		
-		boolean resultado = diaVisita.startsWith(fecha.diaLetra());
-		return resultado;
+		if (diaVisita.indexOf(fecha.diaLetra()) > -1){
+			return true;
+		}
+		return false;
 	}
 	
 	public boolean semanaVisitaHoy(String semana){
-		boolean resultado = semana.startsWith(String.valueOf(fecha.semanaMes()));
-		return resultado;
+		if (semana.indexOf(String.valueOf(fecha.semanaMes())) > -1){
+			return true;
+		}
+		return false;
 	}
 
 	public String jsonPedido(Pedido pedido, String ruta, String vendedor) {

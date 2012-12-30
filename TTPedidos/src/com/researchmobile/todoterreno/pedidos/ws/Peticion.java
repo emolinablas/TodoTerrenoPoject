@@ -19,6 +19,7 @@ import com.researchmobile.todoterreno.pedidos.entity.RespuestaWS;
 import com.researchmobile.todoterreno.pedidos.entity.User;
 import com.researchmobile.todoterreno.pedidos.entity.Vendedor;
 import com.researchmobile.todoterreno.pedidos.utility.ConnectState;
+import com.researchmobile.todoterreno.pedidos.utility.rmString;
 
 public class Peticion {
 	//Temp
@@ -29,6 +30,7 @@ public class Peticion {
 	private RequestDB requestDB = new RequestDB();
 	private RespuestaWS respuesta = new RespuestaWS();
 	private ConnectState connectState = new ConnectState();
+	private rmString rm = new rmString();
 
 	public void limpiaDB(Context context){
 		requestDB.eliminarArticulos(context);
@@ -163,23 +165,17 @@ public class Peticion {
 		for (int i = 0; i < cliente.length; i++){
 			String visitado = cliente[i].getVisitado();
 			if (visitado.equalsIgnoreCase("null") || visitado.equalsIgnoreCase("0")){
-				HashMap<String, String> map = new HashMap<String, String>();
-				map.put("codigoCliente", cliente[i].getCliCodigo());
-		        map.put("empresa", cliente[i].getCliEmpresa());
-		        map.put("contacto", cliente[i].getCliContacto());
-		        map.put("direccion", cliente[i].getCliDireccion());
-		        map.put("telefono", cliente[i].getCliTelefono());
-		        map.put("nit", cliente[i].getCliNit());
-		        mylist.add(map);
+				if (rm.semanaVisitaHoy(cliente[i].getSemana()) && rm.diaVisitaHoy(cliente[i].getDiaVisita())){
+					HashMap<String, String> map = new HashMap<String, String>();
+					map.put("codigoCliente", cliente[i].getCliCodigo());
+			        map.put("empresa", cliente[i].getCliEmpresa());
+			        map.put("contacto", cliente[i].getCliContacto());
+			        map.put("direccion", cliente[i].getCliDireccion());
+			        map.put("telefono", cliente[i].getCliTelefono());
+			        map.put("nit", cliente[i].getCliNit());
+			        mylist.add(map);
+				}
 			}
-			
-			/*map.put("codigoCliente", "001");
-	        map.put("empresa", "Mi Empresa");
-	        map.put("contacto", "Mi Contacto");
-	        map.put("direccion", "Mi Direccion");
-	        map.put("telefono", "Mi Telefono");
-	        map.put("nit", "Mi Nit");*/
-	        
 		}
 		return mylist;
 		
