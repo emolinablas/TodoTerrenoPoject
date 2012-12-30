@@ -7,6 +7,8 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
@@ -24,6 +26,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -36,6 +39,7 @@ public class Rol extends Activity implements OnClickListener, OnKeyListener, Tex
 	
 private ProgressDialog pd = null;
 	
+	private LinearLayout buscarLayout;
 	private ImageButton borrarImageButton;
 	private EditText buscarEditText;
 	private TextView semanaTextView;
@@ -55,6 +59,8 @@ private ProgressDialog pd = null;
         setContentView(R.layout.rol);
         setPeticion(new Peticion());
         setFecha(new Fecha());
+        
+        setBuscarLayout((LinearLayout)findViewById(R.id.rol_buscar_layout));
         setBuscarEditText((EditText)findViewById(R.id.rol_buscar_editText));
         getBuscarEditText().setOnKeyListener(this);
         getBuscarEditText().addTextChangedListener(this);
@@ -180,6 +186,7 @@ private ProgressDialog pd = null;
 		protected void onPostExecute(Integer resultado) {
 			pd.dismiss();
 			llenaListaPendientes();
+			alertaPendientes();
 		}
 	}
 	
@@ -242,6 +249,15 @@ private ProgressDialog pd = null;
 	
 	private void cargarClientesVisitados() {
 		setClientesVisitadosHashMap(getPeticion().ListaClientesVisitados(Rol.this));
+	}
+	
+	private void alertaPendientes(){
+		Log.e("TT", "Rol.alertaPendientes");
+		if (getPeticion().totalPendientes(this) > 0){
+			getBuscarLayout().setBackgroundDrawable(getResources().getDrawable(R.drawable.alert_layout));
+		}else{
+			getBuscarLayout().setBackgroundDrawable(getResources().getDrawable(R.drawable.background_listview));
+		}
 	}
 	
 	/**
@@ -394,6 +410,14 @@ private ProgressDialog pd = null;
 	public void setClientesVisitadosHashMap(
 			ArrayList<HashMap<String, String>> clientesVisitadosHashMap) {
 		this.clientesVisitadosHashMap = clientesVisitadosHashMap;
+	}
+
+	public LinearLayout getBuscarLayout() {
+		return buscarLayout;
+	}
+
+	public void setBuscarLayout(LinearLayout buscarLayout) {
+		this.buscarLayout = buscarLayout;
 	}
 
 	

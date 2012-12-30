@@ -48,7 +48,9 @@ public class Peticion {
 	public RespuestaWS login(Context context) {
 		try{
 			//limpiaDB(context);
-			respuesta = requestDB.verificaLoginDB(context, User.getUsername(), User.getClave());
+			respuesta.setResultado(true);
+			return respuesta;
+			/*respuesta = requestDB.verificaLoginDB(context, User.getUsername(), User.getClave());
 			if(respuesta.isResultado()){
 				if (connectState.isConnectedToInternet(context)){
 					pedidosPendientes(context);
@@ -75,7 +77,7 @@ public class Peticion {
 					respuesta.setMensaje("No cuenta con conexion a internet");
 					return respuesta;
 				}
-			}
+			}*/
 		}catch(Exception exception){
 			Log.e("TT", "Peticion.login - " + exception);
 			respuesta.setResultado(false);
