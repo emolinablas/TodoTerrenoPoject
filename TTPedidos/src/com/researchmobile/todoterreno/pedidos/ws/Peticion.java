@@ -52,7 +52,6 @@ public class Peticion {
 			if(respuesta.isResultado()){
 				if (connectState.isConnectedToInternet(context)){
 					pedidosPendientes(context);
-					Log.e("TT", "Peticion.login - pendientes");
 				}
 				return respuesta;
 			}else{
@@ -62,6 +61,7 @@ public class Peticion {
 					loginEntity = requestWS.login(User.getUsername(), User.getClave());
 					respuesta = loginEntity.getRespuesta();
 					if (respuesta.isResultado()){
+						pedidosPendientes(context);
 						reiniciaDB(context);
 						guardarDatos(context, loginEntity);
 						cargarClientes(context, loginEntity);

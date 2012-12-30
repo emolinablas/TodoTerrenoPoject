@@ -20,8 +20,10 @@ import com.researchmobile.todoterreno.pedidos.entity.Usuario;
 import com.researchmobile.todoterreno.pedidos.entity.Vendedor;
 import com.researchmobile.todoterreno.pedidos.utility.Fecha;
 
-
 public class RequestDB {
+	
+	private Fecha fecha = new Fecha();
+
 //guarda usuario
 		public void guardaUsuario(Context context, Usuario usuario)
 		{
@@ -35,6 +37,7 @@ public class RequestDB {
 				datoUsuario.setValue("password", usuario.getPassword());
 				datoUsuario.setValue("lastLogin", usuario.getLastLogin());
 				datoUsuario.setValue("activo", usuario.getActivo());
+				datoUsuario.setValue("dia", fecha.diaAnio());
 				datoUsuario.save();
 			}
 			 catch(Exception msj)
@@ -583,21 +586,28 @@ public class RequestDB {
 						{
 							Entity ent = (Entity)e.next();
 							if (usuario.equalsIgnoreCase(ent.getString("usuario")) && password.equalsIgnoreCase(ent.getString("password"))){
-								respuesta.setResultado(true);
-								
+								if (ent.getInt("dia") == fecha.diaAnio()){
+									respuesta.setResultado(true);
+								}else{
+									respuesta.setResultado(false);
+									respuesta.setMensaje("Error 0012 - Login correcto - dia diferente");
+								}
 							}else{
 								respuesta.setResultado(false);
+								respuesta.setMensaje("Error 0013 - Login incorrecto");
 							}
 						}
 					}
 					 else {
 						respuesta.setResultado(false);
+						respuesta.setMensaje("Error 0014 - Login Vacío en DB");
 					 }
 			}
 			catch(Exception msj)
 			{
 				Log.e("TT", "RequestDB.verificaLoginDB error = " + msj);
 				respuesta.setResultado(false);
+				respuesta.setMensaje("Error 0010 - Error en la DB");
 			 msj.printStackTrace();
 			}
 			return respuesta;

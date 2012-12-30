@@ -19,6 +19,11 @@ public class Fecha {
 		return semana;
 	}
 	
+	public int diaAnio(){
+		int dia = Calendar.DAY_OF_YEAR;
+		return dia;
+	}
+	
 	public String diaLetra() {
 		String dia = null;
 		if (getCalendar().get(Calendar.DAY_OF_WEEK) == 1){

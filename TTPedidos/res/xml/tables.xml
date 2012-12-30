@@ -1,4 +1,4 @@
-    <database name="todoterreno015" version="1">
+    <database name="todoterreno016" version="1">
 	
 	<!-- U S U A R I O -->
     <table name="usuario" to-string="%usuario%">
@@ -7,7 +7,8 @@
     <field name="usuario"		obligatory="false" 	type="text" size="20"/>    
     <field name="password"		obligatory="false" 	type="text" size="20"/>    
     <field name="lastLogin"		obligatory="false" 	type="text" size="20"/>
-    <field name="activo"		obligatory="false" 	type="text" size="10"/>    
+    <field name="activo"		obligatory="false" 	type="text" size="10"/>
+    <field name="dia"			obligatory="false" 	type="integer"/>    
         
     </table>
 	

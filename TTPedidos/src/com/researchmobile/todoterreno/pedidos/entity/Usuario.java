@@ -10,6 +10,7 @@ public class Usuario implements Serializable{
 	private String password;
 	private String lastLogin;
 	private String activo;
+	private int dia;
 	public String getId() {
 		return id;
 	}
@@ -40,4 +41,12 @@ public class Usuario implements Serializable{
 	public void setActivo(String activo) {
 		this.activo = activo;
 	}
+	public int getDia() {
+		return dia;
+	}
+	public void setDia(int dia) {
+		this.dia = dia;
+	}
+	
+	
 }
