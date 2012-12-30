@@ -37,6 +37,7 @@ import com.researchmobile.todoterreno.pedidos.entity.Pedido;
 import com.researchmobile.todoterreno.pedidos.utility.Fecha;
 import com.researchmobile.todoterreno.pedidos.utility.FormatDecimal;
 import com.researchmobile.todoterreno.pedidos.utility.Mensaje;
+import com.researchmobile.todoterreno.pedidos.utility.rmString;
 import com.researchmobile.todoterreno.pedidos.ws.Peticion;
 
 public class TomarPedido extends Activity implements TextWatcher, OnItemClickListener, OnClickListener, OnKeyListener {
@@ -242,9 +243,9 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 		final ImageButton eliminarImageButton = (ImageButton) textEntryView.findViewById(R.id.tomar_pedido_dialog_eliminar_imagebutton);
 		final TextView precioTextViewDialog = (TextView) textEntryView.findViewById(R.id.precioTextViewDialog);
 		
-		cajaEditText.setText(String.valueOf(getArticuloSeleccionado().getCaja()));
-		unidadEditText.setText(String.valueOf(getArticuloSeleccionado().getUnidad()));
-		precioTextViewDialog.setText(String.valueOf(getArticuloSeleccionado().getPrecio()));
+		//cajaEditText.setText(String.valueOf(getArticuloSeleccionado().getCaja()));
+		//unidadEditText.setText(String.valueOf(getArticuloSeleccionado().getUnidad()));
+		//precioTextViewDialog.setText(String.valueOf(getArticuloSeleccionado().getPrecio()));
 			
 		FormatDecimal formatDecimal = new FormatDecimal();
 		
@@ -259,8 +260,20 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 		}
 
 			private void insertaDetalle() {
-				int cajas = Integer.parseInt(cajaEditText.getText().toString());
-				int unidades = Integer.parseInt(unidadEditText.getText().toString());
+				String cajaTemp = cajaEditText.getText().toString();
+				String unidadTemp = unidadEditText.getText().toString();
+				
+				int cajas = 0;
+				int unidades = 0;
+				
+				if (!cajaTemp.equalsIgnoreCase("")){
+					cajas = Integer.parseInt(cajaEditText.getText().toString());
+				}
+				
+				if (!unidadTemp.equalsIgnoreCase("")){
+					unidades = Integer.parseInt(unidadEditText.getText().toString());
+				}
+				
 				int totalUnidades = (unidades + (cajas * getArticuloSeleccionado().getUnidadesFardo()));
 				float subTotal = totalUnidades * getArticuloSeleccionado().getPrecio();
 				
