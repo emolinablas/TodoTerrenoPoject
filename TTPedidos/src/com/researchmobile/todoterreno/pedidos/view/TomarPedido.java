@@ -60,6 +60,7 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 	private int numeroPedido;
 	private String codigoCliente;
 	private String ruta;
+	private boolean nuevo;
 	
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -68,6 +69,7 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 		setCodigoCliente((String)bundle.getString("codigoCliente"));
 		setRuta((String)bundle.getString("idRuta"));
 		Log.e("TT", "idruta = " + getRuta());
+		setNuevo(true);
 		setMensaje(new Mensaje());
 		setTotal(0);
 		setFecha(new Fecha());
@@ -123,8 +125,14 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 		   @SuppressWarnings("unchecked")
            HashMap<String, String> selected = (HashMap<String, String>) getSimpleAdapter().getItem(position);
            String codigoProducto = selected.get("codigoProducto");
-           setArticuloSeleccionado(seleccionaArticulo(codigoProducto));
-           agregarDialog();
+           if (isNuevo()){
+        	   setArticuloSeleccionado(seleccionaArticulo(codigoProducto));
+        	   agregarDialog();
+           }else{
+        	   
+           }
+           
+           
            
     }
 	
@@ -171,10 +179,12 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 		}
 	}
 	public void agregarArticulo(){
+		setNuevo(true);
 		new articulosAsync().execute("");
 	}
 	
 	public void verPedido(){
+		setNuevo(false);
 		new pedidoAsync().execute("");
 	}
 	
@@ -243,10 +253,6 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 		final ImageButton eliminarImageButton = (ImageButton) textEntryView.findViewById(R.id.tomar_pedido_dialog_eliminar_imagebutton);
 		final TextView precioTextViewDialog = (TextView) textEntryView.findViewById(R.id.precioTextViewDialog);
 		
-		//cajaEditText.setText(String.valueOf(getArticuloSeleccionado().getCaja()));
-		//unidadEditText.setText(String.valueOf(getArticuloSeleccionado().getUnidad()));
-		//precioTextViewDialog.setText(String.valueOf(getArticuloSeleccionado().getPrecio()));
-			
 		FormatDecimal formatDecimal = new FormatDecimal();
 		
 		final AlertDialog.Builder alert = new AlertDialog.Builder(TomarPedido.this);
@@ -642,5 +648,15 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 	public void setPedidoHashMap(ArrayList<HashMap<String, String>> pedidoHashMap) {
 		this.pedidoHashMap = pedidoHashMap;
 	}
+
+	public boolean isNuevo() {
+		return nuevo;
+	}
+
+	public void setNuevo(boolean nuevo) {
+		this.nuevo = nuevo;
+	}
+	
+	
 	
 }
