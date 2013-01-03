@@ -178,6 +178,34 @@
 	<field name="sinc_temp"			obligatory="false"	type="integer"/>    
 	    
 	</table>
+	
+	<!-- E N C A B E Z A D O   F A C T U R A -->
+	<table name="encabezadofactura"	to-string="%encabezadofactura%">
+	
+	<field name="codigocliente"	obligatory="false"	type="text"	size="20"/>
+	<field name="total"			obligatory="false"	type="float"/>
+	<field name="fecha"			obligatory="false"	type="text"	size="50"/>
+	<field name="hora"			obligatory="false"	type="text"	size="50"/>
+	<field name="credito"		obligatory="false"	type="text"	size="80"/>
+	<field name="sinc"			obligatory="false"	type="integer"/>
+	<field name="idnoventa"		obligatory="false"	type="integer"/>
+	<field name="id"			obligatory="false"	type="integer"/>
+	
+	</table>
+	
+	<!-- D E T A L L E   F A C T U R A -->
+	<table name="detallefactura" to-string="%detallefactura%">
 	    
+	<field name="idEncabezado"		obligatory="false"	type="text"	size="20"/>
+	<field name="codigo"		obligatory="false"	type="text"	size="20"/>
+	<field name="nombre"		obligatory="false"	type="text"	size="80"/>
+	<field name="caja"			obligatory="false"	type="integer"/>
+	<field name="unidad"		obligatory="false"	type="integer"/>
+	<field name="precio"		obligatory="false"	type="float"/>
+	<field name="subtotal"		obligatory="false"	type="float"/>
+	<field name="totalunidades"	obligatory="false"	type="integer"/>
+	<field name="unidadesfardo"	obligatory="false"	type="integer"/>
+	
+	</table>
 	    
 </database>

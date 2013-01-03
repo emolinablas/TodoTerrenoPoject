@@ -1129,4 +1129,120 @@ public class RequestDB {
 						return (float) 0;
 					}
 				}
+//3-01-13
+//guarda encabezado facturación
+				public void encabezadoFactura(Context context, EncabezadoPedido encabezado)
+				{
+					try
+					{
+					DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.ws");
+					Entity datoEncabezado = new Entity("encabezadofactura");
+					datoEncabezado.setValue("codigocliente", encabezado.getCodigoCliente());
+					datoEncabezado.setValue("total", encabezado.getTotal());
+					datoEncabezado.setValue("fecha", encabezado.getFecha());
+					datoEncabezado.setValue("hora", encabezado.getHora());
+					datoEncabezado.setValue("credito", encabezado.getCredito());
+					datoEncabezado.setValue("sinc", encabezado.getSinc());
+					datoEncabezado.setValue("idnoventa",0);
+					datoEncabezado.setValue("id",0);
+					
+					}
+				 		catch(Exception msj)
+				 		{
+				 			msj.printStackTrace();
+				 		}
+				}
+//guarda detalle facturacion
+				public void detalleFactura(Context context, DetallePedido detalle)
+				{
+					try
+					{
+						DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.ws");
+						Entity datodetalle = new Entity("detallefactura");
+						datodetalle.setValue("codigo", detalle.getCodigo());
+						datodetalle.setValue("nombre", detalle.getNombre());
+						datodetalle.setValue("caja", detalle.getCaja());
+						datodetalle.setValue("unidad", detalle.getUnidad());
+						datodetalle.setValue("precio", detalle.getPrecio());
+						datodetalle.setValue("subtotal", detalle.getSubTotal());
+						datodetalle.setValue("totalunidades", detalle.getTotalUnidades());
+						datodetalle.setValue("unidadesfardo", detalle.getUnidadesFardo());
+					}
+					  catch(Exception msj)
+					  {
+						  msj.printStackTrace();
+					  }
+				}
+
+//consulta encabezadofactura
+				public EncabezadoPedido[] encabezadoFactura(Context context)
+				{
+					try
+					{
+						DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+						List<Entity> encabezadoFactura = DataFramework.getInstance().getEntityList("encabezadofactura");
+						int tamano = encabezadoFactura.size();
+						EncabezadoPedido[] totalEncabezados = new EncabezadoPedido[tamano];
+						Iterator it = encabezadoFactura.iterator();
+						int a= 0;
+						while(it.hasNext())
+						{
+							Entity datoEncabezado = (Entity)it.next();
+							EncabezadoPedido temp = new EncabezadoPedido();
+							
+							temp.setCodigoCliente(datoEncabezado.getString("codigocliente"));
+							temp.setTotal(Float.parseFloat(datoEncabezado.getString("total")));
+					 		temp.setFecha(datoEncabezado.getString("fecha"));
+					 		temp.setHora(datoEncabezado.getString("hora"));
+					 		temp.setCredito(datoEncabezado.getString("credito"));
+					 		temp.setSinc(Integer.parseInt(datoEncabezado.getString("sinc")));
+					 		
+					 		totalEncabezados[a]=temp;
+					 		a++;
+						}
+						return totalEncabezados;
+					}
+			
+					catch(Exception e)
+					{
+					 return null;	
+					}
+				}
+//consulta detallefactura
+				public DetallePedido[] detalleFacturacion(Context context)
+				{
+					try
+					{
+						DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+						List<Entity> detalleFacturacion = DataFramework.getInstance().getEntityList("detallefactura");
+						int tamano = detalleFacturacion.size();
+						DetallePedido[] totaldetalle = new DetallePedido[tamano];
+						Iterator it = detalleFacturacion.iterator();
+						int a=0;
+						while(it.hasNext())
+						{
+							Entity datodetalle = (Entity)it.next();
+							DetallePedido temp = new DetallePedido();
+							
+							temp.setCodigo(datodetalle.getString("codigo"));
+							temp.setNombre(datodetalle.getString("nombre"));
+							temp.setCaja(Integer.parseInt(datodetalle.getString("caja")));
+							temp.setUnidad(Integer.parseInt(datodetalle.getString("unidad")));
+							temp.setPrecio(Float.parseFloat(datodetalle.getString("precio")));
+							temp.setSubTotal(Float.parseFloat(datodetalle.getString("subtotal")));
+							temp.setTotalUnidades(Integer.parseInt(datodetalle.getString("totalunidades")));
+							temp.setUnidadesFardo(Integer.parseInt(datodetalle.getString("unidadesfardo")));
+							
+							totaldetalle[a]= temp;
+							a++;
+							
+						}
+						return totaldetalle;	
+					}
+					
+					catch(Exception e)
+					{
+						return null;
+					}
+				}
 }
