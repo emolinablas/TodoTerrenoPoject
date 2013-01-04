@@ -258,7 +258,7 @@
                         <Spinner 
                             android:id="@+id/detalle_cliente_motivos_spinner"
                             android:layout_width="260sp"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content" style="@style/Spinner_001"/>
                         
                         <Button 
                             android:id="@+id/detalle_cliente_enviarnovente_button"

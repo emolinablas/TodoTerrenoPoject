@@ -50,7 +50,7 @@
                 android:id="@+id/login_entrar_button"
                 android:layout_width="100sp"
                 android:layout_height="wrap_content"
-                android:text="@string/login_entrar_button" />
+                android:text="@string/login_entrar_button" style="@style/Button_001"/>
 
         </LinearLayout>
 

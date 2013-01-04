@@ -71,7 +71,7 @@
                     android:id="@+id/rol_borrar_imagebutton"
                     android:layout_width="wrap_content"
                     android:layout_height="50sp"
-                    android:src="@drawable/clear" />
+                    android:src="@drawable/clear" style="@style/Button_001"/>
 
             </LinearLayout>
         </LinearLayout>
