@@ -708,6 +708,39 @@ public class RequestDB {
 			
 			
 		}
+		
+
+	// buscaArticulo Pedido
+	public DetallePedido buscaArticuloPedido(Context context, String codigoArticulo, int numeroPedido) {
+		DetallePedido articulo = new DetallePedido();
+		try {
+			DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+			List<Entity> categories = DataFramework.getInstance().getEntityList("detallepedido_temp");
+			Iterator e = categories.iterator();
+			while (e.hasNext()) {
+				Entity d = (Entity) e.next();
+				String codigo = d.getString("codigo_temp");
+				int pedido = d.getInt("idEncabezado_temp");
+				if (codigo.equalsIgnoreCase(codigoArticulo) && pedido == numeroPedido) {
+					articulo.setIdDb(d.getId());
+					articulo.setCodigo(d.getString("codigo_temp"));
+					articulo.setCaja(d.getInt("caja_temp"));
+					articulo.setUnidad(d.getInt("unidad_temp"));
+					articulo.setNombre(d.getString("nombre_temp"));
+					articulo.setPrecio(d.getFloat("precio_temp"));
+					articulo.setSubTotal(d.getFloat("subtotal_temp"));
+					articulo.setTotalUnidades(d.getInt("totalunidades_temp"));
+					articulo.setUnidadesFardo(d.getInt("unidadesfardo_temp"));
+					return articulo;
+				}
+
+			}
+			return articulo;
+		} catch (Exception exception) {
+			return null;
+		}
+
+	}
 //ultima llave
 		
 		public int ultimoEncabezado(Context context){
@@ -1245,4 +1278,53 @@ public class RequestDB {
 						return null;
 					}
 				}
+//Eiminar un Articulo del pedido
+	public void eliminaArticuloPedido(Context context, long idDb) {
+		try{
+			DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+			Entity ent = new Entity("detallepedido_temp", idDb);
+			ent.delete();
+		}catch(Exception exception){
+			
+		}
+	}
+
+	public void editarArticuloPedido(Context context, DetallePedido articuloSeleccionado) {
+		try{
+			DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+			Entity ent = new Entity("detallepedido_temp", articuloSeleccionado.getIdDb());
+			ent.setValue("caja_temp", articuloSeleccionado.getCaja());
+			ent.setValue("unidad_temp", articuloSeleccionado.getUnidad());
+			ent.setValue("subtotal_temp", articuloSeleccionado.getSubTotal());
+			ent.setValue("totalunidades_temp", articuloSeleccionado.getTotalUnidades());
+			ent.save();
+		}catch(Exception exception){
+			
+		}
+		
+	}
+
+	public float totalActual(Context context, int numeroPedido) {
+		try{
+			float total = 0;
+			DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+			List<Entity> detallePedido = DataFramework.getInstance().getEntityList("detallepedido_temp");
+			int tamano = detallePedido.size();
+			Iterator it = detallePedido.iterator();
+			while(it.hasNext())
+			{
+				Entity datodetalle = (Entity)it.next();
+				int pedido = datodetalle.getInt("idEncabezado_temp");
+				if (pedido == numeroPedido){
+					float subtotal = datodetalle.getFloat("subtotal_temp");
+					total = total + subtotal;
+				}
+			}
+			return total;
+			
+		}catch(Exception exception){
+			
+		}
+		return 0;
+	}
 }

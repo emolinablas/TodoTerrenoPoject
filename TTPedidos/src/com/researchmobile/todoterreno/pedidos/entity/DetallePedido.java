@@ -13,6 +13,7 @@ public class DetallePedido implements Serializable{
 	private float subTotal;
 	private int totalUnidades;
 	private int unidadesFardo;
+	private long idDb;
 	public String getCodigo() {
 		return codigo;
 	}
@@ -61,4 +62,11 @@ public class DetallePedido implements Serializable{
 	public void setUnidadesFardo(int unidadesFardo) {
 		this.unidadesFardo = unidadesFardo;
 	}
+	public long getIdDb() {
+		return idDb;
+	}
+	public void setIdDb(long idDb) {
+		this.idDb = idDb;
+	}
+	
 }

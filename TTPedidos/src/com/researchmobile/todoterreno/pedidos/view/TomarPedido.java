@@ -116,7 +116,12 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 	
 	public DetallePedido seleccionaArticulo(String codigoProducto){
 		DetallePedido articulo = new DetallePedido();
-		articulo = getPeticion().buscaArticulo(TomarPedido.this, codigoProducto);
+		if (isNuevo()){
+			articulo = getPeticion().buscaArticulo(TomarPedido.this, codigoProducto);
+		}else{
+			articulo = getPeticion().buscaArticuloPedido(TomarPedido.this, codigoProducto, getNumeroPedido());
+		}
+		
 		return articulo;
 	}
 	
@@ -125,15 +130,8 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 		   @SuppressWarnings("unchecked")
            HashMap<String, String> selected = (HashMap<String, String>) getSimpleAdapter().getItem(position);
            String codigoProducto = selected.get("codigoProducto");
-           if (isNuevo()){
-        	   setArticuloSeleccionado(seleccionaArticulo(codigoProducto));
-        	   agregarDialog();
-           }else{
-        	   
-           }
-           
-           
-           
+           setArticuloSeleccionado(seleccionaArticulo(codigoProducto));
+           agregarDialog();
     }
 	
 	/**
@@ -247,14 +245,17 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 		LayoutInflater factory = LayoutInflater.from(TomarPedido.this);            
      
 		final View textEntryView = factory.inflate(R.layout.tomar_pedido_dialog, null);
-		
 		final EditText cajaEditText = (EditText) textEntryView.findViewById(R.id.tomarpedido_dialog_caja_edittext);
 		final EditText unidadEditText = (EditText) textEntryView.findViewById(R.id.tomarpedido_dialog_unidad_edittext);
-		final ImageButton eliminarImageButton = (ImageButton) textEntryView.findViewById(R.id.tomar_pedido_dialog_eliminar_imagebutton);
 		final TextView precioTextViewDialog = (TextView) textEntryView.findViewById(R.id.precioTextViewDialog);
-		
-		FormatDecimal formatDecimal = new FormatDecimal();
-		
+		Log.e("TT", "cajas = " + getArticuloSeleccionado().getCaja());
+		if (getArticuloSeleccionado().getCaja() > 0){
+			cajaEditText.setText(String.valueOf(getArticuloSeleccionado().getCaja()));
+		}
+		if (getArticuloSeleccionado().getUnidad() > 0){
+			unidadEditText.setText(String.valueOf(getArticuloSeleccionado().getUnidad()));
+		}
+		precioTextViewDialog.setText(String.valueOf(getArticuloSeleccionado().getPrecio()));
 		final AlertDialog.Builder alert = new AlertDialog.Builder(TomarPedido.this);
 		alert.setTitle(getArticuloSeleccionado().getNombre());
 		alert.setView(textEntryView);
@@ -287,8 +288,14 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 				getArticuloSeleccionado().setUnidad(unidades);
 				getArticuloSeleccionado().setTotalUnidades(totalUnidades);
 				getArticuloSeleccionado().setSubTotal(subTotal);
+				if(isNuevo()){
+					getPeticion().insertaArticuloTemp(TomarPedido.this, getArticuloSeleccionado(), getNumeroPedido());
+				}else{
+					getPeticion().editaArticuloPedido(TomarPedido.this, getArticuloSeleccionado());
+					actualizaTotalGeneral();
+					verPedido();
+				}
 				
-				getPeticion().insertaArticuloTemp(TomarPedido.this, getArticuloSeleccionado(), getNumeroPedido());
 			}
 		
      });
@@ -301,25 +308,29 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
          }
      });
      
-     eliminarImageButton.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				cajaEditText.setText("");
-				unidadEditText.setText("");
-				
-			}
-		});
-     
+     alert.setNeutralButton("X", new DialogInterface.OnClickListener()
+     {
+         public void onClick(DialogInterface dialog, int whichButton)
+         {
+        	 if (!isNuevo()){
+					eliminarArticulo();
+				}else{
+					cajaEditText.setText("");
+					unidadEditText.setText("");
+				}
+         }
+     });
      alert.show();
-		
 	}
+	
 
+	private void eliminarArticulo() {
+		getPeticion().eliminaArticuloPedido(TomarPedido.this, getArticuloSeleccionado().getIdDb());
+		actualizaTotalGeneral();
+		verPedido();
+	}
 	protected void actualizaTotalGeneral() {
-		float totalActual = getTotal();
-		float subTotal = getArticuloSeleccionado().getSubTotal();
-		float nuevoTotal = totalActual + subTotal;
-		setTotal(nuevoTotal);
+		setTotal(getPeticion().totalActual(TomarPedido.this, getNumeroPedido()));
 		getTotalGeneralTextView().setText(String.valueOf(getTotal()));
 		
 	}

@@ -302,6 +302,18 @@ public class Peticion {
 		// TODO Auto-generated method stub
 		return articulo;
 	}
+	
+	public DetallePedido buscaArticuloPedido(Context context, String codigoProducto, int numeroPedido) {
+		DetallePedido articulo = new DetallePedido();
+		articulo = requestDB.buscaArticuloPedido(context, codigoProducto, numeroPedido);
+		
+		// TODO Auto-generated method stub
+		return articulo;
+	}
+	
+	public void eliminaArticuloPedido(Context context, long idDb) {
+		requestDB.eliminaArticuloPedido(context, idDb);
+	}
 
 	public int numeroPedido(Context context) {
 		int numero = 0;
@@ -394,4 +406,12 @@ public class Peticion {
 		requestDB.cancelarPedido(context, numeroPedido);
 		
 	}
+	public void editaArticuloPedido(Context context, DetallePedido articuloSeleccionado) {
+		requestDB.editarArticuloPedido(context, articuloSeleccionado);		
+	}
+	public float totalActual(Context context, int numeroPedido) {
+		float totalActual = requestDB.totalActual(context, numeroPedido);
+		return totalActual;
+	}
+	
 }

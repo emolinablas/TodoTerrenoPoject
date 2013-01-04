@@ -89,13 +89,6 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:orientation="vertical" >
-
-                <ImageButton
-                    android:id="@+id/tomar_pedido_dialog_eliminar_imagebutton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10sp"
-                    android:src="@drawable/salir" />
             </LinearLayout>
         </LinearLayout>
 
