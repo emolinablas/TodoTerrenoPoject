@@ -39,8 +39,8 @@ public class Login extends Activity implements OnClickListener, OnKeyListener{
         getContraseniaEditText().setOnKeyListener(this);
         setEntrarButton((Button)findViewById(R.id.login_entrar_button));
         getEntrarButton().setOnClickListener(this);
-        getUsuarioEditText().setText("gersont");
-        getContraseniaEditText().setText("123");
+        getUsuarioEditText().setText("");
+        getContraseniaEditText().setText("");
     }
 
 	@Override
