@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" android:background="@drawable/principal_background">
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/nuevo_titulo_textview" style="@style/CodeFont_title"/>
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" android:background="@drawable/secundary_background" android:gravity="center">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/nuevo_nombre_textview" style="@style/CodeFont_label"/>
+
+
+        <EditText
+            android:id="@+id/nuevo_nombre_edittext"
+            android:layout_width="220sp"
+            android:layout_height="wrap_content"
+            android:hint="@string/nuevo_nombre_hint" android:inputType="textPersonName"/>
+        
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/nuevo_nit_textview" style="@style/CodeFont_label"/>
+
+
+        <EditText
+            android:id="@+id/nuevo_nit_edittext"
+            android:layout_width="220sp"
+            android:layout_height="wrap_content"
+            android:hint="@string/nuevo_nit_hint" />
+        
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/nuevo_contacto_textview" style="@style/CodeFont_label"/>
+
+
+        <EditText
+            android:id="@+id/nuevo_contacto_edittext"
+            android:layout_width="220sp"
+            android:layout_height="wrap_content"
+            android:hint="@string/nuevo_contacto_hint" android:inputType="textPersonName"/>
+        
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/nuevo_telefono_textview" style="@style/CodeFont_label"/>
+
+
+        <EditText
+            android:id="@+id/nuevo_telefono_edittext"
+            android:layout_width="220sp"
+            android:layout_height="wrap_content"
+            android:hint="@string/nuevo_telefono_hint" android:inputType="phone"/>
+        
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/nuevo_direccion_textview" style="@style/CodeFont_label"/>
+
+
+        <EditText
+            android:id="@+id/nuevo_direccion_edittext"
+            android:layout_width="220sp"
+            android:layout_height="wrap_content"
+            android:hint="@string/nuevo_direccion_hint" android:inputType="textPostalAddress"/>
+        
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:gravity="center">
+
+            <Button
+                android:id="@+id/nuevo_crear_button"
+                android:layout_width="140sp"
+                android:layout_height="wrap_content"
+                android:text="@string/nuevo_crear_button" style="@style/Button_001"/>
+            
+            <Button
+                android:id="@+id/nuevo_cancelar_button"
+                android:layout_width="140sp"
+                android:layout_height="wrap_content"
+                android:text="@string/nuevo_cancelar_button" style="@style/Button_001"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

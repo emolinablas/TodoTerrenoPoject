@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- TextView -->
+    <string name="nuevo_titulo_textview">NUEVO CLIENTE</string>
+    
+    <string name="nuevo_nombre_textview">Nombre</string>
+    <string name="nuevo_nit_textview">Nit</string>
+    <string name="nuevo_contacto_textview">Contacto</string>
+    <string name="nuevo_telefono_textview">Telefono</string>
+    <string name="nuevo_direccion_textview">Dirección</string>
+    
+    <!-- Button -->
+    <string name="nuevo_crear_button">Crear Cliente</string>
+    <string name="nuevo_cancelar_button">Cancelar</string>
+    
+    
+    <!-- Hint -->
+    <string name="nuevo_nombre_hint">Nombre</string>
+    <string name="nuevo_nit_hint">Nit</string>
+    <string name="nuevo_contacto_hint">Contacto</string>
+    <string name="nuevo_telefono_hint">Telefono</string>
+    <string name="nuevo_direccion_hint">Dirección</string>
+</resources>

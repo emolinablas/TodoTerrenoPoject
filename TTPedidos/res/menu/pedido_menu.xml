@@ -14,4 +14,9 @@
         android:id="@+id/pedido_menu_salir_opcion" 
         android:title="SALIR"
         android:icon="@drawable/salir"></item>
+    
+    <item 
+        android:id="@+id/pedido_menu_nuevo_opcion" 
+        android:title="NUEVO"
+        android:icon="@drawable/add_user"></item>
 </menu>

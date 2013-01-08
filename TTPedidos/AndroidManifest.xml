@@ -24,6 +24,7 @@
         <activity android:name="DetalleCliente" android:screenOrientation="portrait" android:configChanges="orientation"></activity>
         <activity android:name="TomarPedido" android:screenOrientation="portrait" android:configChanges="orientation"></activity>
         <activity android:name="ListaPedidos" android:screenOrientation="portrait" android:configChanges="orientation"></activity>
+        <activity android:name="NuevoCliente" android:screenOrientation="portrait" android:configChanges="orientation"></activity>
     </application>
 
 </manifest>

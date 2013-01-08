@@ -291,11 +291,19 @@ private ProgressDialog pd = null;
 			salir();
 			return true;
 			
+		case R.id.pedido_menu_nuevo_opcion:
+			nuevoCliente();
+			return true;
+			
 		default:
 			return super.onOptionsItemSelected(item);
 		}
 	}
 	
+	private void nuevoCliente(){
+		Intent intent = new Intent(Rol.this, NuevoCliente.class);
+		startActivity(intent);
+	}
 	private void salir() {
 		Intent intent = new Intent(Rol.this, Login.class);
 		startActivity(intent);
