@@ -10,6 +10,7 @@
     <string name="nuevo_direccion_textview">Dirección</string>
     <string name="nuevo_codigo_textview">Codigo </string>
     <string name="nuevo_categoria_textview">Categoria </string>
+    <string name="nuevo_diavisita_textview">Dia Visita </string>
     
     <!-- Button -->
     <string name="nuevo_crear_button">Crear Cliente</string>
