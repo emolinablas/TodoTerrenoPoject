@@ -207,5 +207,13 @@
 	<field name="unidadesfardo"	obligatory="false"	type="integer"/>
 	
 	</table>
+	
+	<!-- C A T E G O R I A  -->
+	<table name="categoria" to-string="%detallefactura%">
+	    
+	    <field name="id_categoria" obligatory="false" type="text" size="20"/>
+	    <field name="descripcion"  obligatory="false" type="text" size="50"/>
+	    
+	</table>
 	    
 </database>
