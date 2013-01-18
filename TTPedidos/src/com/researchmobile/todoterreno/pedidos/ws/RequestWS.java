@@ -8,6 +8,7 @@ import android.util.Log;
 import com.researchmobile.todoterreno.pedidos.entity.Articulo;
 import com.researchmobile.todoterreno.pedidos.entity.Cliente;
 import com.researchmobile.todoterreno.pedidos.entity.ListaArticulos;
+import com.researchmobile.todoterreno.pedidos.entity.ListaCategoria;
 import com.researchmobile.todoterreno.pedidos.entity.ListaClientes;
 import com.researchmobile.todoterreno.pedidos.entity.LoginEntity;
 import com.researchmobile.todoterreno.pedidos.entity.NoVenta;
@@ -27,6 +28,7 @@ public class RequestWS {
 	private static String WS_PRODUCTOS = "ws_articulos.php?a=catalogo&idportafolio=";
 	private static String WS_ENVIO = "json.php?username=";
 	private static String WS_ENVIAMOTIVO = "ws_noventa.php?cliente=";
+	private static String WS_CATEGORIAS = "ws_categorias.php?";
 
 	// Metodo que llena el Entity del login
 	@SuppressWarnings("unused")
@@ -151,6 +153,26 @@ public class RequestWS {
 			return null;
 		}
 
+		
+	}
+	
+	//Metodo captura caterog’a
+	public ListaCategoria listaCategoria(){
+		String url = WS_CATEGORIAS;
+		
+		JSONObject jsonObject = ConnectWS.obtenerJson(url);
+		System.out.println("RESPUESTA WS LOGIN: " + jsonObject.toString());
+		ListaCategoria listaCategoria = new ListaCategoria();
+		try{
+			if(jsonObject.has("resultado")){
+				listaCategoria.setRespuesta(new RespuestaWS());
+				listaCategoria.getRespuesta().setResultado(jsonObject.getBoolean("resultado"));
+				listaCategoria.getRespuesta().setMensaje(jsonObject.getString("mensaje"));
+			}
+		}catch(Exception e){
+			
+		}
+		return null;
 		
 	}
 	
