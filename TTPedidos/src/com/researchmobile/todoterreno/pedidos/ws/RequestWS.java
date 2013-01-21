@@ -105,7 +105,7 @@ public class RequestWS {
 						int tamano = rutasJsonArray.length();
 						Ruta[] rutas = new Ruta[tamano];
 						for(int i=0; i < tamano; i++){ // recorro el Array para asignar cada registro a una variable a un objeto temporal y luego agregarlo al Array de listaClientes
-						JSONObject rutasJsonObject = rutasJsonArray.getJSONObject(0);
+						JSONObject rutasJsonObject = rutasJsonArray.getJSONObject(i);
 						Ruta temp = new Ruta();
 						//temp.setIdPortafolio(nullToString(rutasJsonObject.getString("IDportafolio")));
 						temp.setId(nullToString(rutasJsonObject.getString("ID")));
