@@ -11,9 +11,10 @@ import com.android.dataframework.Entity;
 import com.researchmobile.todoterreno.pedidos.entity.Articulo;
 import com.researchmobile.todoterreno.pedidos.entity.Categoria;
 import com.researchmobile.todoterreno.pedidos.entity.Cliente;
+import com.researchmobile.todoterreno.pedidos.entity.ClienteNuevo;
 import com.researchmobile.todoterreno.pedidos.entity.DetallePedido;
 import com.researchmobile.todoterreno.pedidos.entity.EncabezadoPedido;
-import com.researchmobile.todoterreno.pedidos.entity.NCliente;
+import com.researchmobile.todoterreno.pedidos.entity.ListaCategoria;
 import com.researchmobile.todoterreno.pedidos.entity.NoVenta;
 import com.researchmobile.todoterreno.pedidos.entity.Portafolio;
 import com.researchmobile.todoterreno.pedidos.entity.RespuestaWS;
@@ -48,6 +49,26 @@ public class RequestDB {
 				 Log.e("TT", "RequestDB.guardaUsuario = " + msj);
 				 msj.printStackTrace();
 			 }
+		}
+		
+		public void guardarNuevoCliente(Context context, ClienteNuevo cliente) {
+			try{
+				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+				Entity datoUsuario = new Entity("nuevocliente");
+				datoUsuario.setValue("idnuevo_cliente", cliente.getIdNuevoCliente());
+				datoUsuario.setValue("nit", cliente.getNit());
+				datoUsuario.setValue("nombre_negocio", cliente.getNombreNegocio());
+				datoUsuario.setValue("categoria_cliente", cliente.getCategoriaCliente());
+				datoUsuario.setValue("nombre_contacto", cliente.getNombreContacto());
+				datoUsuario.setValue("telefono", cliente.getTelefono());
+				datoUsuario.setValue("direccion", cliente.getDireccion());
+				datoUsuario.setValue("ruta", cliente.getRuta());
+				datoUsuario.setValue("dia_visita", cliente.getDiaVisita());
+				datoUsuario.save();
+			}catch(Exception exception){
+				
+			}
+			
 		}
 		
 //guarda Motivo seleccionado
@@ -1390,64 +1411,8 @@ public class RequestDB {
 			 return false;
 		 }
 	}
-	//guarda nuevo_cliente
-	public void ncliente(Context context, NCliente[] ncliente)
-	{
-		try
-		{
-			int longitud = ncliente.length;
-			for(int a=0; a<longitud; a++)
-			{
-				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.ws");
-				Entity datonuevocliente = new Entity("nuevocliente");
-				datonuevocliente.setValue("idnuevo_cliente", ncliente[a].getidNuevoCliente());
-				datonuevocliente.setValue("nit", ncliente[a].getNit());
-				datonuevocliente.setValue("nombre_negocio", ncliente[a].getNombreNegocio());
-				datonuevocliente.setValue("categoria_cliente", ncliente[a].getCategoriaCliente());
-				datonuevocliente.setValue("nombre_contacto", ncliente[a].getNombreContacto());
-				datonuevocliente.setValue("telefono", ncliente[a].getTelefono());
-				datonuevocliente.setValue("direccion", ncliente[a].getDireccion());
-				datonuevocliente.setValue("ruta", ncliente[a].getRuta());
-				datonuevocliente.setValue("dia_visita", ncliente[a].getDiaVisita());
-				datonuevocliente.save();
-			}
-		}
-		 catch(Exception msj)
-		 {
-			 msj.printStackTrace();
-		 }
-	}
-	//busca nuevo_cliente
-	public NCliente buscaNCliente (String idNuevoCliente)
-	{
-		NCliente ncliente = new NCliente();
-		try
-		{
-			List<Entity> categories = DataFramework.getInstance().getEntityList("nuevocliente","idnuevo_cliente="+ idNuevoCliente);
-			{
-				Iterator it = categories.iterator();
-				while(it.hasNext())
-				{
-					Entity ent = (Entity)it.next();
-					ncliente.setidNuevoCliente(ent.getString("idnuevo_cliente"));
-					ncliente.setNit(ent.getString("Nit"));
-					ncliente.setNombreNegocio(ent.getString("nombre_negocio"));
-					ncliente.setCategoriaCliente(ent.getString("categoria_cliente"));
-					ncliente.setNombreContacto(ent.getString("NombreContacto"));
-					ncliente.setTelefono(ent.getString("telefono"));
-					ncliente.setDireccion(ent.getString("direccion"));
-					ncliente.setRuta(ent.getString("ruta"));
-					ncliente.setDiaVisita(ent.getString("dia_visita"));
-				}
-			}
-			return ncliente;
-		}
-		 catch(Exception msj)
-		 {
-			 msj.printStackTrace();
-			 return null;
-		 }
-	}
+	
+	
 	
 	//vaciar tabla nuevo_cliente
 		public boolean limpiaNcliente(Context context)
@@ -1463,4 +1428,41 @@ public class RequestDB {
 				 return false;
 			 }
 		}
+		
+		public ListaCategoria buscaCategoria(Context context) {
+			try
+			{
+				ListaCategoria listaCategoria = new ListaCategoria();
+				listaCategoria.setCategoria(null);
+				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+				List<Entity> categories = DataFramework.getInstance().getEntityList("nuevocliente");
+			 			int tamano = categories.size();
+			 			Categoria[] categoria = new Categoria[tamano];
+			 			if (tamano > 0){
+			 				listaCategoria.setCategoria(new Categoria[tamano]);
+			 				Iterator iter = categories.iterator();
+			 				int i = 0;
+				 			while(iter.hasNext())
+				 			{
+				 			Entity datoCategoria = (Entity)iter.next();
+				 			Categoria temp = new Categoria();
+				 			temp.setIdCategoria(datoCategoria.getString("id"));
+				 			temp.setDescripcion((datoCategoria.getString("descripcion")));
+				 			categoria[i] = temp;
+				 			i++;
+				 			}
+			 			}else{
+			 				return null;
+			 			}
+			 			listaCategoria.setCategoria(categoria);
+			 			
+			 		return listaCategoria;
+			 }
+			  catch(Exception msj)
+			  {
+				msj.printStackTrace();
+				return null;
+			  }
+		}
+
 }

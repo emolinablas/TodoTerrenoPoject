@@ -61,6 +61,7 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 	private String codigoCliente;
 	private String ruta;
 	private boolean nuevo;
+	private FormatDecimal formatDecimal;
 	
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -74,12 +75,14 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 		setTotal(0);
 		setFecha(new Fecha());
 		setTotalGeneralTextView((TextView)findViewById(R.id.tomar_pedido_total_textview));
-		getTotalGeneralTextView().setText(String.valueOf(getTotal()));
+		getTotalGeneralTextView().setText(getFormatDecimal().convierteFloat(getTotal()));
 		setBuscarEditText((EditText)findViewById(R.id.tomar_pedido_buscar_edittext));
 		setBorrarImageButton((ImageButton)findViewById(R.id.tomar_pedido_borrar_imagebutton));
 		setArticulosListView((ListView)findViewById(R.id.tomar_pedido_lista_productos_listview));
 		setPeticion(new Peticion());
 		setPedido(new Pedido());
+		
+		setFormatDecimal(new FormatDecimal());
 		
 		getBuscarEditText().setOnKeyListener(this);
 		getBuscarEditText().addTextChangedListener(this);
@@ -255,7 +258,7 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 		if (getArticuloSeleccionado().getUnidad() > 0){
 			unidadEditText.setText(String.valueOf(getArticuloSeleccionado().getUnidad()));
 		}
-		precioTextViewDialog.setText(String.valueOf(getArticuloSeleccionado().getPrecio()));
+		precioTextViewDialog.setText(getFormatDecimal().convierteFloat(getArticuloSeleccionado().getPrecio()));
 		final AlertDialog.Builder alert = new AlertDialog.Builder(TomarPedido.this);
 		alert.setTitle(getArticuloSeleccionado().getNombre());
 		alert.setView(textEntryView);
@@ -667,7 +670,13 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 	public void setNuevo(boolean nuevo) {
 		this.nuevo = nuevo;
 	}
-	
-	
+
+	public FormatDecimal getFormatDecimal() {
+		return formatDecimal;
+	}
+
+	public void setFormatDecimal(FormatDecimal formatDecimal) {
+		this.formatDecimal = formatDecimal;
+	}
 	
 }

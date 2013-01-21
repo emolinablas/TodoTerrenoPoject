@@ -54,7 +54,7 @@
 
         <EditText
             android:id="@+id/nuevo_nombre_edittext"
-            android:layout_width="220sp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/nuevo_nombre_hint" android:inputType="textPersonName"/>
         
@@ -67,7 +67,7 @@
 
         <EditText
             android:id="@+id/nuevo_nit_edittext"
-            android:layout_width="220sp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/nuevo_nit_hint" />
         
@@ -80,7 +80,7 @@
 
         <EditText
             android:id="@+id/nuevo_contacto_edittext"
-            android:layout_width="220sp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/nuevo_contacto_hint" android:inputType="textPersonName"/>
         
@@ -93,7 +93,7 @@
 
         <EditText
             android:id="@+id/nuevo_telefono_edittext"
-            android:layout_width="220sp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/nuevo_telefono_hint" android:inputType="phone"/>
         
@@ -106,7 +106,7 @@
 
         <EditText
             android:id="@+id/nuevo_direccion_edittext"
-            android:layout_width="220sp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/nuevo_direccion_hint" android:inputType="textPostalAddress"/>
         
@@ -124,7 +124,8 @@
             <LinearLayout 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:gravity="center">
             
                 <TextView
             android:id="@+id/textView2"
@@ -143,7 +144,9 @@
             <LinearLayout 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginLeft="10sp"
+            android:gravity="center">
             
                 <TextView
             android:id="@+id/textView2"
@@ -162,7 +165,9 @@
             <LinearLayout 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginLeft="10sp"
+            android:gravity="center">
             
                 <TextView
             android:id="@+id/textView2"
@@ -181,54 +186,75 @@
         </LinearLayout>
             
         
-        
         <LinearLayout 
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             
-            <TextView
+            <LinearLayout 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+			android:gravity="center">
+            
+                <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="J" style="@style/CodeFont_label"/>
             
-            <TextView
+            <CheckBox 
+                android:id="@+id/nuevo_jueves_checkBox"
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	/>
+            
+        </LinearLayout>
+        
+            <LinearLayout 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="10sp"
+            android:gravity="center">
+            
+                <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="V" style="@style/CodeFont_label"/>
+                
+                <CheckBox 
+                android:id="@+id/nuevo_viernes_checkBox"
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	/>
+                
+        </LinearLayout>
+        
+            <LinearLayout 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="10sp"
+            android:gravity="center">
             
-            <TextView
+                <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="S" style="@style/CodeFont_label"/>
+                
+                <CheckBox 
+                android:id="@+id/nuevo_sabado_checkBox"
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	/>
+                
+        </LinearLayout>
             
         </LinearLayout>
         
-        <LinearLayout 
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            
-            <CheckBox 
-                android:id="@+id/nuevo_jueves_checkBox"
-            	android:layout_width="fill_parent"
-            	android:layout_height="wrap_content"
-            	/>
-            <CheckBox 
-                android:id="@+id/nuevo_viernes_checkBox"
-            	android:layout_width="fill_parent"
-            	android:layout_height="wrap_content"
-            	/>
-            <CheckBox 
-                android:id="@+id/nuevo_sabado_checkBox"
-            	android:layout_width="fill_parent"
-            	android:layout_height="wrap_content"
-            	/>
-            
-        </LinearLayout>
         
         <LinearLayout
             android:id="@+id/linearLayout2"

@@ -8,9 +8,11 @@ import android.util.Log;
 
 import com.researchmobile.todoterreno.pedidos.entity.Articulo;
 import com.researchmobile.todoterreno.pedidos.entity.Cliente;
+import com.researchmobile.todoterreno.pedidos.entity.ClienteNuevo;
 import com.researchmobile.todoterreno.pedidos.entity.DetallePedido;
 import com.researchmobile.todoterreno.pedidos.entity.EncabezadoPedido;
 import com.researchmobile.todoterreno.pedidos.entity.ListaArticulos;
+import com.researchmobile.todoterreno.pedidos.entity.ListaCategoria;
 import com.researchmobile.todoterreno.pedidos.entity.ListaClientes;
 import com.researchmobile.todoterreno.pedidos.entity.LoginEntity;
 import com.researchmobile.todoterreno.pedidos.entity.NoVenta;
@@ -19,6 +21,7 @@ import com.researchmobile.todoterreno.pedidos.entity.RespuestaWS;
 import com.researchmobile.todoterreno.pedidos.entity.User;
 import com.researchmobile.todoterreno.pedidos.entity.Vendedor;
 import com.researchmobile.todoterreno.pedidos.utility.ConnectState;
+import com.researchmobile.todoterreno.pedidos.utility.FormatDecimal;
 import com.researchmobile.todoterreno.pedidos.utility.rmString;
 
 public class Peticion {
@@ -31,6 +34,7 @@ public class Peticion {
 	private RespuestaWS respuesta = new RespuestaWS();
 	private ConnectState connectState = new ConnectState();
 	private rmString rm = new rmString();
+	private FormatDecimal formatDecimal = new FormatDecimal();
 
 	public void limpiaDB(Context context){
 		requestDB.eliminarArticulos(context);
@@ -193,11 +197,11 @@ public class Peticion {
         	map.put("nombreProducto", articulo[i].getArtDescripcion());
         	map.put("cajas", "0");
         	map.put("unidades", "0");
-        	map.put("valor", String.valueOf(articulo[i].getPrecioVenta()));
+        	map.put("valor", formatDecimal.convierteFloat(articulo[i].getPrecioVenta()));
         	map.put("presentacion", String.valueOf(articulo[i].getUnidadesFardo()));
         	map.put("existencia", "0");
         	map.put("bonificacion", "0");
-        	map.put("total", "0");
+        	map.put("total", "0.00");
         	mylist.add(map);
         }
 		return mylist;
@@ -213,11 +217,11 @@ public class Peticion {
         	map.put("nombreProducto", articulo[i].getNombre());
         	map.put("cajas", String.valueOf(articulo[i].getCaja()));
         	map.put("unidades", String.valueOf(articulo[i].getUnidad()));
-        	map.put("valor", String.valueOf(articulo[i].getPrecio()));
+        	map.put("valor", formatDecimal.convierteFloat(articulo[i].getPrecio()));
         	map.put("presentacion", String.valueOf(articulo[i].getUnidadesFardo()));
         	map.put("existencia", "0");
         	map.put("bonificacion", "0");
-        	map.put("total", String.valueOf(articulo[i].getSubTotal()));
+        	map.put("total", formatDecimal.convierteFloat(articulo[i].getSubTotal()));
         	mylist.add(map);
         }
 		return mylist;
@@ -382,6 +386,36 @@ public class Peticion {
 		}
 		return null;
 	}
+	
+	public RespuestaWS enviarNuevoCliente(Context context, ClienteNuevo cliente) {
+		RespuestaWS respuesta = new RespuestaWS();
+		Vendedor vendedor = new Vendedor();
+		vendedor = vendedor(context);
+		try{
+			if (connectState.isConnectedToInternet(context)){
+				Log.e("TT", "enviar nuevo cliente");
+				respuesta = requestWS.enviarNuevoCliente(cliente, vendedor.getIdusuario());
+				if (respuesta != null && !respuesta.isResultado()){
+					Log.e("TT", "enviar Datos");
+					return respuesta;
+				}else{
+					requestDB.guardarNuevoCliente(context, cliente);
+					respuesta.setMensaje("Los datos se guardar localmente");
+					respuesta.setResultado(true);
+					return respuesta;
+				}
+			}else{
+				requestDB.guardarNuevoCliente(context, cliente);
+				respuesta.setMensaje("Los datos se guardar localmente");
+				respuesta.setResultado(true);
+				return respuesta;
+			}
+			
+		}catch(Exception exception){
+			
+		}
+		return null;
+	}
 
 	public float totalGeneral(Context context) {
 		float total = requestDB.totalVentas(context);
@@ -401,7 +435,10 @@ public class Peticion {
 		NoVenta[] noVenta = requestDB.noVentaDB(context);
 		return noVenta;
 	}
-	
+	public ListaCategoria buscaCategoria(Context context) {
+		ListaCategoria listaCategoria = requestDB.buscaCategoria(context);
+		return listaCategoria;
+	}
 	public void cancelarPedido(Context context, int numeroPedido) {
 		requestDB.cancelarPedido(context, numeroPedido);
 		
@@ -412,6 +449,10 @@ public class Peticion {
 	public float totalActual(Context context, int numeroPedido) {
 		float totalActual = requestDB.totalActual(context, numeroPedido);
 		return totalActual;
+	}
+	public Vendedor vendedor(Context context) {
+		Vendedor vendedor = requestDB.vendedorDB(context);
+		return vendedor;
 	}
 	
 }

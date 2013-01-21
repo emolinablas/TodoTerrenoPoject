@@ -103,7 +103,7 @@ public class Login extends Activity implements OnClickListener, OnKeyListener{
 		// Metodo con las instrucciones al finalizar lo ejectuado en background
 		protected void onPostExecute(Integer resultado) {
 			pd.dismiss();
-			if (!getRespuesta().isResultado()){
+			if (getRespuesta().isResultado()){
 				activityRol();
 			}else{
 				getMensaje().VerMensaje(Login.this, getRespuesta().getMensaje());

@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.researchmobile.todoterreno.pedidos.entity.ClienteNuevo;
 import com.researchmobile.todoterreno.pedidos.entity.Pedido;
 
 public class rmString {
@@ -22,6 +23,28 @@ public class rmString {
 			return true;
 		}
 		return false;
+	}
+	
+	public String jsonNuevoCliente(ClienteNuevo cliente){
+		String json = "";
+		try{
+			JSONObject allData = new JSONObject();
+			allData.put("codigoCliente", cliente.getIdNuevoCliente());
+			allData.put("nit", cliente.getNit());
+			allData.put("nombreNegocio", cliente.getNombreNegocio());
+			allData.put("categoria", cliente.getCategoriaCliente());
+			allData.put("contacto", cliente.getNombreContacto());
+			allData.put("telefono", cliente.getTelefono());
+			allData.put("direccion", cliente.getDireccion());
+			allData.put("ruta", cliente.getRuta());
+			allData.put("diaVisita", cliente.getDiaVisita());
+			allData.put("fecha", fecha.FechaHoy());
+			allData.put("hora", fecha.Hora());
+			json = allData.toString();
+			return json;
+		}catch(Exception exception){
+			return json;
+		}
 	}
 
 	public String jsonPedido(Pedido pedido, String ruta, String vendedor) {

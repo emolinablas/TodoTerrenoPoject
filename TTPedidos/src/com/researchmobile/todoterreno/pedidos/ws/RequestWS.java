@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.researchmobile.todoterreno.pedidos.entity.Articulo;
 import com.researchmobile.todoterreno.pedidos.entity.Cliente;
+import com.researchmobile.todoterreno.pedidos.entity.ClienteNuevo;
 import com.researchmobile.todoterreno.pedidos.entity.ListaArticulos;
 import com.researchmobile.todoterreno.pedidos.entity.ListaCategoria;
 import com.researchmobile.todoterreno.pedidos.entity.ListaClientes;
@@ -29,7 +30,8 @@ public class RequestWS {
 	private static String WS_ENVIO = "json.php?username=";
 	private static String WS_ENVIAMOTIVO = "ws_noventa.php?cliente=";
 	private static String WS_CATEGORIAS = "ws_categorias.php?";
-
+	private static String WS_NUEVOCLIENTE = "ws_clientenuevo.php?idUsuario=";
+	
 	// Metodo que llena el Entity del login
 	@SuppressWarnings("unused")
 	public LoginEntity login(String usuario, String password) {
@@ -346,6 +348,27 @@ public class RequestWS {
 			}
 			return null;
 		}
+		
+		public RespuestaWS enviarNuevoCliente(ClienteNuevo cliente, String vendedor) {
+			try{
+				Fecha fecha = new Fecha();
+				RespuestaWS respuesta = new RespuestaWS();
+				rmString jsonString = new rmString();
+				String json = jsonString.jsonNuevoCliente(cliente);
+				
+				String urlTemp = WS_NUEVOCLIENTE + vendedor + "&cliente=" + json; 
+				String url = urlTemp.replace(" ", "%20");
+				JSONObject jsonObject = ConnectWS.enviaNuevoCliente(url);
+				if (jsonObject.has("resultado")){
+					respuesta.setResultado(jsonObject.getBoolean("resultado"));
+					respuesta.setMensaje(jsonObject.getString("mensaje"));
+					return respuesta;
+				}
+			}catch(Exception exception){
+				return null;
+			}
+			return null;
+		}
 	
 	// Metodo convierte un valor null ingresado a un String y devuelve un espacio en blanco
 	public String nullToString(String variable){
@@ -364,4 +387,6 @@ public class RequestWS {
 			return va;
 		}
 	}
+
+	
 }
