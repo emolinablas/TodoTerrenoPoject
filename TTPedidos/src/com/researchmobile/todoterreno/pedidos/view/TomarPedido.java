@@ -75,7 +75,7 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 		setTotal(0);
 		setFecha(new Fecha());
 		setTotalGeneralTextView((TextView)findViewById(R.id.tomar_pedido_total_textview));
-		getTotalGeneralTextView().setText(getFormatDecimal().convierteFloat(getTotal()));
+		getTotalGeneralTextView().setText(String.valueOf(getTotal()));
 		setBuscarEditText((EditText)findViewById(R.id.tomar_pedido_buscar_edittext));
 		setBorrarImageButton((ImageButton)findViewById(R.id.tomar_pedido_borrar_imagebutton));
 		setArticulosListView((ListView)findViewById(R.id.tomar_pedido_lista_productos_listview));
@@ -334,7 +334,7 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 	}
 	protected void actualizaTotalGeneral() {
 		setTotal(getPeticion().totalActual(TomarPedido.this, getNumeroPedido()));
-		getTotalGeneralTextView().setText(String.valueOf(getTotal()));
+		getTotalGeneralTextView().setText(getFormatDecimal().convierteFloat(getTotal()));
 		
 	}
 

@@ -109,7 +109,7 @@ public class Peticion {
 		int tamanoPortafolio = loginEntity.getPortafolio().length;
 		for (int i = 0; i < tamanoPortafolio; i++){
 			listaArticulos = requestWS.listaArticulos(loginEntity.getPortafolio()[i].getIdPortafolio());
-			if (listaArticulos.getArticulo().length > 0){
+			if (listaArticulos.getArticulo().length > i){
 				guardarArticulos(context, listaArticulos);
 			}
 		}

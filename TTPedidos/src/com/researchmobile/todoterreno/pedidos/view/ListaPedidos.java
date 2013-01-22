@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnKeyListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -20,6 +19,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import com.researchmobile.todoterreno.pedidos.utility.FormatDecimal;
 import com.researchmobile.todoterreno.pedidos.ws.Peticion;
 
 public class ListaPedidos extends Activity implements OnItemClickListener, OnClickListener{
@@ -33,6 +33,7 @@ public class ListaPedidos extends Activity implements OnItemClickListener, OnCli
 	private SimpleAdapter simpleAdapter;
 	private Peticion peticion;
 	private ProgressDialog pd = null;
+	FormatDecimal formatDecimal = new FormatDecimal();
 	
 	private float totalGeneral;
 	private int enviados;
@@ -148,7 +149,8 @@ public class ListaPedidos extends Activity implements OnItemClickListener, OnCli
     }
     
     public void llenaPedidos(){
-    	getTotalGenralTextView().setText(String.valueOf(getTotalGeneral()));
+    	
+    	getTotalGenralTextView().setText(formatDecimal.convierteFloat(getTotalGeneral()));
     	getEnviadosTextView().setText(String.valueOf(getEnviados()));
     	getPendientesTextView().setText(String.valueOf(getPendientes()));
     	setSimpleAdapter(new SimpleAdapter(ListaPedidos.this, 
