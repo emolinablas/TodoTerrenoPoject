@@ -64,6 +64,9 @@ public class rmString {
 			encabezadoJson.put("movtotal", pedido.getEncabezadoPedido().getTotal());
 			encabezadoJson.put("movefectivo", "0");
 			encabezadoJson.put("movcheque", "0");
+			encabezadoJson.put("autorizado", "0");
+			encabezadoJson.put("movfacturado", "0");
+			encabezadoJson.put("movanulado", "0");
 			encabezadoJsonArray.put(encabezadoJson);
 			int tamano = pedido.getDetallePedido().length;
 			for (int i = 0; i < tamano; i++){
