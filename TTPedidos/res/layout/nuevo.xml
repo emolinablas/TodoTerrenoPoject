@@ -26,6 +26,19 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/nuevo_ruta_textview" style="@style/CodeFont_label"/>
+
+
+        <EditText
+            android:id="@+id/nuevo_ruta_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/nuevo_ruta_hint" android:inputType="number"/>    
+            
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/nuevo_nombre_textview" style="@style/CodeFont_label"/>
 
 

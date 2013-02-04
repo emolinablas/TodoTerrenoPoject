@@ -432,7 +432,7 @@ public class Peticion {
 			      m.set_to(toArr); 
 			      m.set_from("todoterrenosc@gmail.com"); 
 			      m.set_subject("Peticion de nuevo Cliente"); 
-			      m.setBody("El usuario " + vendedor.getNombre() + ", ha solicitado la creación de un nuevo cliente con los siguientes datos: " + 
+			      m.setBody("El vendedor " + vendedor.getNombre() + ", ha solicitado la creación de un nuevo cliente en la ruta " + cliente.getRuta() + " con los siguientes datos: " + 
 			    		  "\nNombre de Negocio: " + cliente.getNombreNegocio() +
 			    		  "\nNit: " + cliente.getNit() +
 			    		  "\nContacto: " + cliente.getNombreContacto() +

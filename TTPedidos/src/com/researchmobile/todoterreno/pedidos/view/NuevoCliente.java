@@ -29,6 +29,7 @@ import com.researchmobile.todoterreno.pedidos.ws.Peticion;
 public class NuevoCliente extends Activity implements OnClickListener, OnKeyListener{
 	//nit, nombreNegocio, nombreContacto, telefono, direccion
 
+	private EditText rutaEditText;
 	private EditText nombreNegocioEditTExt;
 	private EditText nitEditText;
 	private EditText contactoEditText;
@@ -56,12 +57,14 @@ public class NuevoCliente extends Activity implements OnClickListener, OnKeyList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.nuevo);
         
+        setRutaEditText((EditText)findViewById(R.id.nuevo_ruta_edittext));
         setNombreNegocioEditTExt((EditText)findViewById(R.id.nuevo_nombre_edittext));
         setNitEditText((EditText)findViewById(R.id.nuevo_nit_edittext));
         setContactoEditText((EditText)findViewById(R.id.nuevo_contacto_edittext));
         setTelefonoEditText((EditText)findViewById(R.id.nuevo_telefono_edittext));
         setDireccionEditText((EditText)findViewById(R.id.nuevo_direccion_edittext));
         
+        getRutaEditText().setOnKeyListener(this);
         getNombreNegocioEditTExt().setOnKeyListener(this);
         getNitEditText().setOnKeyListener(this);
         getContactoEditText().setOnKeyListener(this);
@@ -138,7 +141,9 @@ public class NuevoCliente extends Activity implements OnClickListener, OnKeyList
      {
          if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP)
          {
-        	 if (view == getNombreNegocioEditTExt()){
+        	 if (view == getRutaEditText()){
+        		 getNombreNegocioEditTExt().requestFocus();
+        	 }else if (view == getNombreNegocioEditTExt()){
         		 getNitEditText().requestFocus();
         	 }else if (view == getNitEditText()){
         		 getContactoEditText().requestFocus();
@@ -170,6 +175,7 @@ public class NuevoCliente extends Activity implements OnClickListener, OnKeyList
 		 
 		 ClienteNuevo cliente = new ClienteNuevo();
 		 
+		 String ruta = getRutaEditText().getText().toString();
 		 String nombre = getNombreNegocioEditTExt().getText().toString();
 		 String nit = getNitEditText().getText().toString();
 		 String contacto = getContactoEditText().getText().toString();
@@ -192,7 +198,7 @@ public class NuevoCliente extends Activity implements OnClickListener, OnKeyList
 		 if (viernes) {dia = dia + "V";};
 		 if (sabado) {dia = dia + "S";};
 		 
-		 if (nombre.equalsIgnoreCase("") || nit.equalsIgnoreCase("") || contacto.equalsIgnoreCase("") || telefono.equalsIgnoreCase("") || direccion.equalsIgnoreCase("")){
+		 if (ruta.equalsIgnoreCase("") || nombre.equalsIgnoreCase("") || nit.equalsIgnoreCase("") || contacto.equalsIgnoreCase("") || telefono.equalsIgnoreCase("") || direccion.equalsIgnoreCase("")){
 			 res.setMensaje("Debe llenar todos los campos");
 			 res.setResultado(false);
 			 return res;
@@ -204,6 +210,7 @@ public class NuevoCliente extends Activity implements OnClickListener, OnKeyList
 			 return res;
 		 }else{
 			 
+			 cliente.setRuta(ruta);
 			 cliente.setNombreNegocio(nombre);
 			 cliente.setNit(nit);
 			 cliente.setNombreContacto(contacto);
@@ -393,5 +400,15 @@ public class NuevoCliente extends Activity implements OnClickListener, OnKeyList
 	public void setRuta(String ruta) {
 		this.ruta = ruta;
 	}
+
+	public EditText getRutaEditText() {
+		return rutaEditText;
+	}
+
+	public void setRutaEditText(EditText rutaEditText) {
+		this.rutaEditText = rutaEditText;
+	}
+	
+	
 	
 }

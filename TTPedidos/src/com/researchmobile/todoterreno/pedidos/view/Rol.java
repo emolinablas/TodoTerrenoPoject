@@ -92,6 +92,8 @@ private ProgressDialog pd = null;
            String idCliente = selected.get("codigoCliente");
            if (isVisitados()){
         	   dialogVisitado(idCliente);
+           }else{
+        	   detalleActivity(idCliente);
            }
     }
 	
