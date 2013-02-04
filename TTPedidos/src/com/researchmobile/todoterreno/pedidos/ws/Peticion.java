@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.researchmobile.todoterreno.pedidos.entity.Articulo;
 import com.researchmobile.todoterreno.pedidos.entity.Cliente;
@@ -22,6 +23,7 @@ import com.researchmobile.todoterreno.pedidos.entity.User;
 import com.researchmobile.todoterreno.pedidos.entity.Vendedor;
 import com.researchmobile.todoterreno.pedidos.utility.ConnectState;
 import com.researchmobile.todoterreno.pedidos.utility.FormatDecimal;
+import com.researchmobile.todoterreno.pedidos.utility.Mail;
 import com.researchmobile.todoterreno.pedidos.utility.rmString;
 
 public class Peticion {
@@ -390,29 +392,39 @@ public class Peticion {
 	public RespuestaWS enviarNuevoCliente(Context context, ClienteNuevo cliente) {
 		RespuestaWS respuesta = new RespuestaWS();
 		Vendedor vendedor = new Vendedor();
-		vendedor = vendedor(context);
+		vendedor = requestDB.vendedorDB(context);
 		try{
 			if (connectState.isConnectedToInternet(context)){
-				Log.e("TT", "enviar nuevo cliente");
-				respuesta = requestWS.enviarNuevoCliente(cliente, vendedor.getIdusuario());
-				if (respuesta != null && !respuesta.isResultado()){
-					Log.e("TT", "enviar Datos");
-					return respuesta;
-				}else{
-					requestDB.guardarNuevoCliente(context, cliente);
-					respuesta.setMensaje("Los datos se guardar localmente");
-					respuesta.setResultado(true);
-					return respuesta;
-				}
-			}else{
-				requestDB.guardarNuevoCliente(context, cliente);
-				respuesta.setMensaje("Los datos se guardar localmente");
-				respuesta.setResultado(true);
-				return respuesta;
-			}
+				
+				
+				Mail m = new Mail("todoterrenosc@gmail.com", "todoterreno123"); 
+				 
+			      String[] toArr = {"eclaudio@grupotodoterreno.com", "william.ale20@gmail.com", "wlevy@researchmobile.co", "walvarado@researchmobile.co"}; 
+			      m.set_to(toArr); 
+			      m.set_from("todoterrenosc@gmail.com"); 
+			      m.set_subject("Peticion de nuevo Cliente"); 
+			      m.setBody("El usuario " + vendedor.getNombre() + ", ha solicitado la creación de un nuevo cliente con los siguientes datos: " + 
+			    		  "\nNombre de Negocio: " + cliente.getNombreNegocio() +
+			    		  "\nNit: " + cliente.getNit() +
+			    		  "\nContacto: " + cliente.getNombreContacto() +
+			    		  "\nTelefono: " + cliente.getTelefono() +
+			    		  "\nDirección: " + cliente.getDireccion() +
+			    		  "\nDias de Visita: " + cliente.getDiaVisita()); 
+			 
+			      if(m.send()) { 
+			    	  respuesta.setResultado(true);
+			    	  respuesta.setMensaje("correo enviado");
+			    	  return respuesta;
+			        } else { 
+			        respuesta.setResultado(false);
+				    respuesta.setMensaje("correo no enviado");
+			        return respuesta;   
+			        } 
+			    }
 			
 		}catch(Exception exception){
-			
+			respuesta.setResultado(false);
+		    respuesta.setMensaje("error en la creacion del cliente");
 		}
 		return null;
 	}

@@ -35,10 +35,8 @@ public class NuevoCliente extends Activity implements OnClickListener, OnKeyList
 	private EditText contactoEditText;
 	private EditText telefonoEditText;
 	private EditText direccionEditText;
-	private TextView codigoTextView;
 	private Button crearButton;
 	private Button cancelarButton;
-	private Spinner categoriaSpinner;
 	private CheckBox lunesCheckBox;
 	private CheckBox martesCheckBox;
 	private CheckBox miercolesCheckBox;
@@ -64,7 +62,6 @@ public class NuevoCliente extends Activity implements OnClickListener, OnKeyList
         setContactoEditText((EditText)findViewById(R.id.nuevo_contacto_edittext));
         setTelefonoEditText((EditText)findViewById(R.id.nuevo_telefono_edittext));
         setDireccionEditText((EditText)findViewById(R.id.nuevo_direccion_edittext));
-        setCodigoTextView((TextView)findViewById(R.id.nuevo_codigo_textview));
         
         getNombreNegocioEditTExt().setOnKeyListener(this);
         getNitEditText().setOnKeyListener(this);
@@ -84,17 +81,12 @@ public class NuevoCliente extends Activity implements OnClickListener, OnKeyList
         setViernesCheckBox((CheckBox)findViewById(R.id.nuevo_viernes_checkBox));
         setSabadoCheckBox((CheckBox)findViewById(R.id.nuevo_sabado_checkBox));
         
-        setCategoriaSpinner((Spinner)findViewById(R.id.nuevo_categoria_spinner));
-        
         Vendedor vendedor = new Vendedor();
 		vendedor = peticion.vendedor(NuevoCliente.this);
         setRuta(vendedor.getRuta());
         
         Fecha fecha = new Fecha();
         setCodigoNuevoCliente(""+fecha.diaAnio()+getRuta()+"-"+fecha.fechaUnida());
-        getCodigoTextView().setText(getCodigoNuevoCliente());
-        new categoriasAsync().execute("");
-        
         
     }
 
@@ -144,14 +136,11 @@ public class NuevoCliente extends Activity implements OnClickListener, OnKeyList
 		 
 		 ClienteNuevo cliente = new ClienteNuevo();
 		 
-		 String codigo = getCodigoTextView().getText().toString();
 		 String nombre = getNombreNegocioEditTExt().getText().toString();
 		 String nit = getNitEditText().getText().toString();
-		 String contacto = getNombreNegocioEditTExt().getText().toString();
+		 String contacto = getContactoEditText().getText().toString();
 		 String telefono = getTelefonoEditText().getText().toString();
 		 String direccion = getDireccionEditText().getText().toString();
-		 Categoria categoria = (Categoria)getCategoriaSpinner().getSelectedItem();
-		 
 		 
 		 boolean lunes = getLunesCheckBox().isChecked();
 		 boolean martes = getMartesCheckBox().isChecked();
@@ -169,7 +158,7 @@ public class NuevoCliente extends Activity implements OnClickListener, OnKeyList
 		 if (viernes) {dia = dia + "V";};
 		 if (sabado) {dia = dia + "S";};
 		 
-		 if (codigo.equalsIgnoreCase("") || nombre.equalsIgnoreCase("") || nit.equalsIgnoreCase("") || contacto.equalsIgnoreCase("") || telefono.equalsIgnoreCase("") || direccion.equalsIgnoreCase("")){
+		 if (nombre.equalsIgnoreCase("") || nit.equalsIgnoreCase("") || contacto.equalsIgnoreCase("") || telefono.equalsIgnoreCase("") || direccion.equalsIgnoreCase("")){
 			 res.setMensaje("Debe llenar todos los campos");
 			 res.setResultado(false);
 			 return res;
@@ -181,7 +170,6 @@ public class NuevoCliente extends Activity implements OnClickListener, OnKeyList
 			 return res;
 		 }else{
 			 
-			 cliente.setIdNuevoCliente(codigo);
 			 cliente.setNombreNegocio(nombre);
 			 cliente.setNit(nit);
 			 cliente.setNombreContacto(contacto);
@@ -221,58 +209,14 @@ public class NuevoCliente extends Activity implements OnClickListener, OnKeyList
 		// Metodo con las instrucciones al finalizar lo ejectuado en background
 		protected void onPostExecute(Integer resultado) {
 			pd.dismiss();
-			//if (respuestaWS.isResultado()){
-				//finish();
-			//}else{
-				//Toast.makeText(NuevoCliente.this, respuestaWS.getMensaje(), Toast.LENGTH_SHORT).show();
-			//}
+			if (respuestaWS.isResultado()){
+				Toast.makeText(NuevoCliente.this, respuestaWS.getMensaje(), Toast.LENGTH_SHORT).show();
+				finish();
+			}else{
+				Toast.makeText(NuevoCliente.this, respuestaWS.getMensaje(), Toast.LENGTH_SHORT).show();
+			}
 		}
 		
-	}
-	
-	// Clase para ejecutar en Background
-    class categoriasAsync extends AsyncTask<String, Integer, Integer> {
-
-          // Metodo que prepara lo que usara en background, Prepara el progress
-          @Override
-          protected void onPreExecute() {
-                pd = ProgressDialog. show(NuevoCliente.this, "CARGANDO CATEGORIAS", "ESPERE UN MOMENTO");
-                pd.setCancelable( false);
-         }
-
-          // Metodo con las instrucciones que se realizan en background
-          @Override
-          protected Integer doInBackground(String... urlString) {
-                try {
-                	buscarCategorias();
-               } catch (Exception exception) {
-
-               }
-                return null ;
-         }
-
-          // Metodo con las instrucciones al finalizar lo ejectuado en background
-          protected void onPostExecute(Integer resultado) {
-                pd.dismiss();
-                try{
-                	if (getListaCategoria().getCategoria().length > 0 || getListaCategoria().getCategoria() != null){
-        				fillDataSpinner();
-        			}
-                }catch(Exception exception){
-                	Log.e("TT", "error al cargar las categorias");
-                }
-    			
-         }
-
-   }
-
-	
-	private void fillDataSpinner(){
-		Categoria[] cat = getListaCategoria().getCategoria();
-		if (cat != null){
-			setCategoriaAdapter(new ArrayAdapter<Categoria>(NuevoCliente.this, R.layout.item_spinner, R.id.item_spinner_textview, cat));
-			getCategoriaSpinner().setAdapter(getCategoriaAdapter());
-		}
 	}
 	
 	public void buscarCategorias(){
@@ -320,14 +264,6 @@ public class NuevoCliente extends Activity implements OnClickListener, OnKeyList
 		this.direccionEditText = direccionEditText;
 	}
 
-	public TextView getCodigoTextView() {
-		return codigoTextView;
-	}
-
-	public void setCodigoTextView(TextView codigoTextView) {
-		this.codigoTextView = codigoTextView;
-	}
-
 	public Button getCrearButton() {
 		return crearButton;
 	}
@@ -350,14 +286,6 @@ public class NuevoCliente extends Activity implements OnClickListener, OnKeyList
 
 	public void setListaCategoria(ListaCategoria listaCategoria) {
 		this.listaCategoria = listaCategoria;
-	}
-
-	public Spinner getCategoriaSpinner() {
-		return categoriaSpinner;
-	}
-
-	public void setCategoriaSpinner(Spinner categoriaSpinner) {
-		this.categoriaSpinner = categoriaSpinner;
 	}
 
 	public CheckBox getLunesCheckBox() {
