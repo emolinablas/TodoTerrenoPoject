@@ -1,4 +1,4 @@
-    <database name="todoterreno020" version="1">
+    <database name="todoterreno023" version="1">
 	
 	<!-- U S U A R I O -->
     <table name="usuario" to-string="%usuario%">
@@ -219,7 +219,6 @@
 	<!-- N U E V O  C L I E N T E -->
 	<table name="nuevocliente" to-string="%nuevocliente%">
 	    
-	    <field name="idnuevo_cliente" 	obligatory="false" type="text" size="20"/>
 	    <field name="nit"			  	obligatory="false" type="text" size="20"/>
 	    <field name="nombre_negocio"  	obligatory="false" type="text" size="60"/>
 	    <field name="categoria_cliente"	obligatory="false" type="text" size="20"/>
@@ -227,8 +226,8 @@
 	    <field name="telefono"			obligatory="false" type="text" size="20"/>
 	    <field name="direccion"			obligatory="false" type="text" size="60"/>
 	    <field name="ruta"				obligatory="false" type="text" size="8"/>
-	    <field name="dia_visita"		obligatory="false" type="text" size="8"/>	        	
+	    <field name="dia_visita"		obligatory="false" type="text" size="8"/>
+	    <field name="sinc"				obligatory="false" type="integer"/>	        	
 	 </table>
-	    
 </database>
 	

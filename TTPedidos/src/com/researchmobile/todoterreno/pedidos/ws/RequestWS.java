@@ -129,7 +129,8 @@ public class RequestWS {
 					if(jsonObject.has("motivonoventa")){ // si viene el Array de motivos no venta asigno los campos al array de no venta y lo envio al LoginEntity
 						JSONArray noVentaJsonArray = jsonObject.getJSONArray("motivonoventa");
 						int tamano = noVentaJsonArray.length();
-						NoVenta[] noVenta = new NoVenta[tamano];
+						NoVenta[] noVenta = new NoVenta[tamano+1];
+						
 						for(int i=0; i < tamano; i++){ // recorro el Array para asignar cada registro a una variable a un objeto temporal y luego agregarlo al Array de listaClientes
 						JSONObject noVentaJsonObject = noVentaJsonArray.getJSONObject(i);
 						NoVenta temp = new NoVenta();

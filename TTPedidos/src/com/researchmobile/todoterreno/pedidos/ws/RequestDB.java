@@ -859,6 +859,17 @@ public class RequestDB {
 				return false;
 			}
 		}
+		
+		public boolean eliminarNuevoCliente(Context context){
+			try{
+				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+				DataFramework.getInstance().emptyTable("nuevocliente");
+				return true;
+			}catch(Exception e){
+				return false;
+			}
+		}
+		
 		public boolean eliminarPedido(Context context){
 			try {
 				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");

@@ -5,7 +5,6 @@ import java.util.HashMap;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.researchmobile.todoterreno.pedidos.entity.Articulo;
 import com.researchmobile.todoterreno.pedidos.entity.Cliente;
@@ -22,6 +21,7 @@ import com.researchmobile.todoterreno.pedidos.entity.RespuestaWS;
 import com.researchmobile.todoterreno.pedidos.entity.User;
 import com.researchmobile.todoterreno.pedidos.entity.Vendedor;
 import com.researchmobile.todoterreno.pedidos.utility.ConnectState;
+import com.researchmobile.todoterreno.pedidos.utility.Fecha;
 import com.researchmobile.todoterreno.pedidos.utility.FormatDecimal;
 import com.researchmobile.todoterreno.pedidos.utility.Mail;
 import com.researchmobile.todoterreno.pedidos.utility.rmString;
@@ -50,12 +50,10 @@ public class Peticion {
 		requestDB.eliminarUsuario(context);
 		requestDB.eliminarVendedor(context);
 		requestDB.eliminarNoVenta(context);
+		requestDB.eliminarNuevoCliente(context);
 	}
 	public RespuestaWS login(Context context) {
 		try{
-			//limpiaDB(context);
-			//respuesta.setResultado(true);
-			//return respuesta;
 			respuesta = requestDB.verificaLoginDB(context, User.getUsername(), User.getClave());
 			if(respuesta.isResultado()){
 				if (connectState.isConnectedToInternet(context)){
@@ -69,12 +67,19 @@ public class Peticion {
 					loginEntity = requestWS.login(User.getUsername(), User.getClave());
 					respuesta = loginEntity.getRespuesta();
 					if (respuesta.isResultado()){
-						pedidosPendientes(context);
-						reiniciaDB(context);
-						guardarDatos(context, loginEntity);
-						cargarClientes(context, loginEntity);
-						cargarArticulos(context, loginEntity);
-						return respuesta;
+						if (loginEntity.getPortafolio().length > 0 && loginEntity.getRuta().length > 0){
+							pedidosPendientes(context);
+							reiniciaDB(context);
+							guardarDatos(context, loginEntity);
+							cargarClientes(context, loginEntity);
+							cargarArticulos(context, loginEntity);
+							return respuesta;
+						}else{
+							respuesta.setResultado(false);
+							respuesta.setMensaje("Problemas al cargar datos, intente nuevamente");
+							return respuesta;
+						}
+						
 					}else{
 						return respuesta;
 					}
@@ -88,6 +93,7 @@ public class Peticion {
 			Log.e("TT", "Peticion.login - " + exception);
 			respuesta.setResultado(false);
 			respuesta.setMensaje("Error 0040. Verifique sus datos, Intente nuevamente");
+			limpiaDB(context);
 			return respuesta;
 			
 		}
@@ -109,13 +115,25 @@ public class Peticion {
 	private void cargarArticulos(Context context, LoginEntity loginEntity) {
 		ListaArticulos listaArticulos = new ListaArticulos();
 		int tamanoPortafolio = loginEntity.getPortafolio().length;
+		
+		int intentos = 0;
 		for (int i = 0; i < tamanoPortafolio; i++){
-			listaArticulos = requestWS.listaArticulos(loginEntity.getPortafolio()[i].getIdPortafolio());
-			if (listaArticulos.getArticulo().length > i){
-				guardarArticulos(context, listaArticulos);
+			do{
+				listaArticulos = requestWS.listaArticulos(loginEntity.getPortafolio()[i].getIdPortafolio());
+				if (listaArticulos.getArticulo().length > i){
+					guardarArticulos(context, listaArticulos);
+					
+				}else{
+					intentos++;
+					Log.e("TT", "intentos en articulos = " + intentos);
+				}
+			}while(listaArticulos.getArticulo().length < 1 && intentos < 3);
+			if (intentos > 2 ){
+				limpiaDB(context);
+			}else{
+				intentos = 0;
 			}
 		}
-		
 	}
 	
 	public void insertaEncabezado(Context context, EncabezadoPedido encabezadoPedido) {
@@ -129,18 +147,26 @@ public class Peticion {
 	}
 
 	private void cargarClientes(Context context, LoginEntity loginEntity) {
-		Log.e("TT", "Peticion.cargarClientes 1");
 		ListaClientes listaClientes = new ListaClientes();
-		Log.e("TT", "Peticion.cargarClientes 2");
 		int tamanoRuta = loginEntity.getRuta().length;
 		Log.e("TT", "Peticion.cargarClientes 3 = " + tamanoRuta);
+		int intentos = 0;
 		for (int i = 0; i < tamanoRuta; i++){
-			listaClientes = requestWS.listaClientes("catalogo", loginEntity.getRuta()[i].getId());
-			if (listaClientes.getCliente().length > 0){
-				guardarClientes(context, listaClientes);
+			do{
+				listaClientes = requestWS.listaClientes("catalogo", loginEntity.getRuta()[i].getId());
+				if (listaClientes.getCliente().length > 0){
+					guardarClientes(context, listaClientes);
+					
+				}else{
+					intentos++;
+				}
+			}while(listaClientes.getCliente().length < 1 && intentos < 3);
+			if (intentos > 2 ){
+				limpiaDB(context);
+			}else{
+				intentos = 0;
 			}
 		}
-		
 	}
 
 	private void guardarClientes(Context context, ListaClientes listaClientes) {
@@ -275,7 +301,7 @@ public class Peticion {
 	public void pedidosPendientes(Context context){
 		try{
 			if (connectState.isConnectedToInternet(context)){
-				//Enviar Pedidos
+				//Enviar Pedidos Pendientes
 				EncabezadoPedido[] pedidos = requestDB.encabezadoPedidoNoSinc(context);
 				int tamano = pedidos.length;
 				Log.e("TT", "Peticion.pedidosPendientes - tamano == " + tamano);
@@ -289,6 +315,8 @@ public class Peticion {
 					}
 					
 				}
+				
+				//Enviar nuevos clientes pendientes
 			}
 		}catch(Exception exception){
 			
@@ -393,6 +421,7 @@ public class Peticion {
 		RespuestaWS respuesta = new RespuestaWS();
 		Vendedor vendedor = new Vendedor();
 		vendedor = requestDB.vendedorDB(context);
+		Fecha fecha = new Fecha();
 		try{
 			if (connectState.isConnectedToInternet(context)){
 				
@@ -409,8 +438,9 @@ public class Peticion {
 			    		  "\nContacto: " + cliente.getNombreContacto() +
 			    		  "\nTelefono: " + cliente.getTelefono() +
 			    		  "\nDirección: " + cliente.getDireccion() +
-			    		  "\nDias de Visita: " + cliente.getDiaVisita()); 
-			 
+			    		  "\nDias de Visita: " + cliente.getDiaVisita() +
+			    		  "\nFecha : " + fecha.FechaHoy() +
+			    		  "\nHora : " + fecha.Hora());
 			      if(m.send()) { 
 			    	  respuesta.setResultado(true);
 			    	  respuesta.setMensaje("correo enviado");
@@ -420,6 +450,9 @@ public class Peticion {
 				    respuesta.setMensaje("correo no enviado");
 			        return respuesta;   
 			        } 
+			    }else{
+			    	respuesta.setResultado(false);
+				    respuesta.setMensaje("los datos se guardaran en la base de datos");
 			    }
 			
 		}catch(Exception exception){
