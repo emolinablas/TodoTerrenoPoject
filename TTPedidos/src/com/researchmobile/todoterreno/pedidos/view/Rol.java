@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
@@ -38,8 +38,11 @@ import com.researchmobile.todoterreno.pedidos.ws.Peticion;
 public class Rol extends Activity implements OnClickListener, OnKeyListener, TextWatcher, OnItemClickListener{
 	
 private ProgressDialog pd = null;
-	
+	private static final String TITULO_CLIENTES = "LISTADO DE CLIENTES";
+	private static final String TITULO_VISITADOS = "CLIENTES VISITADOS";
+
 	private LinearLayout buscarLayout;
+	private TextView tituloTextView;
 	private ImageButton borrarImageButton;
 	private EditText buscarEditText;
 	private TextView semanaTextView;
@@ -60,6 +63,7 @@ private ProgressDialog pd = null;
         setPeticion(new Peticion());
         setFecha(new Fecha());
         
+        setTituloTextView((TextView)findViewById(R.id.rol_titulo_textview));
         setBuscarLayout((LinearLayout)findViewById(R.id.rol_buscar_layout));
         setBuscarEditText((EditText)findViewById(R.id.rol_buscar_editText));
         getBuscarEditText().setOnKeyListener(this);
@@ -86,8 +90,29 @@ private ProgressDialog pd = null;
 		   @SuppressWarnings("unchecked")
            HashMap<String, String> selected = (HashMap<String, String>) getSimpleAdapter().getItem(position);
            String idCliente = selected.get("codigoCliente");
-           detalleActivity(idCliente);
+           if (isVisitados()){
+        	   dialogVisitado(idCliente);
+           }
     }
+	
+	private void dialogVisitado(final String idCliente){
+		new AlertDialog.Builder(this)
+        .setTitle("Cliente Visitado")
+        .setMessage("Este cliente ya fue visitado, desea continuar?")
+        .setPositiveButton("SI", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                	detalleActivity(idCliente);
+                }
+        })
+        .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                	detalleActivity(idCliente);
+                }
+        })
+        .show();
+
+		
+	}
 	
 	public void detalleActivity(String idCliente){
 		Intent intent = new Intent(Rol.this, DetalleCliente.class);
@@ -319,10 +344,11 @@ private ProgressDialog pd = null;
 		if (isVisitados()){
 			new ClientesPendientesAsync().execute("");
 			setVisitados(false);
+			getTituloTextView().setText(TITULO_CLIENTES);
 		}else{
 			new ClientesVisitadosAsync().execute("");
-			
 			setVisitados(true);
+			getTituloTextView().setText(TITULO_VISITADOS);
 		}
 		
 	}
@@ -426,6 +452,14 @@ private ProgressDialog pd = null;
 
 	public void setBuscarLayout(LinearLayout buscarLayout) {
 		this.buscarLayout = buscarLayout;
+	}
+
+	public TextView getTituloTextView() {
+		return tituloTextView;
+	}
+
+	public void setTituloTextView(TextView tituloTextView) {
+		this.tituloTextView = tituloTextView;
 	}
 
 	

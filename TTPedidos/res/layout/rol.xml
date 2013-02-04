@@ -6,7 +6,7 @@
 
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/rol_titulo_textview"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/rol_titulo_textview" style="@style/CodeFont_title"/>

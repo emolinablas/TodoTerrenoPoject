@@ -107,6 +107,11 @@ public class NuevoCliente extends Activity implements OnClickListener, OnKeyList
                 	finish();
                 }
         })
+        .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                	
+                }
+        })
         .show();
 	}
 	
@@ -117,6 +122,11 @@ public class NuevoCliente extends Activity implements OnClickListener, OnKeyList
         .setPositiveButton("SI", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
                 	new crearAsync().execute("");
+                }
+        })
+        .setPositiveButton("NO", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                	
                 }
         })
         .show();
