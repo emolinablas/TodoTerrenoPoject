@@ -1,11 +1,12 @@
 package com.researchmobile.todoterreno.pedidos.view;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,8 +16,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.researchmobile.todoterreno.pedidos.entity.Categoria;
@@ -93,10 +92,35 @@ public class NuevoCliente extends Activity implements OnClickListener, OnKeyList
 	@Override
 	public void onClick(View view) {
 		if (view == getCrearButton()){
-			new crearAsync().execute("");
+			dialogCrear();
 		}else if (view == getCancelarButton()){
-			
+			dialogCancelar();
 		}
+	}
+	
+	private void dialogCancelar(){
+		new AlertDialog.Builder(this)
+        .setTitle("Cancelar")
+        .setMessage("Desea Cancelar y regresar al Rol de hoy?")
+        .setPositiveButton("SI", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                	finish();
+                }
+        })
+        .show();
+	}
+	
+	private void dialogCrear(){
+		new AlertDialog.Builder(this)
+        .setTitle("Crear Cliente")
+        .setMessage("Esta seguro que desea crear el cliente?")
+        .setPositiveButton("SI", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                	new crearAsync().execute("");
+                }
+        })
+        .show();
+
 	}
 
 	 @Override
