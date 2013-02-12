@@ -215,7 +215,8 @@ public class Peticion {
 		
 	}
 	
-	public ArrayList<HashMap<String, String>> listaArticulos(Context context) {
+	public ArrayList<HashMap<String, String>> listaArticulos(Context context, int precio) {
+		Log.d("TT", "precio = " + precio);
 		ArrayList<HashMap<String, String>> mylist = new ArrayList<HashMap<String, String>>();
 		Articulo[] articulo = requestDB.articuloDB(context);
 		int tamano = articulo.length;
@@ -225,7 +226,22 @@ public class Peticion {
         	map.put("nombreProducto", articulo[i].getArtDescripcion());
         	map.put("cajas", "0");
         	map.put("unidades", "0");
-        	map.put("valor", formatDecimal.convierteFloat(articulo[i].getPrecioVenta()));
+        	switch (precio){
+        	case 1:
+        		map.put("valor", formatDecimal.convierteFloat(articulo[i].getPrecioDes1()));
+        		break;
+        	case 2:
+        		map.put("valor", formatDecimal.convierteFloat(articulo[i].getPrecioDes2()));
+        		break;
+        	case 3:
+        		map.put("valor", formatDecimal.convierteFloat(articulo[i].getPrecioDes3()));
+        		break;
+        	default:
+        		map.put("valor", formatDecimal.convierteFloat(articulo[i].getPrecioVenta()));
+        		break;
+        	}
+        	
+//        	map.put("valor", formatDecimal.convierteFloat(articulo[i].getPrecioVenta()));
         	map.put("presentacion", String.valueOf(articulo[i].getUnidadesFardo()));
         	map.put("existencia", "0");
         	map.put("bonificacion", "0");
@@ -262,14 +278,16 @@ public class Peticion {
 		for (int i = 0; i < cliente.length; i++){
 			String visitado = cliente[i].getVisitado();
 			if (visitado.equalsIgnoreCase("1")){
-				HashMap<String, String> map = new HashMap<String, String>();
-				map.put("codigoCliente", cliente[i].getCliCodigo());
-		        map.put("empresa", cliente[i].getCliEmpresa());
-		        map.put("contacto", cliente[i].getCliContacto());
-		        map.put("direccion", cliente[i].getCliDireccion());
-		        map.put("telefono", cliente[i].getCliTelefono());
-		        map.put("nit", cliente[i].getCliNit());
-		        mylist.add(map);
+				if (rm.semanaVisitaHoy(cliente[i].getSemana()) && rm.diaVisitaHoy(cliente[i].getDiaVisita())){
+					HashMap<String, String> map = new HashMap<String, String>();
+					map.put("codigoCliente", cliente[i].getCliCodigo());
+			        map.put("empresa", cliente[i].getCliEmpresa());
+			        map.put("contacto", cliente[i].getCliContacto());
+			        map.put("direccion", cliente[i].getCliDireccion());
+			        map.put("telefono", cliente[i].getCliTelefono());
+			        map.put("nit", cliente[i].getCliNit());
+			        mylist.add(map);
+				}
 			}
 		}
 		return mylist;
@@ -329,9 +347,9 @@ public class Peticion {
 		return ruta;
 	}
 
-	public DetallePedido buscaArticulo(Context context, String codigoProducto) {
+	public DetallePedido buscaArticulo(Context context, String codigoProducto, int precio) {
 		DetallePedido articulo = new DetallePedido();
-		articulo = requestDB.buscaArticulo(context, codigoProducto);
+		articulo = requestDB.buscaArticulo(context, codigoProducto, precio);
 		
 		// TODO Auto-generated method stub
 		return articulo;
@@ -498,6 +516,25 @@ public class Peticion {
 	public Vendedor vendedor(Context context) {
 		Vendedor vendedor = requestDB.vendedorDB(context);
 		return vendedor;
+	}
+	public int precioAplica(Context context, String codigoCliente) {
+		Cliente cliente = requestDB.buscaCliente(context, codigoCliente);
+		Log.d("TT", "buscando precio para cliente = " + codigoCliente);
+		int precio = 0;
+		Log.d("TT", "buscando precio para cliente = " + codigoCliente);
+		if (!cliente.getCliDes1().equalsIgnoreCase("0")){
+			Log.d("TT", "buscando precio1 para cliente = " + codigoCliente);
+			precio = 1;
+		}
+		if (!cliente.getCliDes2().equalsIgnoreCase("0")){
+			Log.d("TT", "buscando precio2 para cliente = " + codigoCliente);
+			precio = 2;
+		}
+		if (!cliente.getCliDes3().equalsIgnoreCase("0")){
+			Log.d("TT", "buscando precio3 para cliente = " + codigoCliente);
+			precio = 3;
+		}
+		return precio;
 	}
 	
 }

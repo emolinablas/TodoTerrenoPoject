@@ -1,4 +1,17 @@
 package com.researchmobile.todoterreno.pedidos.view;
+/**
+ * El precio que aplica se maneja de la seiguiente manera
+ * Si clidesnormal = 1 -> PRECIO = 0
+ * Si clides1 = 1 -> PRECIO = 1
+ * Si clides2 = 1 -> PRECIO = 2
+ * Si clides3 = 1 -> PRECIO = 3
+ * 
+ * El precio que se muestra es
+ * Si PRECIO = 0 -> artprecioventa
+ * Si PRECIO = 1 -> artpreciodes1
+ * Si PRECIO = 2 -> artpreciodes2
+ * Si PRECIO = 3 -> artpreciodes3
+ */
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,6 +55,7 @@ import com.researchmobile.todoterreno.pedidos.ws.Peticion;
 
 public class TomarPedido extends Activity implements TextWatcher, OnItemClickListener, OnClickListener, OnKeyListener {
 	
+	private int PRECIO = 0;
 	private ProgressDialog pd = null;
 	private TextView totalGeneralTextView;
 	private EditText buscarEditText;
@@ -81,7 +95,7 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 		setArticulosListView((ListView)findViewById(R.id.tomar_pedido_lista_productos_listview));
 		setPeticion(new Peticion());
 		setPedido(new Pedido());
-		
+		PRECIO = getPeticion().precioAplica(this, getCodigoCliente());
 		setFormatDecimal(new FormatDecimal());
 		
 		getBuscarEditText().setOnKeyListener(this);
@@ -120,7 +134,7 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 	public DetallePedido seleccionaArticulo(String codigoProducto){
 		DetallePedido articulo = new DetallePedido();
 		if (isNuevo()){
-			articulo = getPeticion().buscaArticulo(TomarPedido.this, codigoProducto);
+			articulo = getPeticion().buscaArticulo(TomarPedido.this, codigoProducto, PRECIO);
 		}else{
 			articulo = getPeticion().buscaArticuloPedido(TomarPedido.this, codigoProducto, getNumeroPedido());
 		}
@@ -359,7 +373,8 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 	}
 	
 	public void buscaArticulos(){
-		setArticulosHashMap(getPeticion().listaArticulos(TomarPedido.this));
+		Log.e("TT", "precio = ");
+		setArticulosHashMap(getPeticion().listaArticulos(TomarPedido.this, PRECIO));
 		setNumeroPedido(getPeticion().numeroPedido(this));
 		Log.e("TT", "numero pedido = " + getNumeroPedido());
 	}
@@ -405,8 +420,6 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
           protected Integer doInBackground(String... urlString) {
                 try {
                 	buscaArticulos();
-                	
-
                } catch (Exception exception) {
 
                }

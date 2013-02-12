@@ -684,6 +684,10 @@ public class RequestDB {
 						 cliente.setCliDireccion(d.getString("cliDireccion"));
 						 cliente.setCliTelefono(d.getString("cliTelefono"));
 						 cliente.setCliFax(d.getString("cliFax"));
+						 cliente.setCliDesnormal(d.getString("cliDesnormal"));
+						 cliente.setCliDes1(d.getString("cliDes1"));
+						 cliente.setCliDes2(d.getString("cliDes2"));
+						 cliente.setCliDes3(d.getString("cliDes3"));
 						 cliente.setCliContacto(d.getString("cliContacto"));
 						 cliente.setCliRuta(d.getString("cliRuta"));
 						 return cliente;
@@ -697,7 +701,7 @@ public class RequestDB {
 		}
 		
 //buscaArticulo
-		public DetallePedido buscaArticulo(Context context, String codigoArticulo)
+		public DetallePedido buscaArticulo(Context context, String codigoArticulo, int precio)
 		{
 			Log.e("TT", "RequestDB.buscaCliente - codigoCliente = " + codigoArticulo);
 			DetallePedido articulo = new DetallePedido();
@@ -717,7 +721,20 @@ public class RequestDB {
 						 articulo.setCaja(0);
 						 articulo.setUnidad(0);
 						 articulo.setNombre(d.getString("artDescripcion"));
-						 articulo.setPrecio(d.getFloat("precioVenta"));
+						 switch(precio){
+						 case 1:
+							 articulo.setPrecio(d.getFloat("precioDes1"));
+							 break;
+						 case 2:
+							 articulo.setPrecio(d.getFloat("precioDes2"));
+							 break;
+						 case 3:
+							 articulo.setPrecio(d.getFloat("precioDes3"));
+							 break;
+						 default :
+							 articulo.setPrecio(d.getFloat("precioVenta"));
+							 break;
+						 }
 						 articulo.setSubTotal(0);
 						 articulo.setTotalUnidades(0);
 						 articulo.setUnidadesFardo(d.getInt("unidadesFardo"));
