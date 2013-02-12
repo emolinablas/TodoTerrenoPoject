@@ -19,4 +19,9 @@
         android:id="@+id/pedido_menu_nuevo_opcion" 
         android:title="NUEVO"
         android:icon="@drawable/add_user"></item>
+    
+    <item 
+        android:id="@+id/pedido_menu_actualizar_opcion" 
+        android:title="ACTUALIZAR"
+        android:icon="@drawable/sincronizar"></item>
 </menu>

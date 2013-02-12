@@ -30,8 +30,10 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.researchmobile.todoterreno.pedidos.entity.ListaClientes;
+import com.researchmobile.todoterreno.pedidos.utility.ConnectState;
 import com.researchmobile.todoterreno.pedidos.utility.Fecha;
 import com.researchmobile.todoterreno.pedidos.ws.Peticion;
 
@@ -55,6 +57,7 @@ private ProgressDialog pd = null;
 	private Fecha fecha;
 	private ArrayList<HashMap<String, String>> clientesPendientesHashMap;
 	private ArrayList<HashMap<String, String>> clientesVisitadosHashMap;
+	private ConnectState connect = new ConnectState();
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -249,6 +252,37 @@ private ProgressDialog pd = null;
 		
 	}
 	
+	// Clase para ejecutar en Background
+    class actualizarClientesAsync extends AsyncTask<String, Integer, Integer> {
+
+          // Metodo que prepara lo que usara en background, Prepara el progress
+          @Override
+          protected void onPreExecute() {
+                pd = ProgressDialog. show(Rol.this, "VERIFICANDO DATOS","ESPERE UN MOMENTO");
+                pd.setCancelable( false);
+         }
+
+          // Metodo con las instrucciones que se realizan en background
+          @Override
+          protected Integer doInBackground(String... urlString) {
+                try {
+                	getPeticion().actualizarClientes(Rol.this);
+               } catch (Exception exception) {
+
+               }
+                return null ;
+         }
+
+          // Metodo con las instrucciones al finalizar lo ejectuado en background
+          protected void onPostExecute(Integer resultado) {
+                pd.dismiss();
+                new ClientesPendientesAsync().execute("");
+
+         }
+    }
+
+	
+	
 	private void llenaListaVisitados() {
 		setSimpleAdapter(new SimpleAdapter(Rol.this, 
 				getClientesVisitadosHashMap(), 
@@ -322,8 +356,20 @@ private ProgressDialog pd = null;
 			nuevoCliente();
 			return true;
 			
+		case R.id.pedido_menu_actualizar_opcion:
+			actualizarClientes();
+			return true;
+			
 		default:
 			return super.onOptionsItemSelected(item);
+		}
+	}
+	
+	private void actualizarClientes(){
+		if(connect.isConnectedToInternet(this)){
+			new actualizarClientesAsync().execute("");
+		}else{
+			Toast.makeText(getBaseContext(), "no cuenta con conexion a internet", Toast.LENGTH_SHORT).show();
 		}
 	}
 	

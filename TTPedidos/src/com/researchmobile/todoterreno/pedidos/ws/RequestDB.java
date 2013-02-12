@@ -1425,6 +1425,7 @@ public class RequestDB {
 		   return null;
 	   }
 	}
+	
 	//vaciar tabla categoria
 	public boolean limpiacategoria(Context context)
 	{
@@ -1492,5 +1493,4 @@ public class RequestDB {
 				return null;
 			  }
 		}
-
 }

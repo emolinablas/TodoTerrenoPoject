@@ -90,10 +90,6 @@ public class RequestWS {
 						Portafolio temp = new Portafolio();
 						temp.setIdPortafolio(nullToString(portafoliosJsonObject.getString("IDportafolio")));
 						temp.setDescripcion(nullToString(portafoliosJsonObject.getString("descripcion")));
-						//temp.setFechacreacion(nullToString(portafoliosJsonObject.getString("fechacreacion")));
-						//temp.setDeshabilitar(nullToString(portafoliosJsonObject.getString("deshabilitar")));
-						//temp.setAnotaciones(nullToString(portafoliosJsonObject.getString("anotaciones")));
-						//temp.setUsuario(nullToString(portafoliosJsonObject.getString("usuario")));
 						portafolios[i] = temp;
 						} loginEntity.setPortafolio(portafolios);
 						Log.e("TT", "RequestWS.login Portafolios");
@@ -107,18 +103,8 @@ public class RequestWS {
 						for(int i=0; i < tamano; i++){ // recorro el Array para asignar cada registro a una variable a un objeto temporal y luego agregarlo al Array de listaClientes
 						JSONObject rutasJsonObject = rutasJsonArray.getJSONObject(i);
 						Ruta temp = new Ruta();
-						//temp.setIdPortafolio(nullToString(rutasJsonObject.getString("IDportafolio")));
 						temp.setId(nullToString(rutasJsonObject.getString("ID")));
 						temp.setDescripcion(nullToString(rutasJsonObject.getString("Descripcion")));
-						//temp.setTipovehiculo(nullToString(rutasJsonObject.getString("tipovehiculo")));
-						//temp.setOrigen(nullToString(rutasJsonObject.getString("origen")));
-						//temp.setDestino(nullToString(rutasJsonObject.getString("destino")));
-						//temp.setPrecioventa(nullToString(rutasJsonObject.getString("precioventa")));
-						//temp.setCombustible(nullToString(rutasJsonObject.getString("combustible")));
-						//temp.setViaticos(nullToString(rutasJsonObject.getString("viaticos")));
-						//temp.setOtrosgastos(nullToString(rutasJsonObject.getString("otrosgastos")));
-						//temp.setKilometros(nullToString(rutasJsonObject.getString("kilometros")));
-						
 						rutas[i] = temp;
 						} loginEntity.setRuta(rutas);
 						Log.e("TT", "RequestWS.login Rutas");
@@ -157,6 +143,44 @@ public class RequestWS {
 		}
 
 		
+	}
+	
+//	Metodo usado para actualizar clientes
+	public LoginEntity actualizaClientes() {
+		String url = WS_LOGIN + "usuario=" + User.getUsername() + "&" + "password=" + User.getClave(); // string de conexi—n
+		JSONObject jsonObject = ConnectWS.obtenerJson(url);
+		Log.e("TT", "respuesta ws actualizar clientes = " + jsonObject.toString());
+		LoginEntity loginEntity = new LoginEntity();
+		
+		try{
+			if(jsonObject.has("resultado")){
+				loginEntity.setRespuesta(new RespuestaWS());
+				loginEntity.getRespuesta().setResultado(jsonObject.getBoolean("resultado"));
+				loginEntity.getRespuesta().setMensaje(jsonObject.getString("mensaje"));
+				if(loginEntity.getRespuesta().isResultado()){ //  si existe resultado relleno los campos del usuario
+					if(jsonObject.has("rutas")){ // si viene el Array de rutas asigno los campos al array de rutas y lo envio al LoginEntity
+						JSONArray rutasJsonArray = jsonObject.getJSONArray("rutas");
+						int tamano = rutasJsonArray.length();
+						Ruta[] rutas = new Ruta[tamano];
+						for(int i=0; i < tamano; i++){ // recorro el Array para asignar cada registro a una variable a un objeto temporal y luego agregarlo al Array de listaClientes
+						JSONObject rutasJsonObject = rutasJsonArray.getJSONObject(i);
+						Ruta temp = new Ruta();
+						temp.setId(nullToString(rutasJsonObject.getString("ID")));
+						temp.setDescripcion(nullToString(rutasJsonObject.getString("Descripcion")));
+						rutas[i] = temp;
+						} loginEntity.setRuta(rutas);
+					}else{
+						loginEntity.getRespuesta().setResultado(false);
+						loginEntity.getRespuesta().setMensaje("No tiene rutas asignadas");
+					}
+				}
+			}
+			return loginEntity;
+		}catch(Exception exception){
+			loginEntity.getRespuesta().setResultado(false);
+			loginEntity.getRespuesta().setMensaje("Ocurrio un problema en la consulta");
+			return null;
+		}
 	}
 	
 	//Metodo captura caterog’a
@@ -229,9 +253,8 @@ public class RequestWS {
 						return listaClientes;
 						
 					}else{
-						System.out.println("No se obtuvo el Array de clientes");
+						return null;
 					}
-					return listaClientes;
 				}else{
 					System.out.println("No se obtuvo resultado del WS");
 					return null;
@@ -389,5 +412,4 @@ public class RequestWS {
 		}
 	}
 
-	
 }

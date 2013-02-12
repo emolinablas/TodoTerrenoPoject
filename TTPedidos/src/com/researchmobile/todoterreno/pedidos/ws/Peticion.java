@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.researchmobile.todoterreno.pedidos.entity.Articulo;
 import com.researchmobile.todoterreno.pedidos.entity.Cliente;
@@ -18,6 +19,7 @@ import com.researchmobile.todoterreno.pedidos.entity.LoginEntity;
 import com.researchmobile.todoterreno.pedidos.entity.NoVenta;
 import com.researchmobile.todoterreno.pedidos.entity.Pedido;
 import com.researchmobile.todoterreno.pedidos.entity.RespuestaWS;
+import com.researchmobile.todoterreno.pedidos.entity.Ruta;
 import com.researchmobile.todoterreno.pedidos.entity.User;
 import com.researchmobile.todoterreno.pedidos.entity.Vendedor;
 import com.researchmobile.todoterreno.pedidos.utility.ConnectState;
@@ -105,13 +107,43 @@ public class Peticion {
 		requestDB.eliminarPortafolio(context);
 		requestDB.eliminarRuta(context);
 		requestDB.eliminarArticulos(context);
-		requestDB.eliminarClientes(context);
+		
 		requestDB.eliminarDetallePedido(context);
 		requestDB.eliminarDetallePedidoTemp(context);
 		requestDB.eliminarEncabezadoPedidoTemp(context);
 		requestDB.eliminarPedido(context);
 	}
-
+	
+	public void actualizarClientes(Context context) {
+		LoginEntity clientes = new LoginEntity();
+		clientes = requestWS.actualizaClientes();
+		if (clientes.getRespuesta().isResultado()){
+			int tamanoRuta = clientes.getRuta().length;
+			ListaClientes[] listaClientes = new ListaClientes[tamanoRuta];
+			if (tamanoRuta > 0){
+				int intentos = 0;
+				for (int i = 0; i < tamanoRuta; i++){
+					ListaClientes listaClientesTemp = requestWS.listaClientes("catalogo", clientes.getRuta()[i].getId());
+					if (listaClientesTemp.getCliente().length > 0){
+						listaClientes[i] = listaClientesTemp;
+					}
+				}
+			}
+			
+			requestDB.eliminarClientes(context);
+			
+			for (int i = 0; i < tamanoRuta; i++){
+				ListaClientes nuevosClientes = new ListaClientes();
+				nuevosClientes = listaClientes[i];
+				if (nuevosClientes != null){
+					guardarClientes(context, nuevosClientes);
+				}
+			}
+		}else{
+			Log.e("TT", "no fue posible consultar las rutas");
+		}
+	}
+	
 	private void cargarArticulos(Context context, LoginEntity loginEntity) {
 		ListaArticulos listaArticulos = new ListaArticulos();
 		int tamanoPortafolio = loginEntity.getPortafolio().length;
@@ -536,5 +568,4 @@ public class Peticion {
 		}
 		return precio;
 	}
-	
 }
