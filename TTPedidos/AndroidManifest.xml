@@ -25,6 +25,10 @@
         <activity android:name="TomarPedido" android:screenOrientation="portrait" android:configChanges="orientation"></activity>
         <activity android:name="ListaPedidos" android:screenOrientation="portrait" android:configChanges="orientation"></activity>
         <activity android:name="NuevoCliente" android:screenOrientation="portrait" android:configChanges="orientation"></activity>
+    	<activity android:name="com.researchmobile.todoterreno.facturacion.view.DetalleClienteFacturacion" android:screenOrientation="portrait" android:configChanges="orientation"></activity>
+    	<activity android:name="com.researchmobile.todoterreno.facturacion.view.DetallePedido" android:screenOrientation="portrait" android:configChanges="orientation"></activity>
+    	<activity android:name="com.researchmobile.todoterreno.facturacion.view.RolFacturacion" android:screenOrientation="portrait" android:configChanges="orientation"></activity>
+    	
     </application>
 
 </manifest>
