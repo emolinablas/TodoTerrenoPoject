@@ -1,196 +1,192 @@
-package com.researchmobile.todoterreno.pedidos.entity;
+package com.researchmobile.todoterreno.facturacion.entity;
 
 import java.io.Serializable;
 
 public class Factura implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	private String MovDocumento;
-	private String MovFecha;
-	private String MovHora;
-	private Integer MovTipo;
-	private boolean MovAnulado;
-	private Integer MovEstatus;
-	private float MovTotal;
-	private float MovEfectivo;
-	private float MovCheque;
-	private float MovCredito;
-	private String CliCodigo;
-	private String Factura;
-	private boolean MovFacturado;
-	private String PrimerDato;
-	private String MovNotas;
-	private Integer MovCerrado;
-	private Integer CajaCodigo;
-	private float MovPagado;
-	private String PagoDocumento;
-	private String MovFechaVence;
-	private Integer CierreMes;
-	private String Vendedor;
-	private String Ruta;
-	private String IdRepartidor;
-	private String FacturaImpresa;
-	private String FacturaRechazo;
+	private String movDocumento;
+	private String movFecha;
+	private String movHora;
+	private Integer movTipo;
+	private boolean movAnulado;
+	private Integer movEstatus;
+	private float movTotal;
+	private float movEfectivo;
+	private float movCheque;
+	private float movCredito;
+	private String cliCodigo;
+	private String factura;
+	private boolean movFacturado;
+	private String primerDato;
+	private String movNotas;
+	private Integer movCerrado;
+	private Integer cajaCodigo;
+	private float movPagado;
+	private String pagoDocumento;
+	private String movFechaVence;
+	private Integer cierreMes;
+	private String vendedor;
+	private String ruta;
+	private String idRepartidor;
+	private String facturaImpresa;
+	private String facturaRechazo;
 	public String getMovDocumento() {
-		return MovDocumento;
+		return movDocumento;
 	}
 	public void setMovDocumento(String movDocumento) {
-		MovDocumento = movDocumento;
+		this.movDocumento = movDocumento;
 	}
 	public String getMovFecha() {
-		return MovFecha;
+		return movFecha;
 	}
 	public void setMovFecha(String movFecha) {
-		MovFecha = movFecha;
+		this.movFecha = movFecha;
 	}
 	public String getMovHora() {
-		return MovHora;
+		return movHora;
 	}
 	public void setMovHora(String movHora) {
-		MovHora = movHora;
+		this.movHora = movHora;
 	}
 	public Integer getMovTipo() {
-		return MovTipo;
+		return movTipo;
 	}
 	public void setMovTipo(Integer movTipo) {
-		MovTipo = movTipo;
+		this.movTipo = movTipo;
 	}
 	public boolean isMovAnulado() {
-		return MovAnulado;
+		return movAnulado;
 	}
 	public void setMovAnulado(boolean movAnulado) {
-		MovAnulado = movAnulado;
+		this.movAnulado = movAnulado;
 	}
 	public Integer getMovEstatus() {
-		return MovEstatus;
+		return movEstatus;
 	}
 	public void setMovEstatus(Integer movEstatus) {
-		MovEstatus = movEstatus;
+		this.movEstatus = movEstatus;
 	}
 	public float getMovTotal() {
-		return MovTotal;
+		return movTotal;
 	}
 	public void setMovTotal(float movTotal) {
-		MovTotal = movTotal;
+		this.movTotal = movTotal;
 	}
 	public float getMovEfectivo() {
-		return MovEfectivo;
+		return movEfectivo;
 	}
 	public void setMovEfectivo(float movEfectivo) {
-		MovEfectivo = movEfectivo;
+		this.movEfectivo = movEfectivo;
 	}
 	public float getMovCheque() {
-		return MovCheque;
+		return movCheque;
 	}
 	public void setMovCheque(float movCheque) {
-		MovCheque = movCheque;
+		this.movCheque = movCheque;
 	}
 	public float getMovCredito() {
-		return MovCredito;
+		return movCredito;
 	}
 	public void setMovCredito(float movCredito) {
-		MovCredito = movCredito;
+		this.movCredito = movCredito;
 	}
 	public String getCliCodigo() {
-		return CliCodigo;
+		return cliCodigo;
 	}
 	public void setCliCodigo(String cliCodigo) {
-		CliCodigo = cliCodigo;
+		this.cliCodigo = cliCodigo;
 	}
 	public String getFactura() {
-		return Factura;
+		return factura;
 	}
 	public void setFactura(String factura) {
-		Factura = factura;
+		this.factura = factura;
 	}
 	public boolean isMovFacturado() {
-		return MovFacturado;
+		return movFacturado;
 	}
 	public void setMovFacturado(boolean movFacturado) {
-		MovFacturado = movFacturado;
+		this.movFacturado = movFacturado;
 	}
 	public String getPrimerDato() {
-		return PrimerDato;
+		return primerDato;
 	}
 	public void setPrimerDato(String primerDato) {
-		PrimerDato = primerDato;
+		this.primerDato = primerDato;
 	}
 	public String getMovNotas() {
-		return MovNotas;
+		return movNotas;
 	}
 	public void setMovNotas(String movNotas) {
-		MovNotas = movNotas;
+		this.movNotas = movNotas;
 	}
 	public Integer getMovCerrado() {
-		return MovCerrado;
+		return movCerrado;
 	}
 	public void setMovCerrado(Integer movCerrado) {
-		MovCerrado = movCerrado;
+		this.movCerrado = movCerrado;
 	}
 	public Integer getCajaCodigo() {
-		return CajaCodigo;
+		return cajaCodigo;
 	}
 	public void setCajaCodigo(Integer cajaCodigo) {
-		CajaCodigo = cajaCodigo;
+		this.cajaCodigo = cajaCodigo;
 	}
 	public float getMovPagado() {
-		return MovPagado;
+		return movPagado;
 	}
 	public void setMovPagado(float movPagado) {
-		MovPagado = movPagado;
+		this.movPagado = movPagado;
 	}
 	public String getPagoDocumento() {
-		return PagoDocumento;
+		return pagoDocumento;
 	}
 	public void setPagoDocumento(String pagoDocumento) {
-		PagoDocumento = pagoDocumento;
+		this.pagoDocumento = pagoDocumento;
 	}
 	public String getMovFechaVence() {
-		return MovFechaVence;
+		return movFechaVence;
 	}
 	public void setMovFechaVence(String movFechaVence) {
-		MovFechaVence = movFechaVence;
+		this.movFechaVence = movFechaVence;
 	}
 	public Integer getCierreMes() {
-		return CierreMes;
+		return cierreMes;
 	}
 	public void setCierreMes(Integer cierreMes) {
-		CierreMes = cierreMes;
+		this.cierreMes = cierreMes;
 	}
 	public String getVendedor() {
-		return Vendedor;
+		return vendedor;
 	}
 	public void setVendedor(String vendedor) {
-		Vendedor = vendedor;
+		this.vendedor = vendedor;
 	}
 	public String getRuta() {
-		return Ruta;
+		return ruta;
 	}
 	public void setRuta(String ruta) {
-		Ruta = ruta;
+		this.ruta = ruta;
 	}
 	public String getIdRepartidor() {
-		return IdRepartidor;
+		return idRepartidor;
 	}
 	public void setIdRepartidor(String idRepartidor) {
-		IdRepartidor = idRepartidor;
+		this.idRepartidor = idRepartidor;
 	}
 	public String getFacturaImpresa() {
-		return FacturaImpresa;
+		return facturaImpresa;
 	}
 	public void setFacturaImpresa(String facturaImpresa) {
-		FacturaImpresa = facturaImpresa;
+		this.facturaImpresa = facturaImpresa;
 	}
 	public String getFacturaRechazo() {
-		return FacturaRechazo;
+		return facturaRechazo;
 	}
 	public void setFacturaRechazo(String facturaRechazo) {
-		FacturaRechazo = facturaRechazo;
-	}
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+		this.facturaRechazo = facturaRechazo;
 	}
 
-	
-	}
+}
 

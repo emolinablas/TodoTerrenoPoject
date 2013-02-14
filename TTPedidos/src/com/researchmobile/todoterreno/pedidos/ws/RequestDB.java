@@ -12,10 +12,8 @@ import com.researchmobile.todoterreno.pedidos.entity.Articulo;
 import com.researchmobile.todoterreno.pedidos.entity.Categoria;
 import com.researchmobile.todoterreno.pedidos.entity.Cliente;
 import com.researchmobile.todoterreno.pedidos.entity.ClienteNuevo;
-import com.researchmobile.todoterreno.pedidos.entity.DetalleFactura;
 import com.researchmobile.todoterreno.pedidos.entity.DetallePedido;
 import com.researchmobile.todoterreno.pedidos.entity.EncabezadoPedido;
-import com.researchmobile.todoterreno.pedidos.entity.Factura;
 import com.researchmobile.todoterreno.pedidos.entity.ListaCategoria;
 import com.researchmobile.todoterreno.pedidos.entity.NoVenta;
 import com.researchmobile.todoterreno.pedidos.entity.Portafolio;
@@ -24,7 +22,6 @@ import com.researchmobile.todoterreno.pedidos.entity.Ruta;
 import com.researchmobile.todoterreno.pedidos.entity.Usuario;
 import com.researchmobile.todoterreno.pedidos.entity.Vendedor;
 import com.researchmobile.todoterreno.pedidos.utility.Fecha;
-import com.researchmobile.todoterreno.pedidos.view.NuevoCliente;
 
 public class RequestDB {
 	

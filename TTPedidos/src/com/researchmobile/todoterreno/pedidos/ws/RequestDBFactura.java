@@ -7,8 +7,8 @@ import android.content.Context;
 
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.researchmobile.todoterreno.pedidos.entity.DetalleFactura;
-import com.researchmobile.todoterreno.pedidos.entity.Factura;
+import com.researchmobile.todoterreno.facturacion.entity.DetalleFactura;
+import com.researchmobile.todoterreno.facturacion.entity.Factura;
 
 public class RequestDBFactura {
 	//guarda factura
@@ -132,8 +132,8 @@ public class RequestDBFactura {
 						 datodetallefactura.setValue("movprecio", detallefactura[b].getMovPrecio());
 						 datodetallefactura.setValue("movfechaentregar",detallefactura[b].getMovFechaEntregar());
 						 datodetallefactura.setValue("cajacodigo", detallefactura[b].getCajaCodigo());
-						 datodetallefactura.setValue("mocostoultimo",detallefactura[b].getMocostoultimo());
-						 datodetallefactura.setValue("movunidevueltos", detallefactura[b].getMovUnidevueltos());
+						 datodetallefactura.setValue("mocostoultimo",detallefactura[b].getMoCostoUltimo());
+						 datodetallefactura.setValue("movunidevueltos", detallefactura[b].getMovUniDevueltos());
 						 datodetallefactura.setValue("movnotas", detallefactura[b].getMovNotas());
 						 datodetallefactura.setValue("vendedor",detallefactura[b].getVendedor());
 						 datodetallefactura.setValue("ruta",detallefactura[b].getRuta());
