@@ -231,5 +231,59 @@
 	    <field name="dia_visita"		obligatory="false" type="text" size="8"/>
 	    <field name="sinc"				obligatory="false" type="integer"/>	        	
 	 </table>
+	 
+	<!-- F A C T U R A --> 
+	<table name="factura" to-string="%factura%">
+	    
+	    <field name="movdocumento"		obligatory="false" type="text" size="20"/>
+	    <field name="movfecha"			obligatory="false" type="text" size="20"/>
+	    <field name="movhora"			obligatory="false" type="text" size="20"/>
+	    <field name="movtipo"			obligatory="false" type="integer"/>
+	    <field name="movanulado"		obligatory="false" type="boolean"/>
+	    <field name="movestatus"		obligatory="false" type="integer"/>
+	    <field name="movtotal"			obligatory="false" type="float"/>
+	    <field name="movefectivo"		obligatory="false" type="float"/>
+	    <field name="movcheque"			obligatory="false" type="float"/>
+	    <field name="movcredito"		obligatory="false" type="float"/>
+	    <field name="clicodigo"			obligatory="false" type="text" size="20"/>
+		<field name="factura"			obligatory="false" type="text" size="20"/>
+		<field name="movfacturado"		obligatory="false" type="boolean"/>
+		<field name="primerdato"		obligatory="false" type="text" size="20"/>
+		<field name="movnotas"			obligatory="false" type="text" size="60"/>
+		<field name="movcerrado"		obligatory="false" type="integer"/>
+		<field name="cajacodigo"		obligatory="false" type="integer"/>
+		<field name="movpagado"			obligatory="false" type="float"/>
+		<field name="pagodocumento"		obligatory="false" type="text" size="20"/>
+		<field name="movfechavence"		obligatory="false" type="text" size="20"/>
+		<field name="cierremes"			obligatory="false" type="integer"/>
+		<field name="vendedor"			obligatory="false" type="text" size="20"/>
+		<field name="ruta"				obligatory="false" type="text" size="20"/>
+		<field name="idrepartidor"		obligatory="false" type="text" size="20"/>
+		<!-- campos agregados para manejar en el REQUESTDB -->
+		<field name="facturaimpresa"	obligatory="false" type="text" size="20"/>
+		<field name="facturarechazo"	obligatory="false" type="text" size="20"/>
+	</table>
+	
+	<!-- D E T A L L E  	F A C T U R A  -->
+	
+	<table name="detallefactura" to-string="%detallefactura%">
+	    
+	    <field name="id"					obligatory="false" type="integer"/>
+	    <field name="movdocumento"			obligatory="false" type="text" size="20"/>
+		<field name="artcodigo"				obligatory="false" type="text" size="20"/>
+		<field name="artunidadesfardo"		obligatory="false" type="integer"/>
+		<field name="movunidades"			obligatory="false" type="integer"/>
+		<field name="movunidadesentregadas"	obligatory="false" type="integer"/>
+		<field name="movprecio"				obligatory="false" type="float"/>
+		<field name="movfechaentregar"		obligatory="false" type="text" size="20"/>
+		<field name="cajacodigo"			obligatory="false" type="integer"/>
+		<field name="mocostoultimo"			obligatory="false" type="float"/>
+		<field name="movunidevueltos"		obligatory="false" type="integer"/>
+		<field name="movnotas"				obligatory="false" type="text" size="60"/>
+		<field name="vendedor"				obligatory="false" type="text" size="20"/>
+		<field name="ruta"					obligatory="false" type="text" size="20"/>
+		<field name="idrepartidor"			obligatory="false" type="text" size="20"/>		
+	</table>
+	
 </database>
 	
