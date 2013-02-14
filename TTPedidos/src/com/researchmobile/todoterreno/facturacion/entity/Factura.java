@@ -29,8 +29,18 @@ public class Factura implements Serializable {
 	private String vendedor;
 	private String ruta;
 	private String idRepartidor;
-	private String facturaImpresa;
-	private String facturaRechazo;
+	private Integer facturaImpresa;
+	private Integer facturaRechazo;
+	private long id;
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 	public String getMovDocumento() {
 		return movDocumento;
 	}
@@ -175,16 +185,16 @@ public class Factura implements Serializable {
 	public void setIdRepartidor(String idRepartidor) {
 		this.idRepartidor = idRepartidor;
 	}
-	public String getFacturaImpresa() {
+	public Integer getFacturaImpresa() {
 		return facturaImpresa;
 	}
-	public void setFacturaImpresa(String facturaImpresa) {
+	public void setFacturaImpresa(Integer facturaImpresa) {
 		this.facturaImpresa = facturaImpresa;
 	}
-	public String getFacturaRechazo() {
+	public Integer getFacturaRechazo() {
 		return facturaRechazo;
 	}
-	public void setFacturaRechazo(String facturaRechazo) {
+	public void setFacturaRechazo(Integer facturaRechazo) {
 		this.facturaRechazo = facturaRechazo;
 	}
 

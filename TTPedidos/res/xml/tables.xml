@@ -260,8 +260,8 @@
 		<field name="ruta"				obligatory="false" type="text" size="20"/>
 		<field name="idrepartidor"		obligatory="false" type="text" size="20"/>
 		<!-- campos agregados para manejar en el REQUESTDB -->
-		<field name="facturaimpresa"	obligatory="false" type="text" size="20"/>
-		<field name="facturarechazo"	obligatory="false" type="text" size="20"/>
+		<field name="facturaimpresa"	obligatory="false" type="integer"/>
+		<field name="facturarechazo"	obligatory="false" type="integer"/>
 	</table>
 	
 	<!-- D E T A L L E  	F A C T U R A  -->

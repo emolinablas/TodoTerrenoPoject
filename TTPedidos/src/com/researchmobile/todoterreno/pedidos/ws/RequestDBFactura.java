@@ -19,7 +19,7 @@ public class RequestDBFactura {
 					int l= factura.length;
 					 for(int a=0; a<l; a++)
 					 {
-						 DataFramework.getInstance().open(context,"com.researchmobile.todoterreno.facturacion.view");
+						 DataFramework.getInstance().open(context,"com.researchmobile.todoterreno.facturacion.entity");
 						 Entity datofactura = new Entity("factura");
 						 datofactura.setValue("movdocumento", factura[a].getMovDocumento());
 						 datofactura.setValue("movfecha", factura[a].getMovFecha());
@@ -96,8 +96,8 @@ public class RequestDBFactura {
 							 Temp.setVendedor(datoFactura.getString("vendedor"));
 							 Temp.setRuta(datoFactura.getString("ruta"));
 							 Temp.setIdRepartidor(datoFactura.getString("idrepartidor"));
-							 Temp.setFacturaImpresa(datoFactura.getString("facturaimpresa"));
-							 Temp.setFacturaRechazo(datoFactura.getString("facturarechazo"));
+							 Temp.setFacturaImpresa(Integer.parseInt(datoFactura.getString("facturaimpresa")));
+							 Temp.setFacturaRechazo(Integer.parseInt(datoFactura.getString("facturarechazo")));
 							 
 							 factura1[a]=Temp;
 							 a++;
@@ -121,7 +121,7 @@ public class RequestDBFactura {
 					int a = detallefactura.length;
 					 for(int b=0; b<a; b++)
 					 {
-						 DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.facturacion.view");
+						 DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.facturacion.entity");
 						 Entity datodetallefactura = new Entity("detallefactura");
 						 datodetallefactura.setValue("id", detallefactura[b].getId());
 						 datodetallefactura.setValue("movdocumento", detallefactura[b].getMovDocumento());
@@ -167,12 +167,70 @@ public class RequestDBFactura {
 							 Entity Ddetallefactura = (Entity)it.next();
 							 DetalleFactura Reg = new DetalleFactura();
 							 Reg.setId(Integer.parseInt(Ddetallefactura.getString("id")));
+							 Reg.setMovDocumento(Ddetallefactura.getString("movdocumento"));
+							 Reg.setArtCodigo(Ddetallefactura.getString("artcodigo"));
+							 Reg.setArtUnidadesFardo(Integer.parseInt(Ddetallefactura.getString("artunidadesfardo")));
+							 Reg.setMovUnidades(Integer.parseInt(Ddetallefactura.getString("movunidades")));
+							 Reg.setMovUnidadesEntregadas(Integer.parseInt(Ddetallefactura.getString("movunidadesentregadas")));
+							 Reg.setMovPrecio(Float.parseFloat(Ddetallefactura.getString("movprecio")));
+							 Reg.setMovFechaEntregar(Ddetallefactura.getString("movfechaentregar"));
+							 Reg.setCajaCodigo(Integer.parseInt(Ddetallefactura.getString("cajacodigo")));
+							 Reg.setMoCostoUltimo(Float.parseFloat(Ddetallefactura.getString("mocostoultimo")));
+							 Reg.setMovUniDevueltos(Integer.parseInt(Ddetallefactura.getString("movunidevueltos")));
+							 Reg.setMovNotas(Ddetallefactura.getString("movnotas"));
+							 Reg.setVendedor(Ddetallefactura.getString("vendedor"));
+							 Reg.setRuta(Ddetallefactura.getString("ruta"));
+							 Reg.setIdRepartidor(Ddetallefactura.getString("idrepartidor"));
 							 
-							 
-							 
+							 detalle[a]=Reg;
+							 a++;
 						 }
+						 return detallefactura;
 					}
 				}
+				catch(Exception msj)
+				{
+					msj.printStackTrace();
+					return null;
+				}
 			}
+
+			
+//UPDATE FACTURA_IMPRESA	
+			public boolean facturaImpresa(Context context, long id)
+			{
+				try
+				{
+					DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.facturacion.entity");
+					Entity Factura = new Entity("factura");
+					Factura = DataFramework.getInstance().getTopEntity("factura", "_id=" + String.valueOf(id), "_id" );
+					Factura.setValue("facturaimpresa", 1);
+					Factura.save();
+					return true;
+					
+				}
+				 catch(Exception msj){
+					 return false;
+				 }
+			}
+
+//UPDATE FACTURA_RECHAZADA
+			public boolean facturaRechazada(Context context, long id)
+			{
+				try
+				{
+					DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.facturacion.entity");
+					Entity Factura = new Entity("factura");
+					Factura = DataFramework.getInstance().getTopEntity("factura", "_id=" + String.valueOf(id), "_id");
+					Factura.setValue("facturarechazo", 1);
+					Factura.save();
+					return true;
+				}
+				catch(Exception msj){
+					return false;
+				}
+			}
+
 }
+
 
