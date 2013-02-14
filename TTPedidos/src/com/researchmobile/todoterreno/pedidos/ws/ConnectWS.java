@@ -72,6 +72,25 @@ public class ConnectWS {
         return jsonObject;
 	}
     
+    public static JSONObject clienteVisitado(String url) {
+    	JSONObject jsonObject = null;
+		try{
+			URL urlCon = new URL("http", IP_SERVER, PUERTO, "/megainfo/ws/" + url);
+            HttpURLConnection urlConnection = (HttpURLConnection) urlCon.openConnection();
+            System.out.println("ENVIAR_CLIENTE VISITADO - url = " + urlCon);
+            InputStream inputStream = urlConnection.getInputStream();
+            
+            String responseInputStream = convertStreamToString(inputStream);
+            System.out.println(responseInputStream);
+            jsonObject = new JSONObject(responseInputStream);
+		}catch(Exception exception){
+			System.out.println(exception);
+            return jsonObject;
+        }
+        return jsonObject;
+		
+	}
+    
     public static JSONObject enviaNuevoCliente(String url) {
     	JSONObject jsonObject = null;
 		try{

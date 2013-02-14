@@ -39,6 +39,7 @@ public class Peticion {
 	private ConnectState connectState = new ConnectState();
 	private rmString rm = new rmString();
 	private FormatDecimal formatDecimal = new FormatDecimal();
+	private Fecha fecha = new Fecha();
 
 	public void limpiaDB(Context context){
 		requestDB.eliminarArticulos(context);
@@ -107,7 +108,7 @@ public class Peticion {
 		requestDB.eliminarPortafolio(context);
 		requestDB.eliminarRuta(context);
 		requestDB.eliminarArticulos(context);
-		
+		requestDB.eliminarClientes(context);
 		requestDB.eliminarDetallePedido(context);
 		requestDB.eliminarDetallePedidoTemp(context);
 		requestDB.eliminarEncabezadoPedidoTemp(context);
@@ -180,8 +181,8 @@ public class Peticion {
 
 	private void cargarClientes(Context context, LoginEntity loginEntity) {
 		ListaClientes listaClientes = new ListaClientes();
-		int tamanoRuta = loginEntity.getRuta().length;
-		Log.e("TT", "Peticion.cargarClientes 3 = " + tamanoRuta);
+		int tamanoRuta = loginEntity.getRuta().length - 1;
+		Log.e("TT", "Peticion.cargarClientes = " + tamanoRuta);
 		int intentos = 0;
 		for (int i = 0; i < tamanoRuta; i++){
 			do{
@@ -229,8 +230,9 @@ public class Peticion {
 		Cliente[] cliente = requestDB.clientePendienteDB(context);
 		//int tamano = cliente.length;
 		for (int i = 0; i < cliente.length; i++){
+			
 			String visitado = cliente[i].getVisitado();
-			if (visitado.equalsIgnoreCase("null") || visitado.equalsIgnoreCase("0")){
+			if (visitado.equalsIgnoreCase("null") || !visitado.equalsIgnoreCase(fecha.fechaInversa())){
 				if (rm.semanaVisitaHoy(cliente[i].getSemana()) && rm.diaVisitaHoy(cliente[i].getDiaVisita())){
 					HashMap<String, String> map = new HashMap<String, String>();
 					map.put("codigoCliente", cliente[i].getCliCodigo());
@@ -309,7 +311,7 @@ public class Peticion {
 		//int tamano = cliente.length;
 		for (int i = 0; i < cliente.length; i++){
 			String visitado = cliente[i].getVisitado();
-			if (visitado.equalsIgnoreCase("1")){
+			if (visitado.equalsIgnoreCase(fecha.fechaInversa())){
 				if (rm.semanaVisitaHoy(cliente[i].getSemana()) && rm.diaVisitaHoy(cliente[i].getDiaVisita())){
 					HashMap<String, String> map = new HashMap<String, String>();
 					map.put("codigoCliente", cliente[i].getCliCodigo());
@@ -416,6 +418,7 @@ public class Peticion {
 			RespuestaWS respuesta = new RespuestaWS();
 			respuesta = requestWS.enviaPedido(pedido, ruta, vendedor.getIdusuario());
 			if (!respuesta.isResultado()){
+				requestWS.clienteVisitado(pedido.getEncabezadoPedido().getCodigoCliente());
 				Log.e("TT", "resultado del envio = " + respuesta.getMensaje());
 				requestDB.actualizarCampoVisitado(context, encabezado.getCodigoCliente());
 				requestDB.actualizarSincEncabezadoPedido(context, numeroPedido);

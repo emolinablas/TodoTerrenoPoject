@@ -111,7 +111,7 @@ private ProgressDialog pd = null;
         })
         .setNegativeButton("NO", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
-                	detalleActivity(idCliente);
+//                	detalleActivity(idCliente);
                 }
         })
         .show();

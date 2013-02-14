@@ -29,6 +29,8 @@ public class Cliente implements Serializable{
 	private String cliNit;
 	private String Semana;
 	private String diaVisita;
+	private String fechaVisitado;
+	
 	private RespuestaWS respuesta;
 	private String visitado;
 	public String getCliCodigo() {
@@ -187,6 +189,12 @@ public class Cliente implements Serializable{
 	}
 	public void setVisitado(String visitado) {
 		this.visitado = visitado;
+	}
+	public String getFechaVisitado() {
+		return fechaVisitado;
+	}
+	public void setFechaVisitado(String fechaVisitado) {
+		this.fechaVisitado = fechaVisitado;
 	}
 	
 	

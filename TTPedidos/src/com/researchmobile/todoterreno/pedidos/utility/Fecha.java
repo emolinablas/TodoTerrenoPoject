@@ -80,6 +80,37 @@ public class Fecha {
 		return fecha;
 	}
 	
+	public String fechaInversa(){
+		int dia = 0;
+		int mes = 0;
+		int anio = 0;
+		String fecha = null;
+		
+		dia = getCalendar().get(Calendar.DAY_OF_MONTH);
+		mes = getCalendar().get(Calendar.MONTH ) + 1;
+		anio = getCalendar().get(Calendar.YEAR);
+		
+		
+		String a = String.valueOf(anio);
+		String m = "";
+		String d = "";
+		
+		if (mes < 10){
+			m = "0" + mes;
+		}else{
+			m = String.valueOf(mes);
+		}
+		
+		if (dia < 10){
+			d = "0" + dia;
+		}else{
+			d = String.valueOf(dia);
+		}
+		
+		fecha = a+"-"+m+"-"+d;
+		
+		return fecha;
+	}
 	public String fechaUnida(){
 		int dia = 0;
 		int mes = 0;

@@ -103,6 +103,7 @@ public class RequestDB {
 		{
 			try
 			{
+				Log.e("TT", "A GUADAR MOTIVOS" + noVenta.length);
 				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
 				int tamano = noVenta.length;
 				for (int i = 0; i < tamano; i++){
@@ -110,7 +111,7 @@ public class RequestDB {
 					datoUsuario.setValue("id", noVenta[i].getId());
 					datoUsuario.setValue("descripcion", noVenta[i].getDescripcion());
 					datoUsuario.save();
-					Log.e("TT", "motivo guardado = " + noVenta[i].getDescripcion());
+					Log.e("TT", "motivo guardado " + i + " = " + noVenta[i].getDescripcion());
 				}
 				
 			}
@@ -239,23 +240,25 @@ public class RequestDB {
 					DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
 					Entity datoarticulo = new Entity("articulo");
 					datoarticulo.setValue("artCodigo", articulo[c].getArtCodigo());
-					datoarticulo.setValue("categoria", articulo[c].getCategoria());
-					datoarticulo.setValue("sector", articulo[c].getSector());
-					datoarticulo.setValue("division", articulo[c].getDivision());
 					datoarticulo.setValue("artDescripcion", articulo[c].getArtDescripcion());
-					datoarticulo.setValue("artIngrediente", articulo[c].getArtIngrediente());
 					datoarticulo.setValue("precioVenta", articulo[c].getPrecioVenta());
 					datoarticulo.setValue("precioDes1", articulo[c].getPrecioDes1());
 					datoarticulo.setValue("precioDes2", articulo[c].getPrecioDes2());
 					datoarticulo.setValue("precioDes3", articulo[c].getPrecioDes3());
 					datoarticulo.setValue("ofertado", articulo[c].isOfertado());//cuando es boolean
 					datoarticulo.setValue("precioOferta",articulo[c].getPrecioOferta());
-					datoarticulo.setValue("foto",articulo[c].getFoto());
-					datoarticulo.setValue("observacion",articulo[c].getObservaciones());
-					datoarticulo.setValue("catalogo",articulo[c].getCatalogo());
 					datoarticulo.setValue("unidadesFardo",articulo[c].getUnidadesFardo());
-					datoarticulo.setValue("link",articulo[c].getLink());
 					datoarticulo.setValue("artOfertaFecha",articulo[c].getArtOfertaFecha());
+					datoarticulo.setValue("existencia", articulo[c].getExistencia());
+					
+//					datoarticulo.setValue("link",articulo[c].getLink());
+//					datoarticulo.setValue("catalogo",articulo[c].getCatalogo());
+//					datoarticulo.setValue("observacion",articulo[c].getObservaciones());
+//					datoarticulo.setValue("foto",articulo[c].getFoto());
+//					datoarticulo.setValue("artIngrediente", articulo[c].getArtIngrediente());
+//					datoarticulo.setValue("categoria", articulo[c].getCategoria());
+//					datoarticulo.setValue("sector", articulo[c].getSector());
+//					datoarticulo.setValue("division", articulo[c].getDivision());
 					datoarticulo.save();
 				}
 			}	
@@ -277,28 +280,30 @@ public class RequestDB {
 				datocliente.setValue("cliCodigo", cliente[d].getCliCodigo());
 				datocliente.setValue("cliEmpresa", cliente[d].getCliEmpresa());
 				datocliente.setValue("cliContacto", cliente[d].getCliContacto());
-				datocliente.setValue("codCatCliete", cliente[d].getCodCatCliete());
 				datocliente.setValue("cliDireccion", cliente[d].getCliDireccion());
 				datocliente.setValue("cliTelefono", cliente[d].getCliTelefono());
-				datocliente.setValue("cliFax", cliente[d].getCliFax());
-				datocliente.setValue("cliEmail", cliente[d].getCliEmail());
-				datocliente.setValue("cliWeb", cliente[d].getCliWeb());
-				datocliente.setValue("fingreso", cliente[d].getFingreso());
 				datocliente.setValue("cliDesnormal", cliente[d].getCliDesnormal());
 				datocliente.setValue("cliDes1", cliente[d].getCliDes1());
 				datocliente.setValue("cliDes2", cliente[d].getCliDes2());
 				datocliente.setValue("cliDes3", cliente[d].getCliDes3());
 				datocliente.setValue("clilimite", cliente[d].getCliLimite());
 				datocliente.setValue("cliSaldo", cliente[d].getCliSaldo());
-				datocliente.setValue("cliCheque", cliente[d].getCliCheque());
 				datocliente.setValue("cliRuta", cliente[d].getCliRuta());
-				datocliente.setValue("cliDireccionParticular", cliente[d].getCliDireccionParticular());
-				datocliente.setValue("cliTelefonoCasa", cliente[d].getCliTelefonoCasa());
-				datocliente.setValue("cliTelefonoMovil", cliente[d].getCliTelefonoMovil());
+//				datocliente.setValue("cliDireccionParticular", cliente[d].getCliDireccionParticular());
 				datocliente.setValue("cliNit", cliente[d].getCliNit());
 				datocliente.setValue("Semana", cliente[d].getSemana());
 				datocliente.setValue("diaVisita", cliente[d].getDiaVisita());
-				datocliente.setValue("visitado", cliente[d].getVisitado());
+//				datocliente.setValue("visitado", cliente[d].getVisitado());
+				datocliente.setValue("fechaVisitado", cliente[d].getFechaVisitado());
+				
+//				datocliente.setValue("codCatCliete", cliente[d].getCodCatCliete());
+//				datocliente.setValue("cliFax", cliente[d].getCliFax());
+//				datocliente.setValue("cliEmail", cliente[d].getCliEmail());
+//				datocliente.setValue("cliWeb", cliente[d].getCliWeb());
+//				datocliente.setValue("fingreso", cliente[d].getFingreso());
+//				datocliente.setValue("cliCheque", cliente[d].getCliCheque());				
+//				datocliente.setValue("cliTelefonoCasa", cliente[d].getCliTelefonoCasa());
+//				datocliente.setValue("cliTelefonoMovil", cliente[d].getCliTelefonoMovil());
 				datocliente.save();
 			 }
 			
@@ -560,28 +565,28 @@ public class RequestDB {
 			 		Temp.setCliCodigo(datoclientevisitado.getString("cliCodigo"));
 			 		Temp.setCliEmpresa(datoclientevisitado.getString("cliEmpresa"));
 			 		Temp.setCliContacto(datoclientevisitado.getString("cliContacto"));
-			 		Temp.setCodCatCliete(datoclientevisitado.getString("codCatCliete"));
+//			 		Temp.setCodCatCliete(datoclientevisitado.getString("codCatCliete"));
 			 		Temp.setCliDireccion(datoclientevisitado.getString("cliDireccion"));
 			 		Temp.setCliTelefono(datoclientevisitado.getString("cliTelefono"));
-			 		Temp.setCliFax(datoclientevisitado.getString("cliFax"));
-			 		Temp.setCliEmail(datoclientevisitado.getString("cliEmail"));
-			 		Temp.setCliWeb(datoclientevisitado.getString("cliWeb"));
-			 		Temp.setFingreso(datoclientevisitado.getString("fingreso"));
+//			 		Temp.setCliFax(datoclientevisitado.getString("cliFax"));
+//			 		Temp.setCliEmail(datoclientevisitado.getString("cliEmail"));
+//			 		Temp.setCliWeb(datoclientevisitado.getString("cliWeb"));
+//			 		Temp.setFingreso(datoclientevisitado.getString("fingreso"));
 			 		Temp.setCliDesnormal(datoclientevisitado.getString("cliDesnormal"));
 			 		Temp.setCliDes1(datoclientevisitado.getString("cliDes1"));
 			 		Temp.setCliDes2(datoclientevisitado.getString("cliDes2"));
 			 		Temp.setCliDes3(datoclientevisitado.getString("cliDes3"));
-			 		Temp.setCliLimite(datoclientevisitado.getString("clilimite"));
+//			 		Temp.setCliLimite(datoclientevisitado.getString("clilimite"));
 			 		Temp.setCliSaldo(datoclientevisitado.getString("cliSaldo"));
-			 		Temp.setCliCheque(datoclientevisitado.getString("cliCheque"));
+//			 		Temp.setCliCheque(datoclientevisitado.getString("cliCheque"));
 			 		Temp.setCliRuta(datoclientevisitado.getString("cliRuta"));
-			 		Temp.setCliDireccionParticular(datoclientevisitado.getString("cliDireccionParticular"));
-			 		Temp.setCliTelefonoCasa(datoclientevisitado.getString("cliTelefonoCasa"));
-			 		Temp.setCliTelefonoMovil(datoclientevisitado.getString("cliTelefonoMovil"));
+//			 		Temp.setCliDireccionParticular(datoclientevisitado.getString("cliDireccionParticular"));
+//			 		Temp.setCliTelefonoCasa(datoclientevisitado.getString("cliTelefonoCasa"));
+//			 		Temp.setCliTelefonoMovil(datoclientevisitado.getString("cliTelefonoMovil"));
 			 		Temp.setCliNit(datoclientevisitado.getString("cliNit"));
 			 		Temp.setSemana(datoclientevisitado.getString("Semana"));
 			 		Temp.setDiaVisita(datoclientevisitado.getString("diaVisita"));
-			 		Temp.setVisitado(datoclientevisitado.getString("visitado"));
+			 		Temp.setVisitado(datoclientevisitado.getString("fechaVisitado"));
 				
 			 		clientes[a]=Temp;
 			 		a++;
@@ -680,15 +685,16 @@ public class RequestDB {
 						 cliente.setCliCodigo(d.getString("cliCodigo"));
 						 cliente.setCliEmpresa(d.getString("cliEmpresa"));
 						 cliente.setCliContacto(d.getString("cliContacto"));
-						 cliente.setCodCatCliete(d.getString("codCatCliete"));
+//						 cliente.setCodCatCliete(d.getString("codCatCliete"));
 						 cliente.setCliDireccion(d.getString("cliDireccion"));
 						 cliente.setCliTelefono(d.getString("cliTelefono"));
-						 cliente.setCliFax(d.getString("cliFax"));
+//						 cliente.setCliFax(d.getString("cliFax"));
 						 cliente.setCliDesnormal(d.getString("cliDesnormal"));
 						 cliente.setCliDes1(d.getString("cliDes1"));
 						 cliente.setCliDes2(d.getString("cliDes2"));
 						 cliente.setCliDes3(d.getString("cliDes3"));
-						 cliente.setCliContacto(d.getString("cliContacto"));
+//						 cliente.setCliContacto(d.getString("cliContacto"));
+						 cliente.setFechaVisitado(d.getString("fechaVisitado"));
 						 cliente.setCliRuta(d.getString("cliRuta"));
 						 return cliente;
 					 }
@@ -1001,7 +1007,7 @@ public class RequestDB {
 			 		if (codigo.equalsIgnoreCase(cliCodigo)){
 			 			long id = datoCliente.getId();
 			 			Entity cliente = new Entity("cliente", id);
-			 			cliente.setValue("visitado", 1);
+			 			cliente.setValue("fechaVisitado", fecha.fechaInversa());
 			 			cliente.save();
 			 			return true;
 			 		}

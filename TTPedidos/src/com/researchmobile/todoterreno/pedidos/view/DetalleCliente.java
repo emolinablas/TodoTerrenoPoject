@@ -202,6 +202,7 @@ public class DetalleCliente extends Activity implements OnClickListener{
 		
 		Peticion peticion = new Peticion();
 		setCliente(peticion.DetalleCliente(DetalleCliente.this, getCodigoCliente()));
+		Log.e("TT", "fecha visitado de cliente = " + getCliente().getFechaVisitado());
 		
 	}
 	

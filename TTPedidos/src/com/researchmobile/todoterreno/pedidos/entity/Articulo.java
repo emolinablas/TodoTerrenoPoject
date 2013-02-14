@@ -25,6 +25,7 @@ public class Articulo implements Serializable{
 	private String link;
 	private String artOfertaFecha;
 	private RespuestaWS respuesta;
+	private int existencia;
 	public String getArtCodigo() {
 		return artCodigo;
 	}
@@ -144,6 +145,12 @@ public class Articulo implements Serializable{
 	}
 	public void setRespuesta(RespuestaWS respuesta) {
 		this.respuesta = respuesta;
+	}
+	public int getExistencia() {
+		return existencia;
+	}
+	public void setExistencia(int existencia) {
+		this.existencia = existencia;
 	}
 	
 }
