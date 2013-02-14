@@ -147,5 +147,32 @@ public class RequestDBFactura {
 							msj.printStackTrace();
 				}
 			}
-	}
+
+			//consulta detallefactura	
+			
+			public DetalleFactura consultadetallefactura()
+			{
+				try
+				{
+					DetalleFactura detallefactura = new DetalleFactura();
+					
+					List<Entity> categories = DataFramework.getInstance().getEntityList("detallefactura");
+					{
+						int tamano = categories.size();
+						DetalleFactura[] detalle = new DetalleFactura[tamano];
+						int a = 0;
+						Iterator it = categories.iterator();
+						 while(it.hasNext())
+						 {
+							 Entity Ddetallefactura = (Entity)it.next();
+							 DetalleFactura Reg = new DetalleFactura();
+							 Reg.setId(Integer.parseInt(Ddetallefactura.getString("id")));
+							 
+							 
+							 
+						 }
+					}
+				}
+			}
+}
 
