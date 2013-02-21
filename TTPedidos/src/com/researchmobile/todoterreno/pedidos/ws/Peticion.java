@@ -5,7 +5,6 @@ import java.util.HashMap;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.researchmobile.todoterreno.pedidos.entity.Articulo;
 import com.researchmobile.todoterreno.pedidos.entity.Cliente;
@@ -19,7 +18,6 @@ import com.researchmobile.todoterreno.pedidos.entity.LoginEntity;
 import com.researchmobile.todoterreno.pedidos.entity.NoVenta;
 import com.researchmobile.todoterreno.pedidos.entity.Pedido;
 import com.researchmobile.todoterreno.pedidos.entity.RespuestaWS;
-import com.researchmobile.todoterreno.pedidos.entity.Ruta;
 import com.researchmobile.todoterreno.pedidos.entity.User;
 import com.researchmobile.todoterreno.pedidos.entity.Vendedor;
 import com.researchmobile.todoterreno.pedidos.utility.ConnectState;
@@ -478,10 +476,11 @@ public class Peticion {
 		try{
 			if (connectState.isConnectedToInternet(context)){
 				
-				
-				Mail m = new Mail("todoterrenosc@gmail.com", "todoterreno123"); 
-				 
-			      String[] toArr = {"eclaudio@grupotodoterreno.com", "william.ale20@gmail.com", "wlevy@researchmobile.co", "walvarado@researchmobile.co"}; 
+				System.out.println("enviarNuevoCliente.....");
+				Mail m = new Mail("walvarado@researchmobile.co", "JavaBuilder");
+				System.out.println("enviarNuevoCliente.....");
+			      String[] toArr = {"walvarado@researchmobile.co"};
+//			      "eclaudio@grupotodoterreno.com", "william.ale20@gmail.com", "wlevy@researchmobile.co", 
 			      m.set_to(toArr); 
 			      m.set_from("todoterrenosc@gmail.com"); 
 			      m.set_subject("Peticion de nuevo Cliente"); 

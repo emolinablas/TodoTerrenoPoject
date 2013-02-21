@@ -2,8 +2,20 @@ package com.researchmobile.todoterreno.facturacion.entity;
 
 import java.io.Serializable;
 
+import com.researchmobile.todoterreno.pedidos.entity.RespuestaWS;
+
 public class Factura implements Serializable {
 	private static final long serialVersionUID = 1L;
+	
+	/**
+	 * Para mostrar en lista RolFacturacion
+	 */
+	private String codigoCliente;
+	private String contacto;
+	private String nombreNegocio;
+	private String direccion;
+	private String telefono;
+	private String nit;
 	
 	private String movDocumento;
 	private String movFecha;
@@ -32,6 +44,10 @@ public class Factura implements Serializable {
 	private Integer facturaImpresa;
 	private Integer facturaRechazo;
 	private long id;
+	
+	private RespuestaWS respuesta;
+	private DetalleFactura[] detalleFactura;
+	
 	public long getId() {
 		return id;
 	}
@@ -196,6 +212,54 @@ public class Factura implements Serializable {
 	}
 	public void setFacturaRechazo(Integer facturaRechazo) {
 		this.facturaRechazo = facturaRechazo;
+	}
+	public String getCodigoCliente() {
+		return codigoCliente;
+	}
+	public void setCodigoCliente(String codigoCliente) {
+		this.codigoCliente = codigoCliente;
+	}
+	public String getContacto() {
+		return contacto;
+	}
+	public void setContacto(String contacto) {
+		this.contacto = contacto;
+	}
+	public String getNombreNegocio() {
+		return nombreNegocio;
+	}
+	public void setNombreNegocio(String nombreNegocio) {
+		this.nombreNegocio = nombreNegocio;
+	}
+	public String getDireccion() {
+		return direccion;
+	}
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
+	public String getTelefono() {
+		return telefono;
+	}
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
+	}
+	public String getNit() {
+		return nit;
+	}
+	public void setNit(String nit) {
+		this.nit = nit;
+	}
+	public RespuestaWS getRespuesta() {
+		return respuesta;
+	}
+	public void setRespuesta(RespuestaWS respuesta) {
+		this.respuesta = respuesta;
+	}
+	public DetalleFactura[] getDetalleFactura() {
+		return detalleFactura;
+	}
+	public void setDetalleFactura(DetalleFactura[] detalleFactura) {
+		this.detalleFactura = detalleFactura;
 	}
 
 }

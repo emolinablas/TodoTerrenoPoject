@@ -127,7 +127,7 @@ public class NuevoCliente extends Activity implements OnClickListener, OnKeyList
                 	new crearAsync().execute("");
                 }
         })
-        .setPositiveButton("NO", new DialogInterface.OnClickListener() {
+        .setNegativeButton("NO", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
                 	
                 }
@@ -217,8 +217,6 @@ public class NuevoCliente extends Activity implements OnClickListener, OnKeyList
 			 cliente.setTelefono(telefono);
 			 cliente.setDireccion(direccion);
 			 
-			 //cliente.setCategoriaCliente(categoria.getIdCategoria());
-			 cliente.setRuta(getRuta());
 			 cliente.setDiaVisita(dia);
 			 res = peticion.enviarNuevoCliente(NuevoCliente.this, cliente);
 		 }

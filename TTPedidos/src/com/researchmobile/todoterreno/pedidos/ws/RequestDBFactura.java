@@ -9,6 +9,7 @@ import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.researchmobile.todoterreno.facturacion.entity.DetalleFactura;
 import com.researchmobile.todoterreno.facturacion.entity.Factura;
+import com.researchmobile.todoterreno.pedidos.entity.RespuestaWS;
 
 public class RequestDBFactura {
 	//guarda factura
@@ -229,6 +230,12 @@ public class RequestDBFactura {
 				catch(Exception msj){
 					return false;
 				}
+			}
+
+			public RespuestaWS verificaLoginDB(Context context,
+					String username, String clave) {
+				// TODO Auto-generated method stub
+				return null;
 			}
 
 }

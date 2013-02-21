@@ -15,10 +15,8 @@ import android.widget.EditText;
 import com.researchmobile.todoterreno.pedidos.entity.RespuestaWS;
 import com.researchmobile.todoterreno.pedidos.entity.User;
 import com.researchmobile.todoterreno.pedidos.utility.Mensaje;
-import com.researchmobile.todoterreno.pedidos.view.Login;
 import com.researchmobile.todoterreno.pedidos.view.R;
-import com.researchmobile.todoterreno.pedidos.view.Rol;
-import com.researchmobile.todoterreno.pedidos.ws.Peticion;
+import com.researchmobile.todoterreno.pedidos.ws.PeticionFactura;
 
 public class LoginRepartidor extends Activity implements OnClickListener, OnKeyListener{
 	
@@ -78,7 +76,7 @@ public class LoginRepartidor extends Activity implements OnClickListener, OnKeyL
 	private void peticionLogin() {
 		User.setUsername(getUsuarioEditText().getText().toString());
 		User.setClave(getContraseniaEditText().getText().toString());
-		Peticion peticion = new Peticion();
+		PeticionFactura peticion = new PeticionFactura();
 		setRespuesta(peticion.login(this));
 	}
 
@@ -106,16 +104,16 @@ public class LoginRepartidor extends Activity implements OnClickListener, OnKeyL
 		// Metodo con las instrucciones al finalizar lo ejectuado en background
 		protected void onPostExecute(Integer resultado) {
 			pd.dismiss();
-			if (getRespuesta().isResultado()){
+//			if (getRespuesta().isResultado()){
 				activityRol();
-			}else{
-				getMensaje().VerMensaje(LoginRepartidor.this, getRespuesta().getMensaje());
-			}
+//			}else{
+//				getMensaje().VerMensaje(LoginRepartidor.this, getRespuesta().getMensaje());
+//			}
 
 		}
 
 		private void activityRol() {
-			Intent intent = new Intent(LoginRepartidor.this, Rol.class);
+			Intent intent = new Intent(LoginRepartidor.this, RolFacturacion.class);
 			startActivity(intent);
 		}
 
