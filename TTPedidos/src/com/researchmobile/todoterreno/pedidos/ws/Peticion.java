@@ -14,6 +14,7 @@ import com.researchmobile.todoterreno.pedidos.entity.EncabezadoPedido;
 import com.researchmobile.todoterreno.pedidos.entity.ListaArticulos;
 import com.researchmobile.todoterreno.pedidos.entity.ListaCategoria;
 import com.researchmobile.todoterreno.pedidos.entity.ListaClientes;
+import com.researchmobile.todoterreno.pedidos.entity.ListaPromocion;
 import com.researchmobile.todoterreno.pedidos.entity.LoginEntity;
 import com.researchmobile.todoterreno.pedidos.entity.NoVenta;
 import com.researchmobile.todoterreno.pedidos.entity.Pedido;
@@ -74,6 +75,7 @@ public class Peticion {
 							guardarDatos(context, loginEntity);
 							cargarClientes(context, loginEntity);
 							cargarArticulos(context, loginEntity);
+							cargarPromociones(context);
 							return respuesta;
 						}else{
 							respuesta.setResultado(false);
@@ -165,6 +167,23 @@ public class Peticion {
 				intentos = 0;
 			}
 		}
+	}
+	
+	private void cargarPromociones(Context context){
+		ListaPromocion listaPromocion = new ListaPromocion();
+		try{
+			listaPromocion = requestWS.listaPromocion();
+			if (listaPromocion.getPromocion().length > 0){
+				guardaPromocion(context, listaPromocion);
+			}
+		}catch(Exception exception){
+			
+		}
+		
+	}
+	
+	private void guardaPromocion(Context context, ListaPromocion listaPromocion){
+		requestDB.guardaPromocion(context, listaPromocion);
 	}
 	
 	public void insertaEncabezado(Context context, EncabezadoPedido encabezadoPedido) {

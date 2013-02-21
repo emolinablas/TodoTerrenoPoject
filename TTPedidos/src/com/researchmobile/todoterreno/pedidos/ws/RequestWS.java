@@ -11,10 +11,12 @@ import com.researchmobile.todoterreno.pedidos.entity.ClienteNuevo;
 import com.researchmobile.todoterreno.pedidos.entity.ListaArticulos;
 import com.researchmobile.todoterreno.pedidos.entity.ListaCategoria;
 import com.researchmobile.todoterreno.pedidos.entity.ListaClientes;
+import com.researchmobile.todoterreno.pedidos.entity.ListaPromocion;
 import com.researchmobile.todoterreno.pedidos.entity.LoginEntity;
 import com.researchmobile.todoterreno.pedidos.entity.NoVenta;
 import com.researchmobile.todoterreno.pedidos.entity.Pedido;
 import com.researchmobile.todoterreno.pedidos.entity.Portafolio;
+import com.researchmobile.todoterreno.pedidos.entity.Promocion;
 import com.researchmobile.todoterreno.pedidos.entity.RespuestaWS;
 import com.researchmobile.todoterreno.pedidos.entity.Ruta;
 import com.researchmobile.todoterreno.pedidos.entity.User;
@@ -32,6 +34,7 @@ public class RequestWS {
 	private static String WS_CATEGORIAS = "ws_categorias.php?";
 	private static String WS_NUEVOCLIENTE = "ws_clientenuevo.php?idUsuario=";
 	private static String WS_CLIENTEVISITADO = "ws_clientes.php?a=visitado&clicodigo=";
+	private static String WS_PROMOCIONES = "ws_promociones.php?a=catalogo";
 	
 	// Metodo que llena el Entity del login
 	@SuppressWarnings("unused")
@@ -205,6 +208,61 @@ public class RequestWS {
 		
 	}
 	
+//	Metodo que captura las promociones
+	public ListaPromocion listaPromocion() {
+		ListaPromocion listaPromocion = new ListaPromocion();
+		RespuestaWS respuesta = new RespuestaWS();
+		String url = WS_PROMOCIONES;
+		
+		JSONObject jsonObject = ConnectWS.obtenerJson(url);
+		try{
+			if (jsonObject != null){
+				if (jsonObject.has("resultado")){
+					respuesta.setResultado(jsonObject.getBoolean("resultado"));
+					respuesta.setMensaje(jsonObject.getString("mensaje"));
+					listaPromocion.setRespuesta(respuesta);
+					if (respuesta.isResultado()){
+						JSONArray jsonArray = jsonObject.getJSONArray("articulos");
+						int tamano = jsonArray.length();
+						Promocion[] promocion = new Promocion[tamano];
+						for (int i = 0; i < tamano; i++){
+							JSONObject jsonTemp = jsonArray.getJSONObject(i);
+							Promocion promocionTemp = new Promocion();
+							promocionTemp.setArtCodigo(jsonTemp.getString("artcodigo"));
+							promocionTemp.setArtUnidadesFardo(jsonTemp.getInt("artunidadesfardo"));
+							promocionTemp.setFardosCompra(jsonTemp.getInt("fardosc"));
+							promocionTemp.setUnidadesCompra(jsonTemp.getInt("unidadesc"));
+							promocionTemp.setArtCodigoBoni(jsonTemp.getString("artcodigob"));
+							promocionTemp.setArtDescripcionBoni(jsonTemp.getString("artdescripcionb"));
+							promocionTemp.setFardosBoni(jsonTemp.getInt("fardosb"));
+							promocionTemp.setUnidadesBoni(jsonTemp.getInt("unidadesb"));
+							promocionTemp.setPrecioVentaBoni(jsonTemp.getInt("precioventab"));
+							promocionTemp.setLimiteOfertaCliente(jsonTemp.getInt("limiteofertascli"));
+							promocionTemp.setLimiteOfertasVenta(jsonTemp.getInt("limiteofertasven"));
+							promocion[i] = promocionTemp;
+						}
+						Log.e("TT", "promociones capturadas = " + promocion.length);
+						listaPromocion.setPromocion(promocion);
+						return listaPromocion;
+					}else{
+						return listaPromocion;
+					}
+				}
+			}else{
+				respuesta.setResultado(false);
+				respuesta.setMensaje("No se han cargado las promociones");
+				listaPromocion.setRespuesta(respuesta);
+				return listaPromocion;
+			}
+		}catch(Exception exception){
+				respuesta.setResultado(false);
+				respuesta.setMensaje("Error al cargar las promociones");
+				listaPromocion.setRespuesta(respuesta);
+				return listaPromocion;
+		}
+		return listaPromocion;
+	}
+	
 	// Metodo que retorna la lista de clientes obtenidas desde el WS se necesita como parametros el cat‡logo y la ruta del vendedor
 	public ListaClientes listaClientes(String catalogo, String ruta){
 		String url = WS_CLIENTES + "a=" + catalogo + "&" + "idruta=" + ruta; // string de conexi—n
@@ -250,17 +308,6 @@ public class RequestWS {
 							temp.setCliSaldo(nullToString(clientesJsonObject.getString("clisaldo")));
 							temp.setFechaVisitado(nullToString(clientesJsonObject.getString("fechavisitado")));
 														
-//							temp.setCliDireccionParticular(nullToString(clientesJsonObject.getString("clidireccionparticular")));
-//							temp.setCliLimite(nullToString(clientesJsonObject.getString("clilimite")));							
-//							temp.setCliCheque(nullToString(clientesJsonObject.getString("clicheque")));
-//							temp.setVisitado(nullToString(clientesJsonObject.getString("visitado")));
-//							temp.setCliTelefonoCasa(nullToString(clientesJsonObject.getString("clitelecasa")));
-//							temp.setCliTelefonoMovil(nullToString(clientesJsonObject.getString("clitelecel")));
-//							temp.setCliWeb(nullToString(clientesJsonObject.getString("cliweb")));
-//							temp.setFingreso(nullToString(clientesJsonObject.getString("clifingreso")));
-//							temp.setCliFax(nullToString(clientesJsonObject.getString("clifax")));
-//							temp.setCliEmail(nullToString(clientesJsonObject.getString("cliemail")));
-//							temp.setCodCatCliete(nullToString(clientesJsonObject.getString("codcatclientes")));
 							clientes[i]=temp;
 							
 						} listaClientes.setCliente(clientes);
@@ -314,24 +361,6 @@ public class RequestWS {
 								temp.setArtOfertaFecha(nullToString(articulosJsonObject.getString("artofertafecha")));
 								temp.setUnidadesFardo(Integer.parseInt(nullToString(articulosJsonObject.getString("artunidadesfardo"))));
 								temp.setExistencia(nullToInteger(articulosJsonObject.getString("existencia")));
-								
-//								temp.setArtCodigoAlterno(nullToString(articulosJsonObject.getString("artcodigoalterno")));								
-//								temp.setSector(nullToString(articulosJsonObject.getString("codsector")));								
-//								temp.setCategoria(nullToString(articulosJsonObject.getString("codcategoria")));
-//								temp.setDivision(nullToString(articulosJsonObject.getString("coddivision")));
-//								temp.setFoto(nullToString(articulosJsonObject.getString("artfoto")));
-//								temp.setLink(nullToString(articulosJsonObject.getString("link")));
-//								temp.setObservaciones(nullToString(articulosJsonObject.getString("artobservaciones")));
-
-								
-								
-								
-							    
-							    
-							    
-							  //temp.setArtIngrediente(nullToString(articulosJsonObject.getString("artingrediente")));
-								
-								//temp.setCatalogo(nullToString(articulosJsonObject.getString("artcatalogo")));
 								
 							    articulos[i]=temp; // asigno el articulo temporal al Array de articulos
 								

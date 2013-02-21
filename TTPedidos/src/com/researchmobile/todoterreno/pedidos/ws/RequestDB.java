@@ -15,6 +15,7 @@ import com.researchmobile.todoterreno.pedidos.entity.ClienteNuevo;
 import com.researchmobile.todoterreno.pedidos.entity.DetallePedido;
 import com.researchmobile.todoterreno.pedidos.entity.EncabezadoPedido;
 import com.researchmobile.todoterreno.pedidos.entity.ListaCategoria;
+import com.researchmobile.todoterreno.pedidos.entity.ListaPromocion;
 import com.researchmobile.todoterreno.pedidos.entity.NoVenta;
 import com.researchmobile.todoterreno.pedidos.entity.Portafolio;
 import com.researchmobile.todoterreno.pedidos.entity.RespuestaWS;
@@ -198,6 +199,32 @@ public class RequestDB {
 			}
 		}
 		
+//guarda Promocion
+		public void guardaPromocion(Context context,ListaPromocion listaPromocion) {
+			try{
+				int tamano = listaPromocion.getPromocion().length;
+				for (int i = 0; i < tamano; i++){
+					DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+					Entity datoPromocion = new Entity("promocion");
+					datoPromocion.setValue("artcodigo", listaPromocion.getPromocion()[i].getArtCodigo());
+					datoPromocion.setValue("artunidadesfardo", listaPromocion.getPromocion()[i].getArtUnidadesFardo());
+					datoPromocion.setValue("fardosc", listaPromocion.getPromocion()[i].getFardosCompra());
+					datoPromocion.setValue("unidadesc", listaPromocion.getPromocion()[i].getUnidadesCompra());
+					datoPromocion.setValue("artcodigob", listaPromocion.getPromocion()[i].getArtCodigoBoni());
+					datoPromocion.setValue("artdescripcionb", listaPromocion.getPromocion()[i].getArtDescripcionBoni());
+					datoPromocion.setValue("fardosb", listaPromocion.getPromocion()[i].getFardosBoni());
+					datoPromocion.setValue("unidadesb", listaPromocion.getPromocion()[i].getUnidadesBoni());
+					datoPromocion.setValue("precioventab", listaPromocion.getPromocion()[i].getPrecioVentaBoni());
+					datoPromocion.setValue("limiteofertascli", listaPromocion.getPromocion()[i].getLimiteOfertaCliente());
+					datoPromocion.setValue("limiteofertasven", listaPromocion.getPromocion()[i].getLimiteOfertasVenta());
+					datoPromocion.save();
+				}
+				Log.e("TT", "promociones guardadas = " + tamano);
+			}catch(Exception exception){
+				Log.e("TT", "Error - RequestDB.gaurdaPromocion = " + exception);
+			}
+			
+		}
 //guarda ruta
 		public void guardaRuta(Context context, Ruta[] ruta)
 		{

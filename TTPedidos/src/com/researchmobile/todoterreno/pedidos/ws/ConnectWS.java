@@ -14,6 +14,7 @@ import android.util.Log;
 public class ConnectWS {
 
 	private static String IP_SERVER = "200.6.222.110";
+//	private static String IP_SERVER = "107.22.146.254";
     private static int PUERTO = 8080;
     
     public static JSONObject obtenerJson(String url) {
