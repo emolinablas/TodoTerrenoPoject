@@ -263,7 +263,7 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 				
 		LayoutInflater factory = LayoutInflater.from(TomarPedido.this);            
      
-		final View textEntryView = factory.inflate(R.layout.tomar_pedido_dialog, null);
+		final View textEntryView = factory.inflate(R.layout.dialog_tomar_pedido, null);
 		final EditText cajaEditText = (EditText) textEntryView.findViewById(R.id.tomarpedido_dialog_caja_edittext);
 		final EditText unidadEditText = (EditText) textEntryView.findViewById(R.id.tomarpedido_dialog_unidad_edittext);
 		final TextView precioTextViewDialog = (TextView) textEntryView.findViewById(R.id.precioTextViewDialog);
@@ -271,11 +271,14 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 //		Elementos para mostrar bonificación
 		final LinearLayout boniLayout = (LinearLayout) textEntryView.findViewById(R.id.boni_layout);
 		final TextView descripcionBoni = (TextView) textEntryView.findViewById(R.id.boni_descripcion_textview);
-		boniLayout.setVisibility(View.INVISIBLE);
-		if (buscaPromocion(getArticuloSeleccionado().getCodigo())){
-			boniLayout.setVisibility(View.VISIBLE);
+//		descripcionBoni.setVisibility(View.INVISIBLE);
+		buscaPromocion(getArticuloSeleccionado().getCodigo());
+		if (getListaPromocion().getRespuesta().isResultado()){
+			Log.e("TT", "promocion es true = ");
+//			descripcionBoni.setVisibility(View.VISIBLE);
+				descripcionBoni.setText(getListaPromocion().getPromocion()[0].getArtDescripcionBoni());
 		}
-		Log.e("TT", "cajas = " + getArticuloSeleccionado().getCaja());
+		
 		if (getArticuloSeleccionado().getCaja() > 0){
 			cajaEditText.setText(String.valueOf(getArticuloSeleccionado().getCaja()));
 		}
@@ -350,11 +353,8 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
      alert.show();
 	}
 	
-	private boolean buscaPromocion(String idArticulo){
+	private void buscaPromocion(String idArticulo){
 		setListaPromocion(getPeticion().buscaBoni(this, idArticulo));
-		Log.e("TT", "TomarPedido - buscaBoni =" + getListaPromocion().getPromocion().length);
-		Log.e("TT", "TomarPedido - buscaBoni =" + getListaPromocion().getRespuesta().isResultado());
-		return getListaPromocion().getRespuesta().isResultado();
 	}
 
 	private void eliminarArticulo() {

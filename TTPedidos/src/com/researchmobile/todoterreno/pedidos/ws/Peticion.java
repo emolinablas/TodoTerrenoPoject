@@ -418,7 +418,6 @@ public class Peticion {
 	public ListaPromocion buscaBoni(Context context, String idArticulo) {
 		ListaPromocion promociones = new ListaPromocion();
 		promociones = requestDB.buscaBoni(context, idArticulo);
-		
 		return promociones;
 	}
 	
