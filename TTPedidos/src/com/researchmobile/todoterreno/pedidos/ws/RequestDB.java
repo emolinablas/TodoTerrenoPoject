@@ -18,6 +18,7 @@ import com.researchmobile.todoterreno.pedidos.entity.ListaCategoria;
 import com.researchmobile.todoterreno.pedidos.entity.ListaPromocion;
 import com.researchmobile.todoterreno.pedidos.entity.NoVenta;
 import com.researchmobile.todoterreno.pedidos.entity.Portafolio;
+import com.researchmobile.todoterreno.pedidos.entity.Promocion;
 import com.researchmobile.todoterreno.pedidos.entity.RespuestaWS;
 import com.researchmobile.todoterreno.pedidos.entity.Ruta;
 import com.researchmobile.todoterreno.pedidos.entity.Usuario;
@@ -206,6 +207,7 @@ public class RequestDB {
 				for (int i = 0; i < tamano; i++){
 					DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
 					Entity datoPromocion = new Entity("promocion");
+					Log.e("TT", "guardar promocion = " + listaPromocion.getPromocion()[i].getArtCodigo());
 					datoPromocion.setValue("artcodigo", listaPromocion.getPromocion()[i].getArtCodigo());
 					datoPromocion.setValue("artunidadesfardo", listaPromocion.getPromocion()[i].getArtUnidadesFardo());
 					datoPromocion.setValue("fardosc", listaPromocion.getPromocion()[i].getFardosCompra());
@@ -851,6 +853,16 @@ public class RequestDB {
 			}
 		}
 		
+		public void eliminarPromociones(Context context) {
+			try{
+				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+				DataFramework.getInstance().emptyTable("promocion");
+				
+				}catch(Exception e){
+				
+				}
+		}
+		
 		public boolean eliminarClientes(Context context){ // metodo que vacia la tabla cliente.
 			try{
 				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
@@ -1490,6 +1502,47 @@ public class RequestDB {
 			 }
 		}
 		
+//		Busca bonificacion de un artículo
+		public ListaPromocion buscaBoni(Context context, String idArticulo) {
+			ListaPromocion promociones = new ListaPromocion();
+			Log.e("TT", "RequestDB.buscaBoni = " + idArticulo);
+			try {
+				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+				List<Entity> boni = DataFramework.getInstance().getEntityList("promocion");
+				int tamano = boni.size();
+				RespuestaWS respuesta = new RespuestaWS();
+				respuesta.setResultado(false);
+				respuesta.setMensaje("Promociones disponibles");
+				if (tamano > 0){
+					Promocion[] promocion = new Promocion[tamano];
+					Iterator iter = boni.iterator();
+					int i = 0;
+					while (iter.hasNext()){
+						Log.e("TT", "RequestDB.buscaBoni tamanoBonis = " + tamano);
+						Entity dato = (Entity)iter.next();
+						Promocion temp = new Promocion();
+						String codigoBoni = dato.getString("artcodigo");
+						Log.e("TT", "RequestDB.buscaBoni codigoBoni = " + codigoBoni);
+						if (codigoBoni.equalsIgnoreCase(idArticulo)){
+							respuesta.setResultado(true);
+							respuesta.setMensaje("Promociones disponibles");
+							temp.setArtCodigo(dato.getString("artcodigo"));
+				 			temp.setArtDescripcionBoni(dato.getString("artdescripcionb"));
+				 			promocion[i] = temp;
+						}
+						i++;
+					}
+					promociones.setRespuesta(respuesta);
+					promociones.setPromocion(promocion);
+					return promociones;
+				}
+				promociones.setRespuesta(respuesta);
+				return promociones;
+			}catch(Exception exception){
+				return null;
+			}
+		}
+		
 		public ListaCategoria buscaCategoria(Context context) {
 			try
 			{
@@ -1525,4 +1578,8 @@ public class RequestDB {
 				return null;
 			  }
 		}
+
+		
+
+		
 }

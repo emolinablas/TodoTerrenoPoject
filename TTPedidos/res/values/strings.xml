@@ -2,7 +2,7 @@
 <resources>
 
     <string name="hello">Hello World, MenuPrincipal!</string>
-    <string name="app_name">Pedidos 1.0.7</string>
+    <string name="app_name">Pedidos 1.0.8</string>
     <string name="estado_de_cuenta_cuentas_por_cobrar">CUENTAS POR COBRAR</string>
 
 </resources>

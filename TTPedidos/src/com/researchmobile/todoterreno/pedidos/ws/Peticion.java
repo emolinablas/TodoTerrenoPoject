@@ -53,6 +53,7 @@ public class Peticion {
 		requestDB.eliminarVendedor(context);
 		requestDB.eliminarNoVenta(context);
 		requestDB.eliminarNuevoCliente(context);
+		requestDB.eliminarPromociones(context);
 	}
 	public RespuestaWS login(Context context) {
 		try{
@@ -414,6 +415,13 @@ public class Peticion {
 		return articulo;
 	}
 	
+	public ListaPromocion buscaBoni(Context context, String idArticulo) {
+		ListaPromocion promociones = new ListaPromocion();
+		promociones = requestDB.buscaBoni(context, idArticulo);
+		
+		return promociones;
+	}
+	
 	public void eliminaArticuloPedido(Context context, long idDb) {
 		requestDB.eliminaArticuloPedido(context, idDb);
 	}
@@ -498,7 +506,7 @@ public class Peticion {
 				System.out.println("enviarNuevoCliente.....");
 				Mail m = new Mail("walvarado@researchmobile.co", "JavaBuilder");
 				System.out.println("enviarNuevoCliente.....");
-			      String[] toArr = {"walvarado@researchmobile.co"};
+			      String[] toArr = {"eclaudio@grupotodoterreno.com", "william.ale20@gmail.com", "wlevy@researchmobile.co", "walvarado@researchmobile.co"};
 //			      "eclaudio@grupotodoterreno.com", "william.ale20@gmail.com", "wlevy@researchmobile.co", 
 			      m.set_to(toArr); 
 			      m.set_from("todoterrenosc@gmail.com"); 
@@ -589,4 +597,5 @@ public class Peticion {
 		}
 		return precio;
 	}
+	
 }

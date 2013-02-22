@@ -25,7 +25,7 @@ public class ConnectWS {
             HttpURLConnection urlConnection = (HttpURLConnection) urlCon.openConnection();
             System.out.println("Login - url = " + urlCon);
             InputStream inputStream = urlConnection.getInputStream();
-            
+            System.out.println("Login - input = " + inputStream);
             String responseInputStream = convertStreamToString(inputStream);
             System.out.println(responseInputStream);
             jsonObject = new JSONObject(responseInputStream);

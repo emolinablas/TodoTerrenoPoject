@@ -83,14 +83,27 @@
                     android:inputType="number" />
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/linearLayout4"
+            
+        </LinearLayout>
+        
+        <LinearLayout
+                android:id="@+id/boni_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical" >
+                android:orientation="vertical" 
+                android:background="#f9f9c5">
+                
+                <TextView 
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Bonificacion"/>
+            
+            	<TextView 
+                android:id="@+id/boni_descripcion_textview"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"/>
+        
             </LinearLayout>
-        </LinearLayout>
 
     </LinearLayout>
 

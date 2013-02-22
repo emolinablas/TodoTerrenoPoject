@@ -40,17 +40,18 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.researchmobile.todoterreno.pedidos.entity.DetallePedido;
 import com.researchmobile.todoterreno.pedidos.entity.EncabezadoPedido;
+import com.researchmobile.todoterreno.pedidos.entity.ListaPromocion;
 import com.researchmobile.todoterreno.pedidos.entity.Pedido;
 import com.researchmobile.todoterreno.pedidos.utility.Fecha;
 import com.researchmobile.todoterreno.pedidos.utility.FormatDecimal;
 import com.researchmobile.todoterreno.pedidos.utility.Mensaje;
-import com.researchmobile.todoterreno.pedidos.utility.rmString;
 import com.researchmobile.todoterreno.pedidos.ws.Peticion;
 
 public class TomarPedido extends Activity implements TextWatcher, OnItemClickListener, OnClickListener, OnKeyListener {
@@ -76,6 +77,7 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 	private String ruta;
 	private boolean nuevo;
 	private FormatDecimal formatDecimal;
+	private ListaPromocion listaPromocion;
 	
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -265,6 +267,14 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 		final EditText cajaEditText = (EditText) textEntryView.findViewById(R.id.tomarpedido_dialog_caja_edittext);
 		final EditText unidadEditText = (EditText) textEntryView.findViewById(R.id.tomarpedido_dialog_unidad_edittext);
 		final TextView precioTextViewDialog = (TextView) textEntryView.findViewById(R.id.precioTextViewDialog);
+		
+//		Elementos para mostrar bonificación
+		final LinearLayout boniLayout = (LinearLayout) textEntryView.findViewById(R.id.boni_layout);
+		final TextView descripcionBoni = (TextView) textEntryView.findViewById(R.id.boni_descripcion_textview);
+		boniLayout.setVisibility(View.INVISIBLE);
+		if (buscaPromocion(getArticuloSeleccionado().getCodigo())){
+			boniLayout.setVisibility(View.VISIBLE);
+		}
 		Log.e("TT", "cajas = " + getArticuloSeleccionado().getCaja());
 		if (getArticuloSeleccionado().getCaja() > 0){
 			cajaEditText.setText(String.valueOf(getArticuloSeleccionado().getCaja()));
@@ -340,6 +350,12 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
      alert.show();
 	}
 	
+	private boolean buscaPromocion(String idArticulo){
+		setListaPromocion(getPeticion().buscaBoni(this, idArticulo));
+		Log.e("TT", "TomarPedido - buscaBoni =" + getListaPromocion().getPromocion().length);
+		Log.e("TT", "TomarPedido - buscaBoni =" + getListaPromocion().getRespuesta().isResultado());
+		return getListaPromocion().getRespuesta().isResultado();
+	}
 
 	private void eliminarArticulo() {
 		getPeticion().eliminaArticuloPedido(TomarPedido.this, getArticuloSeleccionado().getIdDb());
@@ -690,6 +706,14 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 
 	public void setFormatDecimal(FormatDecimal formatDecimal) {
 		this.formatDecimal = formatDecimal;
+	}
+
+	public ListaPromocion getListaPromocion() {
+		return listaPromocion;
+	}
+
+	public void setListaPromocion(ListaPromocion listaPromocion) {
+		this.listaPromocion = listaPromocion;
 	}
 	
 }

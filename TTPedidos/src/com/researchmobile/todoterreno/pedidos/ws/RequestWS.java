@@ -213,9 +213,13 @@ public class RequestWS {
 		ListaPromocion listaPromocion = new ListaPromocion();
 		RespuestaWS respuesta = new RespuestaWS();
 		String url = WS_PROMOCIONES;
+		int intentos = 0;
+		do{
 		
-		JSONObject jsonObject = ConnectWS.obtenerJson(url);
+			JSONObject jsonObject = ConnectWS.obtenerJson(url);
+		
 		try{
+			
 			if (jsonObject != null){
 				if (jsonObject.has("resultado")){
 					respuesta.setResultado(jsonObject.getBoolean("resultado"));
@@ -228,7 +232,7 @@ public class RequestWS {
 						for (int i = 0; i < tamano; i++){
 							JSONObject jsonTemp = jsonArray.getJSONObject(i);
 							Promocion promocionTemp = new Promocion();
-							promocionTemp.setArtCodigo(jsonTemp.getString("artcodigo"));
+							promocionTemp.setArtCodigo(nullToString(jsonTemp.getString("artcodigo")));
 							promocionTemp.setArtUnidadesFardo(jsonTemp.getInt("artunidadesfardo"));
 							promocionTemp.setFardosCompra(jsonTemp.getInt("fardosc"));
 							promocionTemp.setUnidadesCompra(jsonTemp.getInt("unidadesc"));
@@ -240,6 +244,7 @@ public class RequestWS {
 							promocionTemp.setLimiteOfertaCliente(jsonTemp.getInt("limiteofertascli"));
 							promocionTemp.setLimiteOfertasVenta(jsonTemp.getInt("limiteofertasven"));
 							promocion[i] = promocionTemp;
+							Log.e("TT", "promocione capturada = " + promocionTemp.getArtCodigo());
 						}
 						Log.e("TT", "promociones capturadas = " + promocion.length);
 						listaPromocion.setPromocion(promocion);
@@ -249,10 +254,13 @@ public class RequestWS {
 					}
 				}
 			}else{
-				respuesta.setResultado(false);
-				respuesta.setMensaje("No se han cargado las promociones");
-				listaPromocion.setRespuesta(respuesta);
-				return listaPromocion;
+				if (intentos < 3){
+					intentos++;
+					respuesta.setResultado(false);
+					respuesta.setMensaje("No se han cargado las promociones");
+					listaPromocion.setRespuesta(respuesta);
+					return listaPromocion;
+				}
 			}
 		}catch(Exception exception){
 				respuesta.setResultado(false);
@@ -260,7 +268,9 @@ public class RequestWS {
 				listaPromocion.setRespuesta(respuesta);
 				return listaPromocion;
 		}
+		}while(intentos < 3);
 		return listaPromocion;
+		
 	}
 	
 	// Metodo que retorna la lista de clientes obtenidas desde el WS se necesita como parametros el cat‡logo y la ruta del vendedor

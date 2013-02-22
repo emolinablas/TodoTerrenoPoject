@@ -1,4 +1,4 @@
-    <database name="todoterreno030" version="1">
+    <database name="todoterreno034" version="1">
 	
 	<!-- U S U A R I O -->
     <table name="usuario" to-string="%usuario%">
@@ -72,17 +72,17 @@
     
     <!-- P R O M O C I O N E S -->
     <table name="promocion" to-string="%promocion%">
-        <field name="artcodigo"			obligatory="false"	rype="text"	size="20"/>
-        <field name="artunidadesfardo"	obligatory="false"	rype="integer"/>
-        <field name="fardosc"			obligatory="false"	rype="integer"/>
-        <field name="unidadesc"			obligatory="false"	rype="integer"/>
-        <field name="artcodigob"		obligatory="false"	rype="text"	size="20"/>
-        <field name="artdescripcionb"	obligatory="false"	rype="text"	size="80"/>
-        <field name="fardosb"			obligatory="false"	rype="integer"/>
-        <field name="unidadesb"			obligatory="false"	rype="integer"/>
-        <field name="precioventab"		obligatory="false"	rype="text"	size="20"/>
-        <field name="limiteofertascli"	obligatory="false"	rype="integer"/>
-        <field name="limiteofertasven"	obligatory="false"	rype="integer"/>
+        <field name="artcodigo"			obligatory="false"	type="text"	size="80"/>
+        <field name="artunidadesfardo"	obligatory="false"	type="integer"/>
+        <field name="fardosc"			obligatory="false"	type="integer"/>
+        <field name="unidadesc"			obligatory="false"	type="integer"/>
+        <field name="artcodigob"		obligatory="false"	type="text"	size="20"/>
+        <field name="artdescripcionb"	obligatory="false"	type="text"	size="80"/>
+        <field name="fardosb"			obligatory="false"	type="integer"/>
+        <field name="unidadesb"			obligatory="false"	type="integer"/>
+        <field name="precioventab"		obligatory="false"	type="text"	size="20"/>
+        <field name="limiteofertascli"	obligatory="false"	type="integer"/>
+        <field name="limiteofertasven"	obligatory="false"	type="integer"/>
     </table>
     
     <!-- P O R T A F O L I O -->
