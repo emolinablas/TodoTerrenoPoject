@@ -306,6 +306,7 @@ public class Peticion {
 	public ArrayList<HashMap<String, String>> pedidoTemp(Context context, int numeroPedido) {
 		ArrayList<HashMap<String, String>> mylist = new ArrayList<HashMap<String, String>>();
 		DetallePedido[] articulo = requestDB.buscaDetallePedido(context, numeroPedido);
+		
 		int tamano = articulo.length;
 		for (int i = 0; i < tamano; i++){
 			HashMap<String, String> map = new HashMap<String, String>();
@@ -319,6 +320,24 @@ public class Peticion {
         	map.put("bonificacion", "0");
         	map.put("total", formatDecimal.convierteFloat(articulo[i].getSubTotal()));
         	mylist.add(map);
+//        	Verificar bonificacion de este artículo
+        	ListaPromocion listaPromocion = new ListaPromocion();
+        	listaPromocion = buscaBoni(context, articulo[i].getCodigo());
+//        	Si encuentra artículos bonificados para este artículo, agrega el artículo bonificado
+        	if (listaPromocion.getRespuesta().isResultado()){
+        		HashMap<String, String> mapBoni = new HashMap<String, String>();
+            	mapBoni.put("codigoProducto", listaPromocion.getPromocion()[0].getArtCodigo());
+            	mapBoni.put("nombreProducto", listaPromocion.getPromocion()[0].getArtDescripcionBoni());
+            	mapBoni.put("cajas", String.valueOf(listaPromocion.getPromocion()[0].getFardosBoni()));
+            	mapBoni.put("unidades", String.valueOf(listaPromocion.getPromocion()[0].getUnidadesBoni()));
+            	mapBoni.put("valor", formatDecimal.convierteFloat(listaPromocion.getPromocion()[0].getPrecioVentaBoni()));
+            	mapBoni.put("presentacion", String.valueOf("0"));
+            	mapBoni.put("existencia", "0");
+            	mapBoni.put("bonificacion", "0");
+            	mapBoni.put("total", formatDecimal.convierteFloat(articulo[i].getSubTotal()));
+            	mylist.add(mapBoni);
+        	}
+        	
         }
 		return mylist;
 	}
@@ -418,6 +437,7 @@ public class Peticion {
 	public ListaPromocion buscaBoni(Context context, String idArticulo) {
 		ListaPromocion promociones = new ListaPromocion();
 		promociones = requestDB.buscaBoni(context, idArticulo);
+		System.out.println("resultado buscaBoni = " + promociones.getRespuesta().isResultado());
 		return promociones;
 	}
 	

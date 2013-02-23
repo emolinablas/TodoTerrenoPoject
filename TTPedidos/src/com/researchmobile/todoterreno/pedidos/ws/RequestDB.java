@@ -1524,10 +1524,19 @@ public class RequestDB {
 						String codigoBoni = dato.getString("artcodigo");
 						Log.e("TT", "RequestDB.buscaBoni codigoBoni = " + codigoBoni);
 						if (codigoBoni.equalsIgnoreCase(idArticulo)){
+							
 							respuesta.setResultado(true);
 							respuesta.setMensaje("Promociones disponibles");
 							temp.setArtCodigo(dato.getString("artcodigo"));
-				 			temp.setArtDescripcionBoni(dato.getString("artdescripcionb"));
+							temp.setArtDescripcionBoni(dato.getString("artdescripcionb"));
+				 			temp.setFardosCompra(Integer.parseInt(dato.getString("fardosc")));
+				 			temp.setUnidadesCompra(Integer.parseInt(dato.getString("unidadesc")));
+				 			temp.setArtCodigoBoni(dato.getString("artcodigob"));
+				 			temp.setFardosBoni(Integer.parseInt(dato.getString("fardosb")));
+				 			temp.setUnidadesBoni(Integer.parseInt(dato.getString("unidadesb")));
+				 			temp.setPrecioVentaBoni(Float.parseFloat(dato.getString("precioventab")));
+				 			temp.setLimiteOfertaCliente(Integer.parseInt(dato.getString("limiteofertascli")));
+				 			temp.setLimiteOfertasVenta(Integer.parseInt(dato.getString("limiteofertasven")));
 				 			promocion[i] = temp;
 						}
 						i++;
