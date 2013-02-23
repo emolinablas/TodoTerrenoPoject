@@ -330,6 +330,7 @@ public class Peticion {
         		int fardosBoni = listaPromocion.getPromocion()[0].getFardosBoni();
         		int unidadesBoni = listaPromocion.getPromocion()[0].getUnidadesBoni();
         		int totalUnidadesBoni = ((fardosBoni * unidadesBoni) + unidadesBoni);
+        		float precioBoni = listaPromocion.getPromocion()[0].getPrecioVentaBoni();
         		
         		Log.e("TT", "unidadesCompra = " + unidadesCompra);
         		Log.e("TT", "fardosBoni = " + fardosBoni);
@@ -344,10 +345,10 @@ public class Peticion {
                     	mapBoni.put("cajas", String.valueOf(listaPromocion.getPromocion()[0].getFardosBoni()));
                     	mapBoni.put("unidades", String.valueOf(cantidadBoni * listaPromocion.getPromocion()[0].getUnidadesBoni()));
                     	mapBoni.put("valor", formatDecimal.convierteFloat(listaPromocion.getPromocion()[0].getPrecioVentaBoni()));
-                    	mapBoni.put("presentacion", String.valueOf("0"));
+                    	mapBoni.put("presentacion", String.valueOf(listaPromocion.getPromocion()[0].getUnidadesBoni()));
                     	mapBoni.put("existencia", "0");
                     	mapBoni.put("bonificacion", "0");
-                    	mapBoni.put("total", formatDecimal.convierteFloat(articulo[i].getSubTotal()));
+                    	mapBoni.put("total", formatDecimal.convierteFloat(precioBoni * totalUnidadesBoni));
                     	mylist.add(mapBoni);
 //        			}
         		}

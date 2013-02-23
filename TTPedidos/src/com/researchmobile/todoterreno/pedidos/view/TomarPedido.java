@@ -282,7 +282,18 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 		if (getListaPromocion().getRespuesta().isResultado()){
 			Log.e("TT", "promocion es true = ");
 //			descripcionBoni.setVisibility(View.VISIBLE);
-				descripcionBoni.setText(getListaPromocion().getPromocion()[0].getArtDescripcionBoni());
+				descripcionBoni.setText("Por la compra de " +
+						getListaPromocion().getPromocion()[0].getFardosCompra() + 
+						" fardos y " + 
+						getListaPromocion().getPromocion()[0].getUnidadesCompra() +
+						" unidades recibe " +
+						getListaPromocion().getPromocion()[0].getFardosBoni() +
+						" fardos y " +
+						getListaPromocion().getPromocion()[0].getUnidadesBoni() +
+						" unidades de " +
+						getListaPromocion().getPromocion()[0].getArtDescripcionBoni() + 
+						" a Q." + 
+						getListaPromocion().getPromocion()[0].getPrecioVentaBoni());
 		}
 		
 		if (getArticuloSeleccionado().getCaja() > 0){
