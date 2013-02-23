@@ -44,6 +44,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.researchmobile.todoterreno.pedidos.entity.DetallePedido;
 import com.researchmobile.todoterreno.pedidos.entity.EncabezadoPedido;
@@ -149,8 +150,13 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 		   @SuppressWarnings("unchecked")
            HashMap<String, String> selected = (HashMap<String, String>) getSimpleAdapter().getItem(position);
            String codigoProducto = selected.get("codigoProducto");
-           setArticuloSeleccionado(seleccionaArticulo(codigoProducto));
-           agregarDialog();
+           if (codigoProducto.equalsIgnoreCase("BONI")){
+        	   Toast.makeText(getBaseContext(), "Este producto es una Bonificación, No puede editar", Toast.LENGTH_SHORT).show();
+           }else{
+        	   setArticuloSeleccionado(seleccionaArticulo(codigoProducto));
+               agregarDialog();
+           }
+           
     }
 	
 	/**

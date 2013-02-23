@@ -326,7 +326,7 @@ public class Peticion {
 //        	Si encuentra artículos bonificados para este artículo, agrega el artículo bonificado
         	if (listaPromocion.getRespuesta().isResultado()){
         		HashMap<String, String> mapBoni = new HashMap<String, String>();
-            	mapBoni.put("codigoProducto", listaPromocion.getPromocion()[0].getArtCodigo());
+            	mapBoni.put("codigoProducto", "BONI");
             	mapBoni.put("nombreProducto", listaPromocion.getPromocion()[0].getArtDescripcionBoni());
             	mapBoni.put("cajas", String.valueOf(listaPromocion.getPromocion()[0].getFardosBoni()));
             	mapBoni.put("unidades", String.valueOf(listaPromocion.getPromocion()[0].getUnidadesBoni()));
