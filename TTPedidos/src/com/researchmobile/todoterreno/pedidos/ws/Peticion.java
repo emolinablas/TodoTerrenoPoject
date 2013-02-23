@@ -325,19 +325,33 @@ public class Peticion {
         	listaPromocion = buscaBoni(context, articulo[i].getCodigo());
 //        	Si encuentra artículos bonificados para este artículo, agrega el artículo bonificado
         	if (listaPromocion.getRespuesta().isResultado()){
-        		HashMap<String, String> mapBoni = new HashMap<String, String>();
-            	mapBoni.put("codigoProducto", "BONI");
-            	mapBoni.put("nombreProducto", listaPromocion.getPromocion()[0].getArtDescripcionBoni());
-            	mapBoni.put("cajas", String.valueOf(listaPromocion.getPromocion()[0].getFardosBoni()));
-            	mapBoni.put("unidades", String.valueOf(listaPromocion.getPromocion()[0].getUnidadesBoni()));
-            	mapBoni.put("valor", formatDecimal.convierteFloat(listaPromocion.getPromocion()[0].getPrecioVentaBoni()));
-            	mapBoni.put("presentacion", String.valueOf("0"));
-            	mapBoni.put("existencia", "0");
-            	mapBoni.put("bonificacion", "0");
-            	mapBoni.put("total", formatDecimal.convierteFloat(articulo[i].getSubTotal()));
-            	mylist.add(mapBoni);
+        		
+        		int unidadesCompra = articulo[i].getTotalUnidades();
+        		int fardosBoni = listaPromocion.getPromocion()[0].getFardosBoni();
+        		int unidadesBoni = listaPromocion.getPromocion()[0].getUnidadesBoni();
+        		int totalUnidadesBoni = ((fardosBoni * unidadesBoni) + unidadesBoni);
+        		
+        		Log.e("TT", "unidadesCompra = " + unidadesCompra);
+        		Log.e("TT", "fardosBoni = " + fardosBoni);
+        		Log.e("TT", "unidadesBoni = " + unidadesBoni);
+        		Log.e("TT", "totalUndiadeBoni = " + totalUnidadesBoni);
+        		if (unidadesCompra > totalUnidadesBoni){
+        			int cantidadBoni = unidadesCompra / totalUnidadesBoni;
+//        			for (int a = 0; a < cantidadBoni; a++){
+        				HashMap<String, String> mapBoni = new HashMap<String, String>();
+                    	mapBoni.put("codigoProducto", "BONI");
+                    	mapBoni.put("nombreProducto", listaPromocion.getPromocion()[0].getArtDescripcionBoni());
+                    	mapBoni.put("cajas", String.valueOf(listaPromocion.getPromocion()[0].getFardosBoni()));
+                    	mapBoni.put("unidades", String.valueOf(cantidadBoni * listaPromocion.getPromocion()[0].getUnidadesBoni()));
+                    	mapBoni.put("valor", formatDecimal.convierteFloat(listaPromocion.getPromocion()[0].getPrecioVentaBoni()));
+                    	mapBoni.put("presentacion", String.valueOf("0"));
+                    	mapBoni.put("existencia", "0");
+                    	mapBoni.put("bonificacion", "0");
+                    	mapBoni.put("total", formatDecimal.convierteFloat(articulo[i].getSubTotal()));
+                    	mylist.add(mapBoni);
+//        			}
+        		}
         	}
-        	
         }
 		return mylist;
 	}
