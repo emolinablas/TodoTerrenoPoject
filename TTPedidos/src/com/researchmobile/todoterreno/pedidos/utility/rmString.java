@@ -1,11 +1,18 @@
 package com.researchmobile.todoterreno.pedidos.utility;
 
+import java.util.HashMap;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
+import android.util.Log;
+
 import com.researchmobile.todoterreno.pedidos.entity.ClienteNuevo;
+import com.researchmobile.todoterreno.pedidos.entity.ListaPromocion;
 import com.researchmobile.todoterreno.pedidos.entity.Pedido;
+import com.researchmobile.todoterreno.pedidos.ws.Peticion;
 
 public class rmString {
 	private Fecha fecha = new Fecha();
@@ -47,7 +54,7 @@ public class rmString {
 		}
 	}
 
-	public String jsonPedido(Pedido pedido, String ruta, String vendedor) {
+	public String jsonPedido(Context context, Pedido pedido, String ruta, String vendedor) {
 		String jsonPedido = "";
 		
 		JSONObject allDataJson = new JSONObject();
@@ -75,9 +82,38 @@ public class rmString {
 				temp.put("movprecio", pedido.getDetallePedido()[i].getPrecio());
 				temp.put("movunidades", pedido.getDetallePedido()[i].getTotalUnidades());
 				temp.put("artcodigo", pedido.getDetallePedido()[i].getCodigo());
-				//temp.put("unidadesxfardo", pedido.getDetallePedido()[i].getUnidadesFardo());
-				//temp.put("movfechaentregar", pedido.getEncabezadoPedido().getFecha());
+				temp.put("movtipoprecio", "0");
 				detalleJsonArray.put(temp);
+//				Verificar si el articulo tiene bonificacion
+				ListaPromocion listaPromocion = new ListaPromocion();
+				Peticion peticionBoni = new Peticion();
+	        	listaPromocion = peticionBoni.buscaBoni(context, pedido.getDetallePedido()[i].getCodigo());
+//	        	Si encuentra artículos bonificados para este artículo, agrega el artículo bonificado
+	        	if (listaPromocion.getRespuesta().isResultado()){
+	        		
+	        		int unidadesCompra = pedido.getDetallePedido()[i].getTotalUnidades();
+	        		int fardosBoni = listaPromocion.getPromocion()[0].getFardosBoni();
+	        		int unidadesBoni = listaPromocion.getPromocion()[0].getUnidadesBoni();
+	        		int totalUnidadesBoni = ((fardosBoni * unidadesBoni) + unidadesBoni);
+	        		float precioBoni = listaPromocion.getPromocion()[0].getPrecioVentaBoni();
+	        		
+	        		Log.e("TT", "unidadesCompra = " + unidadesCompra);
+	        		Log.e("TT", "fardosBoni = " + fardosBoni);
+	        		Log.e("TT", "unidadesBoni = " + unidadesBoni);
+	        		Log.e("TT", "totalUndiadeBoni = " + totalUnidadesBoni);
+	        		
+	        		if (unidadesCompra > totalUnidadesBoni){
+	        			int cantidadBoni = unidadesCompra / totalUnidadesBoni;
+	        			
+	        			JSONObject tempBoni = new JSONObject();
+	    				//temp.put("idencabezado", pedido.getEncabezadoPedido().getCodigoPedidoTemp());
+	    				tempBoni.put("movprecio", listaPromocion.getPromocion()[0].getPrecioVentaBoni());
+	    				tempBoni.put("movunidades", cantidadBoni * totalUnidadesBoni);
+	    				tempBoni.put("artcodigo", listaPromocion.getPromocion()[0].getArtCodigo());
+	    				tempBoni.put("movtipoprecio", "PROMOCION");
+	    				detalleJsonArray.put(tempBoni);
+	        		}
+	        	}
 			}
 			allDataJson.put("encabezado", encabezadoJsonArray);
 			allDataJson.put("detalle", detalleJsonArray);

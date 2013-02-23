@@ -475,7 +475,7 @@ public class Peticion {
 			Vendedor vendedor = new Vendedor();
 			vendedor = requestDB.vendedorDB(context);
 			RespuestaWS respuesta = new RespuestaWS();
-			respuesta = requestWS.enviaPedido(pedido, ruta, vendedor.getIdusuario());
+			respuesta = requestWS.enviaPedido(context, pedido, ruta, vendedor.getIdusuario());
 			if (!respuesta.isResultado()){
 				requestWS.clienteVisitado(pedido.getEncabezadoPedido().getCodigoCliente());
 				Log.e("TT", "resultado del envio = " + respuesta.getMensaje());

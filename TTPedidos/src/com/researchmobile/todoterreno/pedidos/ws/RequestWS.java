@@ -3,6 +3,7 @@ package com.researchmobile.todoterreno.pedidos.ws;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.researchmobile.todoterreno.pedidos.entity.Articulo;
@@ -393,24 +394,23 @@ public class RequestWS {
 			
 		}
  //Metodo para enviar el pedido		
-		public RespuestaWS enviaPedido(Pedido pedido, String ruta, String vendedor) {
+		public RespuestaWS enviaPedido(Context context, Pedido pedido, String ruta, String vendedor) {
 			try{
-				
-			
 			RespuestaWS respuesta = new RespuestaWS();
 			rmString rm = new rmString();
-			String jsonString = rm.jsonPedido(pedido, ruta, vendedor);
+			String jsonString = rm.jsonPedido(context, pedido, ruta, vendedor);
 			String urlTemp = WS_ENVIO + User.getUsername() + "&password=" + User.getClave() + "&action=pedido&idruta=" + ruta + "&json=" + jsonString; // string de conexi—n
 			Log.e("TT", "RequestWS.enviaPedido - url = " + urlTemp);
 			String url = urlTemp.replace(" ", "%20");
 			
+			/*
 			JSONObject jsonObject = ConnectWS.enviaPedidoJson(url);
 			Log.e("TT", "RequestWS.enviaPedido respuesta = " + jsonObject.toString());
 			if (jsonObject.has("error") ){
 				respuesta.setResultado(jsonObject.getBoolean("error"));
 				respuesta.setMensaje(jsonObject.getString("mensaje"));
 				return respuesta;
-			}
+			}*/
 			}catch(Exception exception){
 				return null;
 			}
