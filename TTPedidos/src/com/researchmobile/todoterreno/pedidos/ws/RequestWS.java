@@ -403,14 +403,14 @@ public class RequestWS {
 			Log.e("TT", "RequestWS.enviaPedido - url = " + urlTemp);
 			String url = urlTemp.replace(" ", "%20");
 			
-			/*
+			
 			JSONObject jsonObject = ConnectWS.enviaPedidoJson(url);
 			Log.e("TT", "RequestWS.enviaPedido respuesta = " + jsonObject.toString());
 			if (jsonObject.has("error") ){
 				respuesta.setResultado(jsonObject.getBoolean("error"));
 				respuesta.setMensaje(jsonObject.getString("mensaje"));
 				return respuesta;
-			}*/
+			}
 			}catch(Exception exception){
 				return null;
 			}
