@@ -46,6 +46,7 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.researchmobile.todoterreno.facturacion.entity.Total;
 import com.researchmobile.todoterreno.pedidos.entity.DetallePedido;
 import com.researchmobile.todoterreno.pedidos.entity.EncabezadoPedido;
 import com.researchmobile.todoterreno.pedidos.entity.ListaPromocion;
@@ -90,6 +91,7 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 		setNuevo(true);
 		setMensaje(new Mensaje());
 		setTotal(0);
+		Total.setTotalPromocion(0);
 		setFecha(new Fecha());
 		setTotalGeneralTextView((TextView)findViewById(R.id.tomar_pedido_total_textview));
 		getTotalGeneralTextView().setText(String.valueOf(getTotal()));
@@ -243,7 +245,7 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 		getEncabezado().setCredito("0");
 		getEncabezado().setFecha(getFecha().FechaHoy());
 		getEncabezado().setHora(getFecha().Hora());
-		getEncabezado().setTotal(getTotal());
+		getEncabezado().setTotal(getTotal() + Total.getTotalPromocion());
 	}
 	
 	public void cancelarPedido(){
@@ -281,19 +283,26 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 		buscaPromocion(getArticuloSeleccionado().getCodigo());
 		if (getListaPromocion().getRespuesta().isResultado()){
 			Log.e("TT", "promocion es true = ");
+			Log.e("TT", "promocion tamaño = " + getListaPromocion().getPromocion().length);
 //			descripcionBoni.setVisibility(View.VISIBLE);
-				descripcionBoni.setText("Por la compra de " +
-						getListaPromocion().getPromocion()[0].getFardosCompra() + 
-						" fardos y " + 
-						getListaPromocion().getPromocion()[0].getUnidadesCompra() +
-						" unidades recibe " +
-						getListaPromocion().getPromocion()[0].getFardosBoni() +
-						" fardos y " +
-						getListaPromocion().getPromocion()[0].getUnidadesBoni() +
-						" unidades de " +
-						getListaPromocion().getPromocion()[0].getArtDescripcionBoni() + 
-						" a Q." + 
-						getListaPromocion().getPromocion()[0].getPrecioVentaBoni());
+			int tamanoPromocion = getListaPromocion().getPromocion().length;
+			String descripcionPromocion = "";
+			for (int i = 0; i < tamanoPromocion; i++){
+				descripcionPromocion = descripcionPromocion + (i+1) + ".) " + "Por la compra de " +
+				getListaPromocion().getPromocion()[i].getFardosCompra() + 
+				" fardos y " + 
+				getListaPromocion().getPromocion()[i].getUnidadesCompra() +
+				" unidades recibe " +
+				getListaPromocion().getPromocion()[i].getFardosBoni() +
+				" fardos y " +
+				getListaPromocion().getPromocion()[i].getUnidadesBoni() +
+				" unidades de " +
+				getListaPromocion().getPromocion()[i].getArtDescripcionBoni() + 
+				" a Q." + 
+				getListaPromocion().getPromocion()[i].getPrecioVentaBoni() + "/n";
+				
+			}
+			descripcionBoni.setText(descripcionPromocion);
 		}
 		
 		if (getArticuloSeleccionado().getCaja() > 0){
@@ -380,7 +389,7 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 		verPedido();
 	}
 	protected void actualizaTotalGeneral() {
-		setTotal(getPeticion().totalActual(TomarPedido.this, getNumeroPedido()));
+		setTotal(getPeticion().totalActual(TomarPedido.this, getNumeroPedido()) + Total.getTotalPromocion());
 		getTotalGeneralTextView().setText(getFormatDecimal().convierteFloat(getTotal()));
 		
 	}
@@ -436,6 +445,7 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 	        								 R.id.fila_lista_producto_bonificacion_textview,
 	        								 R.id.fila_lista_producto_valor_textview}));
 		getArticulosListView().setAdapter(getSimpleAdapter());
+		actualizaTotalGeneral();
 	}
 	
 	// Clase para ejecutar en Background
@@ -556,6 +566,7 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 	        								 R.id.fila_lista_producto_bonificacion_textview,
 	        								 R.id.fila_lista_producto_valor_textview}));
 		getArticulosListView().setAdapter(getSimpleAdapter());
+		actualizaTotalGeneral();
     }
     
     public boolean onKeyDown(int keyCode, KeyEvent event) {

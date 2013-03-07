@@ -40,7 +40,7 @@ public class ConnectWS {
     	Log.e("TT", "ConnectWS.obtenerJson");
         JSONObject jsonObject = null;
         try {
-            URL urlCon = new URL("http", IP_SERVER, PUERTO, "/megainfo/" + url);
+            URL urlCon = new URL("http", IP_SERVER, PUERTO, "/megainfo/ws/" + url);
             HttpURLConnection urlConnection = (HttpURLConnection) urlCon.openConnection();
             System.out.println("ENVIAR_PEDIDO - url = " + urlCon);
             InputStream inputStream = urlConnection.getInputStream();

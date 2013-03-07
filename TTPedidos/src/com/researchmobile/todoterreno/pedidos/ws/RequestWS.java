@@ -30,7 +30,7 @@ public class RequestWS {
 	private static String WS_LOGIN = "ws_login.php?a=login&";
 	private static String WS_CLIENTES = "ws_clientes.php?";
 	private static String WS_PRODUCTOS = "ws_articulos.php?a=catalogo&idportafolio=";
-	private static String WS_ENVIO = "json.php?username=";
+	private static String WS_ENVIO = "ws_pedidos.php?username=";
 	private static String WS_ENVIAMOTIVO = "ws_noventa.php?cliente=";
 	private static String WS_CATEGORIAS = "ws_categorias.php?";
 	private static String WS_NUEVOCLIENTE = "ws_clientenuevo.php?idUsuario=";
@@ -241,7 +241,7 @@ public class RequestWS {
 							promocionTemp.setArtDescripcionBoni(jsonTemp.getString("artdescripcionb"));
 							promocionTemp.setFardosBoni(jsonTemp.getInt("fardosb"));
 							promocionTemp.setUnidadesBoni(jsonTemp.getInt("unidadesb"));
-							promocionTemp.setPrecioVentaBoni(jsonTemp.getInt("precioventab"));
+							promocionTemp.setPrecioVentaBoni(Float.parseFloat(jsonTemp.getString("precioventab")));
 							promocionTemp.setLimiteOfertaCliente(jsonTemp.getInt("limiteofertascli"));
 							promocionTemp.setLimiteOfertasVenta(jsonTemp.getInt("limiteofertasven"));
 							promocion[i] = promocionTemp;

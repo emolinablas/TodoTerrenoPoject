@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.util.Log;
 
 import com.android.dataframework.DataFramework;
@@ -853,13 +854,13 @@ public class RequestDB {
 			}
 		}
 		
-		public void eliminarPromociones(Context context) {
+		public boolean eliminarPromociones(Context context) {
 			try{
 				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
 				DataFramework.getInstance().emptyTable("promocion");
-				
-				}catch(Exception e){
-				
+				return true;
+			}catch(Exception e){
+				return false;
 				}
 		}
 		
@@ -1508,7 +1509,8 @@ public class RequestDB {
 			Log.e("TT", "RequestDB.buscaBoni = " + idArticulo);
 			try {
 				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
-				List<Entity> boni = DataFramework.getInstance().getEntityList("promocion");
+				List<Entity> boni = DataFramework.getInstance().getEntityList("promocion", "artcodigo = '" + idArticulo + "'");
+				
 				int tamano = boni.size();
 				RespuestaWS respuesta = new RespuestaWS();
 				respuesta.setResultado(false);
@@ -1529,8 +1531,8 @@ public class RequestDB {
 							respuesta.setMensaje("Promociones disponibles");
 							temp.setArtCodigo(dato.getString("artcodigo"));
 							temp.setArtDescripcionBoni(dato.getString("artdescripcionb"));
-				 			temp.setFardosCompra(Integer.parseInt(dato.getString("fardosc")));
-				 			temp.setUnidadesCompra(Integer.parseInt(dato.getString("unidadesc")));
+				 			temp.setFardosCompra(dato.getInt("fardosc"));
+				 			temp.setUnidadesCompra(dato.getInt("unidadesc"));
 				 			temp.setArtCodigoBoni(dato.getString("artcodigob"));
 				 			temp.setFardosBoni(Integer.parseInt(dato.getString("fardosb")));
 				 			temp.setUnidadesBoni(Integer.parseInt(dato.getString("unidadesb")));
