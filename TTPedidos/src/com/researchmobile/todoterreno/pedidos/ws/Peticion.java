@@ -2,6 +2,8 @@ package com.researchmobile.todoterreno.pedidos.ws;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 import android.content.Context;
 import android.util.Log;
@@ -304,6 +306,7 @@ public class Peticion {
 		return mylist;
 	}
 	
+	@SuppressWarnings("null")
 	public ArrayList<HashMap<String, String>> pedidoTemp(Context context, int numeroPedido) {
 		Total.setTotalPromocion(0);
 		ArrayList<HashMap<String, String>> mylist = new ArrayList<HashMap<String, String>>();
@@ -329,48 +332,82 @@ public class Peticion {
         	Log.e("TT", "test2");
 //        	Si encuentra artículos bonificados para este artículo, agrega el artículo bonificado
         	if (listaPromocion.getRespuesta().isResultado()){
+        		List<String> listAgregado = new ArrayList<String>();
         		int tamanoPromocion = listaPromocion.getPromocion().length;
-        		int j = 0;
+        		
         		for (int k = 0; k < tamanoPromocion; k++){
         			int unidadesCompra = articulo[i].getTotalUnidades();
-        			int fardosAplicaCompra = listaPromocion.getPromocion()[k].getFardosCompra();
-        			int unidadesAplicaBoni = listaPromocion.getPromocion()[k].getUnidadesCompra();
-        			int totalUnidadesAplicaBoni = ((fardosAplicaCompra * articulo[i].getUnidadesFardo()) + unidadesAplicaBoni);
+        			int totalUnidadesAplicaBoni = (listaPromocion.getPromocion()[k].getTotalUnidades());
         			int fardosBoni = listaPromocion.getPromocion()[k].getFardosBoni();
             		int unidadesBoni = listaPromocion.getPromocion()[k].getUnidadesBoni();
-            		int totalUnidadesBoni = ((fardosBoni * articulo[i].getUnidadesFardo()) + unidadesBoni);
+            		int totalUnidadesBoni = ((fardosBoni * listaPromocion.getPromocion()[k].getArtUnidadesFardo()) + unidadesBoni);
             		float precioBoni = listaPromocion.getPromocion()[k].getPrecioVentaBoni();
             		
             		Log.e("TT", "unidadesCompra = " + unidadesCompra);
             		Log.e("TT", "fardosBoni = " + fardosBoni);
             		Log.e("TT", "unidadesBoni = " + unidadesBoni);
             		Log.e("TT", "totalUndiadeBoni = " + totalUnidadesBoni);
-            		if (unidadesCompra >= totalUnidadesAplicaBoni){
-            			int cantidadBoni = unidadesCompra / totalUnidadesAplicaBoni;
-            			Log.e("TT", "cantidadBoni = " + cantidadBoni);
-//            			for (int a = 0; a < cantidadBoni; a++){
-            				HashMap<String, String> mapBoni = new HashMap<String, String>();
-                        	mapBoni.put("codigoProducto", "BONI");
-                        	mapBoni.put("nombreProducto", listaPromocion.getPromocion()[k].getArtDescripcionBoni());
-                        	mapBoni.put("cajas", String.valueOf(cantidadBoni * listaPromocion.getPromocion()[k].getFardosBoni()));
-                        	if (listaPromocion.getPromocion()[k].getFardosBoni() > 0){
-                        		mapBoni.put("unidades", String.valueOf(cantidadBoni * unidadesBoni));
-                        	}else{
-                        		mapBoni.put("unidades", String.valueOf(cantidadBoni * totalUnidadesBoni));
-                        	}
-                        	mapBoni.put("valor", formatDecimal.convierteFloat(listaPromocion.getPromocion()[k].getPrecioVentaBoni()));
-                        	mapBoni.put("presentacion", String.valueOf(listaPromocion.getPromocion()[k].getUnidadesBoni()));
-                        	mapBoni.put("existencia", "0");
-                        	mapBoni.put("bonificacion", "0");
-                        	mapBoni.put("total", formatDecimal.convierteFloat(precioBoni * totalUnidadesBoni));
-                        	mylist.add(mapBoni);
-                        	float totalTemp = precioBoni * totalUnidadesBoni;
-                        	totalTemp = totalTemp + Total.getTotalPromocion();
-                        	Total.setTotalPromocion(totalTemp);
-//            			}
-            		}
+        			if (listAgregado.size() > 0){
+        				
+        				Iterator iter = listAgregado.iterator();
+        				while (iter.hasNext()){
+        				  String codAgregado = iter.next().toString();
+        				  System.out.println("agregado = " + codAgregado);
+        				  if (!codAgregado.equalsIgnoreCase(listaPromocion.getPromocion()[k].getArtCodigoBoni())){
+        					  
+        					  System.out.println("agregado = " + codAgregado + " -- " + listaPromocion.getPromocion()[k].getArtCodigoBoni());
+        					  if (unidadesCompra >= totalUnidadesAplicaBoni){
+        	            			int cantidadBoni = unidadesCompra / totalUnidadesAplicaBoni;
+        	            			Log.e("TT", "cantidadBoni = 2" + cantidadBoni);
+        	            				HashMap<String, String> mapBoni = new HashMap<String, String>();
+        	                        	mapBoni.put("codigoProducto", "BONI");
+        	                        	mapBoni.put("nombreProducto", listaPromocion.getPromocion()[k].getArtDescripcionBoni());
+        	                        	mapBoni.put("cajas", String.valueOf(cantidadBoni * listaPromocion.getPromocion()[k].getFardosBoni()));
+        	                        	if (listaPromocion.getPromocion()[k].getFardosBoni() > 0){
+        	                        		mapBoni.put("unidades", String.valueOf(cantidadBoni * unidadesBoni));
+        	                        	}else{
+        	                        		mapBoni.put("unidades", String.valueOf(cantidadBoni * totalUnidadesBoni));
+        	                        	}
+        	                        	mapBoni.put("valor", formatDecimal.convierteFloat(listaPromocion.getPromocion()[k].getPrecioVentaBoni()));
+        	                        	mapBoni.put("presentacion", String.valueOf(listaPromocion.getPromocion()[k].getUnidadesBoni()));
+        	                        	mapBoni.put("existencia", "0");
+        	                        	mapBoni.put("bonificacion", "0");
+        	                        	mapBoni.put("total", formatDecimal.convierteFloat(listaPromocion.getPromocion()[k].getPrecioVentaBoni() * totalUnidadesBoni * cantidadBoni));
+        	                        	mylist.add(mapBoni);
+        	                        	float totalTemp = precioBoni * totalUnidadesBoni * cantidadBoni;
+        	                        	totalTemp = totalTemp + Total.getTotalPromocion();
+        	                        	Total.setTotalPromocion(totalTemp);
+        	                        	listAgregado.add(listaPromocion.getPromocion()[k].getArtCodigoBoni());
+        	                    }
+        				  }
+        				}
+        			}else if (unidadesCompra >= totalUnidadesAplicaBoni){
+                			int cantidadBoni = unidadesCompra / totalUnidadesAplicaBoni;
+                			Log.e("TT", "cantidadBoni = 1" + cantidadBoni);
+//                			for (int a = 0; a < cantidadBoni; a++){
+                				HashMap<String, String> mapBoni = new HashMap<String, String>();
+                            	mapBoni.put("codigoProducto", "BONI");
+                            	mapBoni.put("nombreProducto", listaPromocion.getPromocion()[k].getArtDescripcionBoni());
+                            	mapBoni.put("cajas", String.valueOf(cantidadBoni * listaPromocion.getPromocion()[k].getFardosBoni()));
+                            	if (listaPromocion.getPromocion()[k].getFardosBoni() > 0){
+                            		mapBoni.put("unidades", String.valueOf(cantidadBoni * unidadesBoni));
+                            	}else{
+                            		mapBoni.put("unidades", String.valueOf(cantidadBoni * totalUnidadesBoni));
+                            	}
+                            	mapBoni.put("valor", formatDecimal.convierteFloat(listaPromocion.getPromocion()[k].getPrecioVentaBoni()));
+                            	mapBoni.put("presentacion", String.valueOf(listaPromocion.getPromocion()[k].getUnidadesBoni()));
+                            	mapBoni.put("existencia", "0");
+                            	mapBoni.put("bonificacion", "0");
+                            	mapBoni.put("total", formatDecimal.convierteFloat(listaPromocion.getPromocion()[k].getPrecioVentaBoni() * totalUnidadesBoni * cantidadBoni));
+                            	mylist.add(mapBoni);
+                            	float totalTemp = precioBoni * totalUnidadesBoni;
+                            	totalTemp = precioBoni * totalUnidadesBoni * cantidadBoni;
+                            	Total.setTotalPromocion(totalTemp);
+                            	listAgregado.add(listaPromocion.getPromocion()[k].getArtCodigoBoni());
+//                			}
+                		}
+        			
         		}
-        		
         	}
         }
 		Log.e("TT", "tamaño list = " + mylist.size());

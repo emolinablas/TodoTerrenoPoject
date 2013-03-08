@@ -209,10 +209,18 @@ public class RequestDB {
 					DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
 					Entity datoPromocion = new Entity("promocion");
 					Log.e("TT", "guardar promocion = " + listaPromocion.getPromocion()[i].getArtCodigo());
+					
+					int fardosc = listaPromocion.getPromocion()[i].getFardosCompra();
+					int artUnidadesFardo = listaPromocion.getPromocion()[i].getArtUnidadesFardo();
+					int unidadesc = listaPromocion.getPromocion()[i].getUnidadesCompra();
+					int totalUnidades = ((fardosc * artUnidadesFardo) + unidadesc);
+					Log.e("TT", "totalUnidades promocion = " + totalUnidades);
+					
 					datoPromocion.setValue("artcodigo", listaPromocion.getPromocion()[i].getArtCodigo());
-					datoPromocion.setValue("artunidadesfardo", listaPromocion.getPromocion()[i].getArtUnidadesFardo());
-					datoPromocion.setValue("fardosc", listaPromocion.getPromocion()[i].getFardosCompra());
-					datoPromocion.setValue("unidadesc", listaPromocion.getPromocion()[i].getUnidadesCompra());
+					datoPromocion.setValue("artunidadesfardo", artUnidadesFardo);
+					datoPromocion.setValue("fardosc", fardosc);
+					datoPromocion.setValue("unidadesc", unidadesc);
+					datoPromocion.setValue("totalunidades", totalUnidades);
 					datoPromocion.setValue("artcodigob", listaPromocion.getPromocion()[i].getArtCodigoBoni());
 					datoPromocion.setValue("artdescripcionb", listaPromocion.getPromocion()[i].getArtDescripcionBoni());
 					datoPromocion.setValue("fardosb", listaPromocion.getPromocion()[i].getFardosBoni());
@@ -1509,7 +1517,7 @@ public class RequestDB {
 			Log.e("TT", "RequestDB.buscaBoni = " + idArticulo);
 			try {
 				DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
-				List<Entity> boni = DataFramework.getInstance().getEntityList("promocion", "artcodigo = '" + idArticulo + "'");
+				List<Entity> boni = DataFramework.getInstance().getEntityList("promocion", "artcodigo = '" + idArticulo + "'", "artcodigob DESC");
 				
 				int tamano = boni.size();
 				RespuestaWS respuesta = new RespuestaWS();
@@ -1533,6 +1541,7 @@ public class RequestDB {
 							temp.setArtDescripcionBoni(dato.getString("artdescripcionb"));
 				 			temp.setFardosCompra(dato.getInt("fardosc"));
 				 			temp.setUnidadesCompra(dato.getInt("unidadesc"));
+				 			temp.setTotalUnidades(dato.getInt("totalunidades"));
 				 			temp.setArtCodigoBoni(dato.getString("artcodigob"));
 				 			temp.setFardosBoni(Integer.parseInt(dato.getString("fardosb")));
 				 			temp.setUnidadesBoni(Integer.parseInt(dato.getString("unidadesb")));

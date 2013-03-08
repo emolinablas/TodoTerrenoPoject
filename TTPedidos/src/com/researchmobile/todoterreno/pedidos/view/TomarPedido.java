@@ -299,7 +299,7 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 				" unidades de " +
 				getListaPromocion().getPromocion()[i].getArtDescripcionBoni() + 
 				" a Q." + 
-				getListaPromocion().getPromocion()[i].getPrecioVentaBoni() + "/n";
+				getListaPromocion().getPromocion()[i].getPrecioVentaBoni() + "\n \n";
 				
 			}
 			descripcionBoni.setText(descripcionPromocion);
