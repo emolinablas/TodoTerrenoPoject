@@ -245,7 +245,7 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 		getEncabezado().setCredito("0");
 		getEncabezado().setFecha(getFecha().FechaHoy());
 		getEncabezado().setHora(getFecha().Hora());
-		getEncabezado().setTotal(getTotal() + Total.getTotalPromocion());
+		getEncabezado().setTotal(getTotal());
 	}
 	
 	public void cancelarPedido(){
@@ -389,9 +389,9 @@ public class TomarPedido extends Activity implements TextWatcher, OnItemClickLis
 		verPedido();
 	}
 	protected void actualizaTotalGeneral() {
+		getPeticion().totalPromo(this, getNumeroPedido());
 		setTotal(getPeticion().totalActual(TomarPedido.this, getNumeroPedido()) + Total.getTotalPromocion());
 		getTotalGeneralTextView().setText(getFormatDecimal().convierteFloat(getTotal()));
-		
 	}
 
 	@Override

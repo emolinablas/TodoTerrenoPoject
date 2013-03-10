@@ -414,6 +414,65 @@ public class Peticion {
 		
 		return mylist;
 	}
+	
+	
+	public void totalPromo(Context context, int numeroPedido) {
+		Total.setTotalPromocion(0);
+		DetallePedido[] articulo = requestDB.buscaDetallePedido(context, numeroPedido);
+		int tamano = articulo.length;
+		for (int i = 0; i < tamano; i++){
+			ListaPromocion listaPromocion = new ListaPromocion();
+        	Log.e("TT", "test1");
+        	listaPromocion = buscaBoni(context, articulo[i].getCodigo());
+        	Log.e("TT", "test2");
+//        	Si encuentra artículos bonificados para este artículo, agrega el artículo bonificado
+        	if (listaPromocion.getRespuesta().isResultado()){
+        		List<String> listAgregado = new ArrayList<String>();
+        		int tamanoPromocion = listaPromocion.getPromocion().length;
+        		
+        		for (int k = 0; k < tamanoPromocion; k++){
+        			int unidadesCompra = articulo[i].getTotalUnidades();
+        			int totalUnidadesAplicaBoni = (listaPromocion.getPromocion()[k].getTotalUnidades());
+        			int fardosBoni = listaPromocion.getPromocion()[k].getFardosBoni();
+            		int unidadesBoni = listaPromocion.getPromocion()[k].getUnidadesBoni();
+            		int totalUnidadesBoni = ((fardosBoni * listaPromocion.getPromocion()[k].getArtUnidadesFardo()) + unidadesBoni);
+            		float precioBoni = listaPromocion.getPromocion()[k].getPrecioVentaBoni();
+            		
+            		Log.e("TT", "unidadesCompra = " + unidadesCompra);
+            		Log.e("TT", "fardosBoni = " + fardosBoni);
+            		Log.e("TT", "unidadesBoni = " + unidadesBoni);
+            		Log.e("TT", "totalUndiadeBoni = " + totalUnidadesBoni);
+        			if (listAgregado.size() > 0){
+        				
+        				Iterator iter = listAgregado.iterator();
+        				while (iter.hasNext()){
+        				  String codAgregado = iter.next().toString();
+        				  System.out.println("agregado = " + codAgregado);
+        				  if (!codAgregado.equalsIgnoreCase(listaPromocion.getPromocion()[k].getArtCodigoBoni())){
+        					  
+        					  System.out.println("agregado = " + codAgregado + " -- " + listaPromocion.getPromocion()[k].getArtCodigoBoni());
+        					  if (unidadesCompra >= totalUnidadesAplicaBoni){
+        	            			int cantidadBoni = unidadesCompra / totalUnidadesAplicaBoni;
+        	            			Log.e("TT", "cantidadBoni = 2" + cantidadBoni);
+        	            				float totalTemp = precioBoni * totalUnidadesBoni * cantidadBoni;
+        	                        	totalTemp = totalTemp + Total.getTotalPromocion();
+        	                        	Total.setTotalPromocion(totalTemp);
+        	                        	listAgregado.add(listaPromocion.getPromocion()[k].getArtCodigoBoni());
+        	                    }
+        				  }
+        				}
+        			}else if (unidadesCompra >= totalUnidadesAplicaBoni){
+                			int cantidadBoni = unidadesCompra / totalUnidadesAplicaBoni;
+                			Log.e("TT", "cantidadBoni = 1" + cantidadBoni);
+                				float totalTemp = precioBoni * totalUnidadesBoni;
+                            	totalTemp = precioBoni * totalUnidadesBoni * cantidadBoni;
+                            	Total.setTotalPromocion(totalTemp);
+                            	listAgregado.add(listaPromocion.getPromocion()[k].getArtCodigoBoni());
+                		}
+        		}
+        	}
+        }
+	}
 
 	public ArrayList<HashMap<String, String>> ListaClientesVisitados (Context context){
 		ArrayList<HashMap<String, String>> mylist = new ArrayList<HashMap<String, String>>();
