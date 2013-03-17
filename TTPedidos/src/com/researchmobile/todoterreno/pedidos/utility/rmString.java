@@ -87,6 +87,7 @@ public class rmString {
 				temp.put("movunidades", pedido.getDetallePedido()[i].getTotalUnidades());
 				temp.put("artcodigo", pedido.getDetallePedido()[i].getCodigo());
 				temp.put("movtipoprecio", "0");
+				temp.put("movdescuento", pedido.getDetallePedido()[i].getPrecio());
 				detalleJsonArray.put(temp);
 //				Verificar si el articulo tiene bonificacion
 				ListaPromocion listaPromocion = new ListaPromocion();
@@ -125,7 +126,7 @@ public class rmString {
 	        	            			
 	        	            			JSONObject tempBoni = new JSONObject();
 	        		    				//temp.put("idencabezado", pedido.getEncabezadoPedido().getCodigoPedidoTemp());
-	        		    				tempBoni.put("movprecio", formatDecimal.convierteFloat(listaPromocion.getPromocion()[k].getPrecioVentaBoni()));
+	        		    				tempBoni.put("movprecio", formatDecimal.convierteFloat(listaPromocion.getPromocion()[k].getArtPrecioVentaNormal()));
 	        		    				if (listaPromocion.getPromocion()[k].getFardosBoni() > 0){
 	        		    					tempBoni.put("movunidades", String.valueOf(cantidadBoni * unidadesBoni));
         	                        	}else{
@@ -134,6 +135,7 @@ public class rmString {
 	        		    				
 	        		    				tempBoni.put("artcodigo", listaPromocion.getPromocion()[k].getArtCodigoBoni());
 	        		    				tempBoni.put("movtipoprecio", "PROMOCION");
+	        		    				tempBoni.put("movdescuento", listaPromocion.getPromocion()[k].getPrecioVentaBoni());
 	        		    				detalleJsonArray.put(tempBoni);
 	        		    				listAgregado.add(listaPromocion.getPromocion()[k].getArtCodigoBoni());
 	        	            		}
@@ -144,7 +146,7 @@ public class rmString {
 	            			
 	            			JSONObject tempBoni = new JSONObject();
 		    				//temp.put("idencabezado", pedido.getEncabezadoPedido().getCodigoPedidoTemp());
-		    				tempBoni.put("movprecio", formatDecimal.convierteFloat(listaPromocion.getPromocion()[k].getPrecioVentaBoni()));
+		    				tempBoni.put("movprecio", formatDecimal.convierteFloat(listaPromocion.getPromocion()[k].getArtPrecioVentaNormal()));
 		    				if (listaPromocion.getPromocion()[k].getFardosBoni() > 0){
 		    					tempBoni.put("movunidades", String.valueOf(cantidadBoni * unidadesBoni));
                         	}else{
@@ -153,6 +155,7 @@ public class rmString {
 		    				
 		    				tempBoni.put("artcodigo", listaPromocion.getPromocion()[k].getArtCodigoBoni());
 		    				tempBoni.put("movtipoprecio", "PROMOCION");
+		    				tempBoni.put("movdescuento", listaPromocion.getPromocion()[k].getPrecioVentaBoni());
 		    				detalleJsonArray.put(tempBoni);
 		    				listAgregado.add(listaPromocion.getPromocion()[k].getArtCodigoBoni());
 	        			}

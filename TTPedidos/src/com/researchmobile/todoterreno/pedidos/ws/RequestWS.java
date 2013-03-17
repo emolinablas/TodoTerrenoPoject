@@ -244,6 +244,7 @@ public class RequestWS {
 							promocionTemp.setPrecioVentaBoni(Float.parseFloat(jsonTemp.getString("precioventab")));
 							promocionTemp.setLimiteOfertaCliente(jsonTemp.getInt("limiteofertascli"));
 							promocionTemp.setLimiteOfertasVenta(jsonTemp.getInt("limiteofertasven"));
+							promocionTemp.setArtPrecioVentaNormal(Float.parseFloat(jsonTemp.getString("artprecioventabnormal")));
 							promocion[i] = promocionTemp;
 							Log.e("TT", "promocione capturada = " + promocionTemp.getArtCodigo());
 						}

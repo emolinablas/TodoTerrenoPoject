@@ -228,6 +228,7 @@ public class RequestDB {
 					datoPromocion.setValue("precioventab", listaPromocion.getPromocion()[i].getPrecioVentaBoni());
 					datoPromocion.setValue("limiteofertascli", listaPromocion.getPromocion()[i].getLimiteOfertaCliente());
 					datoPromocion.setValue("limiteofertasven", listaPromocion.getPromocion()[i].getLimiteOfertasVenta());
+					datoPromocion.setValue("artprecioventabnormal", listaPromocion.getPromocion()[i].getArtPrecioVentaNormal());
 					datoPromocion.save();
 				}
 				Log.e("TT", "promociones guardadas = " + tamano);
@@ -1548,6 +1549,7 @@ public class RequestDB {
 				 			temp.setPrecioVentaBoni(Float.parseFloat(dato.getString("precioventab")));
 				 			temp.setLimiteOfertaCliente(Integer.parseInt(dato.getString("limiteofertascli")));
 				 			temp.setLimiteOfertasVenta(Integer.parseInt(dato.getString("limiteofertasven")));
+				 			temp.setArtPrecioVentaNormal(Float.parseFloat(dato.getString("artprecioventabnormal")));
 				 			promocion[i] = temp;
 						}
 						i++;
