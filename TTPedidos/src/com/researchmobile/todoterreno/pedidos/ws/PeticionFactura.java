@@ -23,7 +23,7 @@ public class PeticionFactura {
 		setCatalogoRepartidor(new CatalogoRepartidor());
 
 		try{
-			respuesta = requestDB.verificaLoginDB(context, User.getUsername(), User.getClave());
+//			respuesta = requestDB.verificaLoginDB(context, User.getUsername(), User.getClave());
 			if(respuesta.isResultado()){
 				if (connectState.isConnectedToInternet(context)){
 //					pedidosPendientes(context);
@@ -32,8 +32,12 @@ public class PeticionFactura {
 			}else{
 				if (connectState.isConnectedToInternet(context)){
 //					pedidosPendientes(context);
-					LoginEntity loginEntity = new LoginEntity();
 					setCatalogoRepartidor(requestWS.login(User.getUsername(), User.getClave()));
+					respuesta = getCatalogoRepartidor().getRespuesta();
+					if (respuesta.isResultado()){
+//						requestDB.guardaUsuario(context, getCatalogoRepartidor().getRepartidor());
+						return respuesta;
+					}
 				}else{
 					respuesta.setResultado(false);
 					respuesta.setMensaje("No cuenta con conexion a internet");

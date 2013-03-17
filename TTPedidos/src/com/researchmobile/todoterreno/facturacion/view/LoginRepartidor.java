@@ -76,8 +76,14 @@ public class LoginRepartidor extends Activity implements OnClickListener, OnKeyL
 	private void peticionLogin() {
 		User.setUsername(getUsuarioEditText().getText().toString());
 		User.setClave(getContraseniaEditText().getText().toString());
-		PeticionFactura peticion = new PeticionFactura();
-		setRespuesta(peticion.login(this));
+		if (User.getUsername().equalsIgnoreCase("") || User.getClave().equalsIgnoreCase("")){
+			getRespuesta().setResultado(false);
+			getRespuesta().setMensaje("Debe llenar todos los campos");
+		}else{
+			PeticionFactura peticion = new PeticionFactura();
+			setRespuesta(peticion.login(this));
+		}
+		
 	}
 
 	// Clase para ejecutar en Background
@@ -104,11 +110,11 @@ public class LoginRepartidor extends Activity implements OnClickListener, OnKeyL
 		// Metodo con las instrucciones al finalizar lo ejectuado en background
 		protected void onPostExecute(Integer resultado) {
 			pd.dismiss();
-//			if (getRespuesta().isResultado()){
+			if (getRespuesta().isResultado()){
 				activityRol();
-//			}else{
-//				getMensaje().VerMensaje(LoginRepartidor.this, getRespuesta().getMensaje());
-//			}
+			}else{
+				getMensaje().VerMensaje(LoginRepartidor.this, getRespuesta().getMensaje());
+			}
 
 		}
 

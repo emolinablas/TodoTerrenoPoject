@@ -10,13 +10,6 @@ public class Factura implements Serializable {
 	/**
 	 * Para mostrar en lista RolFacturacion
 	 */
-	private String codigoCliente;
-	private String contacto;
-	private String nombreNegocio;
-	private String direccion;
-	private String telefono;
-	private String nit;
-	
 	private String movDocumento;
 	private String movFecha;
 	private String movHora;
@@ -28,6 +21,11 @@ public class Factura implements Serializable {
 	private float movCheque;
 	private float movCredito;
 	private String cliCodigo;
+	private String cliContacto;
+	private String cliEmpresa;
+	private String cliTelefono;
+	private String cliDireccion;
+	private String cliNit;
 	private String factura;
 	private boolean movFacturado;
 	private String primerDato;
@@ -213,42 +211,6 @@ public class Factura implements Serializable {
 	public void setFacturaRechazo(Integer facturaRechazo) {
 		this.facturaRechazo = facturaRechazo;
 	}
-	public String getCodigoCliente() {
-		return codigoCliente;
-	}
-	public void setCodigoCliente(String codigoCliente) {
-		this.codigoCliente = codigoCliente;
-	}
-	public String getContacto() {
-		return contacto;
-	}
-	public void setContacto(String contacto) {
-		this.contacto = contacto;
-	}
-	public String getNombreNegocio() {
-		return nombreNegocio;
-	}
-	public void setNombreNegocio(String nombreNegocio) {
-		this.nombreNegocio = nombreNegocio;
-	}
-	public String getDireccion() {
-		return direccion;
-	}
-	public void setDireccion(String direccion) {
-		this.direccion = direccion;
-	}
-	public String getTelefono() {
-		return telefono;
-	}
-	public void setTelefono(String telefono) {
-		this.telefono = telefono;
-	}
-	public String getNit() {
-		return nit;
-	}
-	public void setNit(String nit) {
-		this.nit = nit;
-	}
 	public RespuestaWS getRespuesta() {
 		return respuesta;
 	}
@@ -261,6 +223,37 @@ public class Factura implements Serializable {
 	public void setDetalleFactura(DetalleFactura[] detalleFactura) {
 		this.detalleFactura = detalleFactura;
 	}
+	public String getCliContacto() {
+		return cliContacto;
+	}
+	public void setCliContacto(String cliContacto) {
+		this.cliContacto = cliContacto;
+	}
+	public String getCliEmpresa() {
+		return cliEmpresa;
+	}
+	public void setCliEmpresa(String cliEmpresa) {
+		this.cliEmpresa = cliEmpresa;
+	}
+	public String getCliTelefono() {
+		return cliTelefono;
+	}
+	public void setCliTelefono(String cliTelefono) {
+		this.cliTelefono = cliTelefono;
+	}
+	public String getCliDireccion() {
+		return cliDireccion;
+	}
+	public void setCliDireccion(String cliDireccion) {
+		this.cliDireccion = cliDireccion;
+	}
+	public String getCliNit() {
+		return cliNit;
+	}
+	public void setCliNit(String cliNit) {
+		this.cliNit = cliNit;
+	}
+	
 
 }
 

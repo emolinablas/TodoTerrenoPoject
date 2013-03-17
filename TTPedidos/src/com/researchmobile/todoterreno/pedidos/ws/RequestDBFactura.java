@@ -4,14 +4,40 @@ import java.util.Iterator;
 import java.util.List;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.researchmobile.todoterreno.facturacion.entity.DetalleFactura;
 import com.researchmobile.todoterreno.facturacion.entity.Factura;
+import com.researchmobile.todoterreno.facturacion.entity.Repartidor;
 import com.researchmobile.todoterreno.pedidos.entity.RespuestaWS;
+import com.researchmobile.todoterreno.pedidos.entity.User;
+import com.researchmobile.todoterreno.pedidos.utility.Fecha;
 
 public class RequestDBFactura {
+	Fecha fecha = new Fecha();
+	
+//	guarda usuario
+	public void guardaUsuario(Context context, Repartidor usuario) {
+		try {
+
+			DataFramework.getInstance().open(context, "com.researchmobile.todoterreno.pedidos.view");
+			Entity datoUsuario = new Entity("usuario");
+			datoUsuario.setValue("id", usuario.getId());
+			datoUsuario.setValue("usuario", User.getUsername());
+			datoUsuario.setValue("password", User.getClave());
+			datoUsuario.setValue("lastLogin", fecha.FechaHoy());
+			datoUsuario.setValue("activo", "1");
+			datoUsuario.setValue("dia", fecha.diaAnio());
+			datoUsuario.save();
+		} catch (Exception msj) {
+			Log.e("TT", "RequestDB.guardaUsuario = " + msj);
+			msj.printStackTrace();
+		}
+	}
+	
+	
 	//guarda factura
 			public void guardafactura(Context context, Factura[] factura)
 			{

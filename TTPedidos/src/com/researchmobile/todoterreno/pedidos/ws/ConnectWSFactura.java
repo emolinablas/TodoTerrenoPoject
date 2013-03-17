@@ -18,11 +18,15 @@ public class ConnectWSFactura {
     
     public static JSONObject obtenerJsonObject(String url) {
     	Log.e("TT", "ConnectWSFactura.obtenerJson");
+    	Log.v("TT", url);
         JSONObject jsonObject = null;
         try {
             URL urlCon = new URL("http", IP_SERVER, PUERTO, "/megainfo/ws/" + url);
+            Log.v("TT", urlCon.toString());
             HttpURLConnection urlConnection = (HttpURLConnection) urlCon.openConnection();
+            Log.v("TT", urlConnection.toString());
             InputStream inputStream = urlConnection.getInputStream();
+            Log.v("TT", inputStream.toString());
             String responseInputStream = convertStreamToString(inputStream);
             Log.v("TT", responseInputStream);
             jsonObject = new JSONObject(responseInputStream);

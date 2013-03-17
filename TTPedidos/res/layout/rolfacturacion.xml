@@ -46,8 +46,7 @@
                     style="@style/CodeFont_label_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="5sp"
-                    android:text="rol_facturacion_textview" />
+                    android:layout_marginRight="5sp"/>
 
                 <TextView
                     android:id="@+id/rol_facturacion_textview"
@@ -65,7 +64,7 @@
                     android:id="@+id/rol_facturacion_buscar_editText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="rol_facturacion_cliente_edittext" 
+                    android:hint="Buscar Cliente" 
                     android:layout_weight="1"/>
 
                 <ImageButton

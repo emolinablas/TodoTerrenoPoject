@@ -1,4 +1,4 @@
-    <database name="todoterreno039" version="1">
+    <database name="todoterreno040" version="1">
 	
 	<!-- U S U A R I O -->
     <table name="usuario" to-string="%usuario%">
@@ -249,6 +249,21 @@
 	    <field name="sinc"				obligatory="false" type="integer"/>	        	
 	 </table>
 	 
+	<!-- M O D U L O     F A C T U R A C I O N -->	<!-- M O D U L O     F A C T U R A C I O N -->	<!-- M O D U L O     F A C T U R A C I O N -->
+	
+	<!-- R E P A R T I D O R -->
+    <table name="vendedor" to-string="%vendedor%">
+    
+    <field name="idrepartidor"		obligatory="false" 	type="text" size="20"/>    
+    <field name="clave"				obligatory="false" 	type="text" size="20"/>    
+    <field name="repartidor"		obligatory="false" 	type="text" size="80"/>    
+    <field name="identificacion"	obligatory="false" 	type="text" size="15"/>
+    <field name="licencia"			obligatory="false" 	type="text" size="15"/>
+    <field name="direccion"			obligatory="false" 	type="text" size="80"/>    
+    <field name="telefono"			obligatory="false" 	type="text" size="11"/>    
+    <field name="saldo"				obligatory="false" 	type="text" size="10"/>    
+    </table>
+     
 	<!-- F A C T U R A --> 
 	<table name="factura" to-string="%factura%">
 	    
@@ -263,7 +278,12 @@
 	    <field name="movcheque"			obligatory="false" type="float"/>
 	    <field name="movcredito"		obligatory="false" type="float"/>
 	    <field name="clicodigo"			obligatory="false" type="text" size="20"/>
-		<field name="factura"			obligatory="false" type="text" size="20"/>
+	    <field name="clicontacto"			obligatory="false" type="text" size="20"/>
+	    <field name="cliempresa"			obligatory="false" type="text" size="20"/>
+	    <field name="clitelefono"			obligatory="false" type="text" size="20"/>
+	    <field name="clidireccion"			obligatory="false" type="text" size="20"/>
+	    <field name="clinit"			obligatory="false" type="text" size="20"/>
+	    <field name="factura"			obligatory="false" type="text" size="20"/>
 		<field name="movfacturado"		obligatory="false" type="boolean"/>
 		<field name="primerdato"		obligatory="false" type="text" size="20"/>
 		<field name="movnotas"			obligatory="false" type="text" size="60"/>
